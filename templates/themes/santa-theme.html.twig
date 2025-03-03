@@ -1,0 +1,30 @@
+{% use 'tailwind_2_layout.html.twig' %}
+
+{%- block widget_attributes -%}
+    {%- set widget_class = widget_class|default('') ~ 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' -%}
+    {{- parent() -}}
+{%- endblock widget_attributes -%}
+
+{%- block button_widget -%}
+    {% set attr = attr|merge({
+        'class': (attr.class|default('') ~ 'rounded px-4 py-2 bg-zinc-200 hover:bg-zinc-100')|trim
+    }) %}
+
+    {{ parent() }}
+{%- endblock button_widget -%}
+
+{%- block email_row -%}
+    <div class="mb-4">
+        {{ form_label(form) }}
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}
+
+{%- block password_row -%}
+    <div class="mb-4">
+        {{ form_label(form) }}
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+    </div>
+{%- endblock -%}

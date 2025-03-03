@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{%- block body_class -%}
+    bg-green-900 flex h-screen justify-center items-center
+{%- endblock -%}
+
+{% block body%}
+    <div class="flex w-md">
+        {{ form(form, { 'attr': { 'class': 'w-full' }}) }}
+    </div>
+{% endblock %}
