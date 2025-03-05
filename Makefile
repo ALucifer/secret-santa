@@ -70,3 +70,6 @@ cc: sf
 
 migrate:
 	$(SYMFONY) doctrine:migrations:migrate --no-interaction
+
+migration:
+	$(SYMFONY) make:migration

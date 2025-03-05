@@ -72,8 +72,27 @@ services:
       - frontend
     labels:
       - traefik.enable=true
-      - traefik.http.routers.dashboard-pma.rule=Host(`pma.secretsanta.com`)
-      - traefik.http.routers.dashboard-pma.entrypoints=web
+      - traefik.http.routers.secret-pma.rule=Host(`pma.secretsanta.com`)
+      - traefik.http.routers.secret-pma.entrypoints=web
+
+  ###> symfony/mailer ###
+  mailer:
+    image: axllent/mailpit
+    container_name: secretsanta_mailer
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    networks:
+      - frontend
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.secret-mailer.rule=Host(`mailer.secretsanta.com`)
+      - traefik.http.routers.secret-mailer.entrypoints=web
+      - traefik.http.services.secret-mailer.loadbalancer.server.port=8025
+    ###< symfony/mailer ###
 
 networks:
   frontend:
