@@ -2,7 +2,7 @@
 
 namespace App\Security;
 
-enum Roles: String
+enum Role: string
 {
     case ROLE_USER = 'ROLE_USER';
 }

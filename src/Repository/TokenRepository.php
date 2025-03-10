@@ -8,6 +8,7 @@ use DateInterval;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @extends ServiceEntityRepository<Token>
@@ -38,5 +39,17 @@ class TokenRepository extends ServiceEntityRepository
 
         $this->getEntityManager()->persist($token);
         $this->getEntityManager()->flush();
+    }
+
+    /**
+        * @param array<string, mixed> $criteria
+        * @param array<string, string>|null $orderBy
+        * @return Token
+     */
+    public function findOneByOrFail(array $criteria, ?array $orderBy = null): Token
+    {
+        $token = $this->findOneBy($criteria, $orderBy);
+
+        return $token ?? throw new NotFoundHttpException('Token not found.');
     }
 }

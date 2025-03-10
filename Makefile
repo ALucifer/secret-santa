@@ -1,7 +1,5 @@
 # Executables (local)
 DOCKER_COMP = docker compose
-UID=1000
-GID=1000
 
 # Docker containers
 PHP_CONT = $(DOCKER_COMP) exec php
@@ -11,6 +9,7 @@ NODE = $(DOCKER_COMP) run --rm node
 PHP      = $(PHP_CONT) php
 COMPOSER = $(PHP_CONT) composer
 SYMFONY  = $(PHP) bin/console
+CCODE = $(DOCKER_COMP) run -it --rm cleancode
 
 # Misc
 .DEFAULT_GOAL = help
@@ -73,3 +72,18 @@ migrate:
 
 migration:
 	$(SYMFONY) make:migration
+
+
+## —— Clean code ——————————————————————————————————————————————————————————————
+
+phpstan:
+	$(CCODE) phpstan analyse src --level 9
+
+phpmd:
+	$(CCODE) phpmd src text phpmd.xml
+
+phpcs:
+	$(CCODE) phpcs src
+
+phpunit:
+	$(CCODE) phpunit

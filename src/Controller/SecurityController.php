@@ -7,7 +7,7 @@ use App\Form\LoginType;
 use App\Form\RegisterType;
 use App\Repository\TokenRepository;
 use App\Repository\UserRepository;
-use App\Security\Roles;
+use App\Security\Role;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +27,7 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var User $user */
             $user = $form->getData();
-            $user->setRoles([Roles::ROLE_USER]);
+            $user->setRoles([Role::ROLE_USER]);
             $userRepository->create($user);
         }
 
@@ -62,14 +62,14 @@ class SecurityController extends AbstractController
         UserRepository $userRepository
     ): Response {
         try {
-            $token = $tokenRepository->findOneBy(['token' => $request->get('token')]);
+            $token = $tokenRepository->findOneByOrFail(['token' => $request->get('token')]);
 
             if (!$token->isValid()) {
                 $this->addFlash('error', 'Invalid token');
                 return $this->redirectToRoute('home');
             }
 
-            $user = $userRepository->findOneBy(['id' => $token->getUser()->getId()]);
+            $user = $userRepository->findOneByOrFail(['id' => $token->getUser()->getId()]);
             $user->setIsVerified(true);
 
             $userRepository->update($user);

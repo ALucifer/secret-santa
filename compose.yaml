@@ -16,7 +16,6 @@ services:
       - ./:/var/www/html:ro,cached
   php:
     container_name: secretsanta_php
-    user: "${UID}:${GID}"
     build:
       context: docker
       dockerfile: ./Dockerfile
@@ -93,6 +92,13 @@ services:
       - traefik.http.routers.secret-mailer.entrypoints=web
       - traefik.http.services.secret-mailer.loadbalancer.server.port=8025
     ###< symfony/mailer ###
+
+  cleancode:
+    image: jakzal/phpqa
+    container_name: secretsanta_cleancode
+    volumes:
+      - .:/app
+    working_dir: /app
 
 networks:
   frontend:

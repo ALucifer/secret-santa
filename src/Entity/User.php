@@ -3,9 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use App\Security\Role;
 use Doctrine\ORM\Mapping as ORM;
+use LogicException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\NotBlank;
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -18,10 +23,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
-    private ?string $email = null;
+    #[NotBlank]
+    #[Email]
+    private string $email;
 
     /**
-     * @var list<string> The user roles
+     * @var array<string> The user roles
      */
     #[ORM\Column()]
     private array $roles = [];
@@ -29,18 +36,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(options: ['default' => false])]
     private bool $isVerified = false;
 
-    /**
-     * @var string The hashed password
-     */
-    #[ORM\Column]
-    private ?string $password = null;
+    #[ORM\Column()]
+    private string $password;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -53,35 +57,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
+     * @return non-empty-string
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        if ('' === $this->email) {
+            throw new LogicException('Email cannot be blank.');
+        }
+
+        return $this->email;
     }
 
     /**
-     * @see UserInterface
-     *
-     * @return list<string>
+     * @return array<string>
      */
     public function getRoles(): array
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = Role::ROLE_USER->value;
 
         return array_unique($roles);
     }
 
     /**
-     * @param list<string> $roles
+     * @param Role[] $roles
      */
     public function setRoles(array $roles): static
     {
-        $this->roles = $roles;
+        $this->roles = array_map(fn ($role) => Role::ROLE_USER->value, $roles);
 
         return $this;
     }
@@ -89,7 +93,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
         return $this->password;
     }

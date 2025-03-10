@@ -22,7 +22,7 @@ class RegisterNotificationHandler
     public function __invoke(RegisterNotification $registerNotification): void
     {
         try {
-            $user = $this->userRepository->findOneBy(['id' => $registerNotification->userId()]);
+            $user = $this->userRepository->findOneByOrFail(['id' => $registerNotification->userId()]);
             $token = $this->tokenRepository->createRegisterToken($user);
 
             $this->mailer->sendAccountValidationMail($user, $token);

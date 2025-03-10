@@ -6,6 +6,8 @@ use App\Entity\User;
 use App\MessageHandler\RegisterNotification\RegisterNotification;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use LogicException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -48,7 +50,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             $this->getEntityManager()->persist($user);
             $this->getEntityManager()->flush();
 
-            $this->messageBus->dispatch(new RegisterNotification($user->getId()));
+            $this->messageBus->dispatch(new RegisterNotification($user->getId() ?? throw new LogicException('User id must be defined')));
         } catch (\Throwable $e) {
             dd($e);
         }
@@ -60,7 +62,19 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             $this->getEntityManager()->persist($user);
             $this->getEntityManager()->flush();
         } catch (Throwable $e) {
-
+            dd($e->getMessage());
         }
+    }
+
+    /**
+     * @param array<string, mixed> $criteria
+     * @param array<string, string>|null $orderBy
+     * @return User
+     */
+    public function findOneByOrFail(array $criteria, ?array $orderBy = null): User
+    {
+        $user = $this->findOneBy($criteria, $orderBy);
+
+        return $user ?? throw new NotFoundHttpException('User not found.');
     }
 }

@@ -15,7 +15,7 @@ class AccountValidationMailer
     ) {
     }
 
-    public function sendAccountValidationMail(User $user, Token $token)
+    public function sendAccountValidationMail(User $user, Token $token): void
     {
         $email = new TemplatedEmail();
         $email

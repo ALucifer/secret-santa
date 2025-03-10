@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Ruleset">
+    <description>Ruleset for PHP Mess Detector that enforces coding standards</description>
+
+    <rule ref="rulesets/cleancode.xml"/>
+    <rule ref="rulesets/codesize.xml"/>
+    <rule ref="rulesets/controversial.xml"/>
+    <rule ref="rulesets/design.xml"/>
+    <rule ref="rulesets/unusedcode.xml">
+        <exclude name="UnusedFormalParameter"/>
+    </rule>
+
+    <rule ref="rulesets/naming.xml/ShortVariable">
+        <properties>
+            <property name="exceptions">
+                <value>id</value>
+            </property>
+        </properties>
+    </rule>
+</ruleset>
