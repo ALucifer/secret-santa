@@ -5,12 +5,14 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
+            {{ encore_entry_link_tags('menu') }}
         {% endblock %}
 
         {% block javascripts %}
         {% endblock %}
     </head>
-    <body class="{%- block body_class-%}bg-green-900{% endblock %}">
+    <body>
+        {{ render_esi(url('esi_menu')) }}
         {% block body %}{% endblock %}
     </body>
 </html>

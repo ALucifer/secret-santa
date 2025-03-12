@@ -1,0 +1,17 @@
+<nav class="menu__container">
+    <a href="{{ path('home') }}">Accueil</a>
+    <ul class="menu__links">
+        <li>
+            {% if not is_granted('IS_AUTHENTICATED') %}
+                <a href="{{ path('app_login') }}" class="action__link action__link--login">Connexion</a>
+            {% else %}
+                <a href="{{ path('_logout_main') }}" class="action__link action__link--logout">Déconnexion</a>
+            {% endif %}
+        </li>
+        <li>
+            {% if is_granted('IS_AUTHENTICATED') %}
+                <a href="{{ path('user_profile') }}">Profile</a>
+            {% endif %}
+        </li>
+    </ul>
+</nav>

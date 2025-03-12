@@ -8,10 +8,14 @@ Encore
     .setOutputPath('public/build/')
     .setPublicPath('/build')
     .addEntry('app', './assets/app.js')
+    .addEntry('menu', './assets/menu.js')
     .splitEntryChunks()
+    .copyFiles({
+            from: './assets/images',
+            to: 'images/[path][name].[ext]',
+    })
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
-    .enableStimulusBridge('./assets/controllers.json')
     .enableStimulusBridge('./assets/controllers.json')
     .enableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()

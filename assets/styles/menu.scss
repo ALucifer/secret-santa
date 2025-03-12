@@ -1,0 +1,44 @@
+.menu {
+  &__container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 50px;
+    background-color: #EFEEEA;
+
+    @media (min-width: 768px) and (max-width: 1024px) {
+      height: 75px;
+    }
+
+    @media (max-width: 768px) {
+      height: 100px;
+    }
+  }
+
+  &__links {
+    display: flex;
+    gap: 32px;
+  }
+}
+
+.action {
+  &__link {
+    padding: 4px 8px;
+    border-radius: 4px;
+
+    &--login {
+      background-color: oklch(79.2% 0.16 72.34);
+      color: oklch(47.62% 0.0794 205.4);
+
+      &:hover {
+        background-color: oklch(0.824 0.149 76.833);
+        color: oklch(0.514 0.085 204.555);
+      }
+    }
+
+    &--logout {
+      background-color: oklch(57% 0.209 22.65);
+      color: oklch(100% 0 0);
+    }
+  }
+}

@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use App\Security\Role;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use LogicException;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\Email;
@@ -15,6 +18,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[UniqueEntity('email', 'Cet email est déjà utilisé.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -38,6 +42,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column()]
     private string $password;
+
+    /**
+     * @var Collection<int, SecretSanta> $secretSantas
+     */
+    #[ORM\OneToMany(targetEntity: SecretSanta::class, mappedBy: 'owner')]
+    private Collection $secretSantas;
+
+    public function __construct()
+    {
+        $this->secretSantas = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -122,5 +137,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): void
     {
         $this->isVerified = $isVerified;
+    }
+
+    /**
+     * @return Collection<int, SecretSanta>
+     */
+    public function getSecretSantas(): Collection
+    {
+        return $this->secretSantas;
     }
 }

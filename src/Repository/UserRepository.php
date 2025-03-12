@@ -7,6 +7,8 @@ use App\MessageHandler\RegisterNotification\RegisterNotification;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use LogicException;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -24,6 +26,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ManagerRegistry $registry,
         private UserPasswordHasherInterface $passwordHasher,
         private MessageBusInterface $messageBus,
+        private RequestStack $requestStack,
     ) {
         parent::__construct($registry, User::class);
     }
@@ -52,7 +55,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
             $this->messageBus->dispatch(new RegisterNotification($user->getId() ?? throw new LogicException('User id must be defined')));
         } catch (\Throwable $e) {
-            dd($e);
+            /** @var Session $session */
+            $session = $this->requestStack->getSession();
+            $session->getFlashBag()->add('danger', $e->getMessage());
         }
     }
 
