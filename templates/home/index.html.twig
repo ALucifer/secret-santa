@@ -1,5 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="home-container"></div>
+    <div class="home-container">
+        <h1 class="site__name">Secret Santa</h1>
+        <p class="site__description">
+            Organisez votre Secret Santa en quelques clics avec notre site simple et intuitif !
+            <br>🎅🎁 Connectez-vous <a href="{{ path('app_login') }}">ici</a> pour tirer au sort et surprendre vos amis ou collègues sans stress !
+        </p>
+    </div>
 {% endblock %}
