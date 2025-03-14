@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\SecretSanta;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -24,5 +25,13 @@ class SecretSantaRepository extends ServiceEntityRepository
         } catch (\Throwable $e) {
             dd($e->getMessage());
         }
+    }
+
+    /**
+     * @return SecretSanta[]
+     */
+    public function findUserSecretsSanta(User $user): array
+    {
+        return $this->findBy(['owner' => $user]);
     }
 }

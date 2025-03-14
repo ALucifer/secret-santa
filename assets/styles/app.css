@@ -33,3 +33,29 @@
     font-family: "Mountains of Christmas", serif;
     font-size: 30px;
 }
+
+.middle {
+    height: calc(100vh - 50px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.application {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    height: 80%;
+    background-color: gainsboro;
+    padding: 8px;
+    border-radius: 12px;
+
+    .menu {
+        width: 25px;
+        height: 25px;
+    }
+}
+
+.application__content {
+    flex: 1;
+}

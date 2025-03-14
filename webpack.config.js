@@ -9,6 +9,10 @@ Encore
     .setPublicPath('/build')
     .addEntry('app', './assets/app.js')
     .addEntry('menu', './assets/menu.js')
+    .addEntries({
+        security: './assets/security.js',
+        profile: './assets/profile.js'
+    })
     .splitEntryChunks()
     .copyFiles({
             from: './assets/images',

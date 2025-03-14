@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  background-color: #EFEEEA;
+  padding: 16px;
+  border-radius: 8px;
+  width: 600px;
+  max-width: 600px;
+
+  &__content {
+    width: 60%;
+  }
+
+  &__information {
+
+  }
+}

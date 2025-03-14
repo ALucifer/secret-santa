@@ -1,6 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends 'security/index.html.twig' %}
 
-{% block body%}
+{% block content %}
     <form action="{{ path('app_login') }}" method="post" class="flex flex-col gap-2">
         <input
             type="email"
@@ -30,4 +30,8 @@
         <button type="submit" class="rounded px-4 py-2 bg-zinc-200 hover:bg-zinc-100">login</button>
     </form>
 
+{% endblock %}
+
+{% block information %}
+<p class="text-center">Vous n'avez pas encore de compte ? <br>Créez en un <a href="{{ url('register') }}">ici</a></p>
 {% endblock %}
