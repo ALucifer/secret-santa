@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('profile') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+
+
+{% block body %}
+    <div class="middle">
+        <div class="application">
+            <div class="flex justify-start relative">
+                <a href="{{ url('user_profile') }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-[24px]">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
+                    </svg>
+                </a>
+            </div>
+            <div class="application__content" {{ vue_component('Hello', { santaId: secretSanta.id }) }}>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

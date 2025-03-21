@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "strict": true,
+    "jsx": "preserve",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowJs": true,
+    "baseUrl": "./assets/vue",
+    "paths": {
+      "@app/*": ["./*"]
+    },
+    "types": ["vue"]
+  },
+  "include": [
+    "assets/**/*.ts",
+    "assets/**/*.tsx",
+    "assets/**/*.vue"
+  ],
+  "exclude": ["node_modules"]
+}
