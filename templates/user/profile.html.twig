@@ -19,7 +19,11 @@
                 </svg>
                 <div class="profile__menu" data-menu-container>
                     <ul>
-                        <li>Nouveau secret santa</li>
+                        <li>
+                            <button data-modal-open>
+                                Nouveau secret santa
+                            </button>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -37,4 +41,8 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block modal %}
+    {% include 'include/modal.html.twig' %}
 {% endblock %}

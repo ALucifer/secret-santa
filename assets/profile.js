@@ -1,4 +1,5 @@
 import './styles/profile.scss'
+import './modal'
 
 const container = document.querySelector('[data-menu-container]')
 const cssClass = 'profile__menu--show'
@@ -12,7 +13,7 @@ document.querySelector('[data-menu]').addEventListener('click', (e) => {
         document.addEventListener('click', clickOutside)
     }
 
-    container.classList.toggle('profile__menu--show')
+    container.classList.toggle(cssClass)
 })
 
 function clickOutside(e) {
@@ -20,3 +21,17 @@ function clickOutside(e) {
         container.classList.toggle(cssClass)
     }
 }
+
+document
+    .querySelector('[data-modal-open]')
+    .addEventListener(
+        'click',
+        () => {
+            const modal = document.querySelector('[role="dialog"]')
+
+            if (modal) {
+                container.classList.toggle(cssClass)
+                modal.classList.remove('hidden')
+            }
+        }
+    )

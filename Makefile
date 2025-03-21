@@ -47,6 +47,9 @@ test: ## Start tests with phpunit, pass the parameter "c=" to add options to php
 watch:
 	$(NODE) npm run watch
 
+dev:
+	$(NODE) npm run dev
+
 node-bash:
 	$(NODE) bash
 

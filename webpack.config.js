@@ -1,3 +1,4 @@
+const path = require('path');
 const Encore = require('@symfony/webpack-encore');
 
 if (!Encore.isRuntimeEnvironmentConfigured()) {
@@ -7,13 +8,14 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 Encore
     .setOutputPath('public/build/')
     .setPublicPath('/build')
-    .addEntry('app', './assets/app.js')
+    .addEntry('app', './assets/app.ts')
     .addEntry('menu', './assets/menu.js')
     .addEntries({
         security: './assets/security.js',
         profile: './assets/profile.js'
     })
     .splitEntryChunks()
+    .enableVueLoader(() => {}, { version: 3 })
     .copyFiles({
             from: './assets/images',
             to: 'images/[path][name].[ext]',
@@ -33,6 +35,9 @@ Encore
     .enableSassLoader()
     .enablePostCssLoader()
     .enableTypeScriptLoader()
+    .addAliases({
+        '@app': path.resolve(__dirname, 'assets/vue')
+    })
 ;
 
 module.exports = Encore.getWebpackConfig();

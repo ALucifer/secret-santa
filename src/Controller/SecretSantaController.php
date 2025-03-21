@@ -18,7 +18,6 @@ use LogicException;
 class SecretSantaController extends AbstractController
 {
     #[Route('/secret-santa/new', name: 'secret_santa')]
-    #[IsGranted('ROLE_USER')]
     public function create(Request $request, Security $security, SecretSantaRepository $secretSantaRepository): Response
     {
         $form = $this->createForm(SecretSantaType::class);
@@ -55,8 +54,15 @@ class SecretSantaController extends AbstractController
     }
 
     #[Route('/secret-santa/{id}', name: 'secret_santa_view')]
-    public function view(SecretSanta $secretSanta): Response
-    {
-        dd($secretSanta);
+    public function view(
+        SecretSanta $secretSanta,
+    ): Response {
+
+        return $this->render(
+            'secret-santa/view.html.twig',
+            [
+                'secretSanta' => $secretSanta,
+            ],
+        );
     }
 }

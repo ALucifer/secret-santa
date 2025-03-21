@@ -44,6 +44,7 @@
 .application {
     display: flex;
     flex-direction: column;
+    gap: 16px;
     width: 60%;
     height: 80%;
     background-color: gainsboro;

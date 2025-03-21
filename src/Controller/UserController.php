@@ -3,12 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\SecretSantaType;
 use App\Repository\SecretSantaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UserController extends AbstractController
@@ -19,15 +19,15 @@ class UserController extends AbstractController
     {
         $user = $security->getUser();
 
-        if (!$user && !$user instanceof User) {
+        if (!$user || !$user instanceof User) {
             return $this->redirectToRoute('app_login');
         }
-
 
         return $this->render(
             'user/profile.html.twig',
             [
                 'items' => $secretSantaRepository->findUserSecretsSanta($user),
+                'form' => $this->createForm(SecretSantaType::class)->createView(),
             ],
         );
     }

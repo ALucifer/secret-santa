@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\MessageHandler\InvationHandler\InviationNotification;
 use App\MessageHandler\RegisterNotification\RegisterNotification;
+use App\Services\Request\NewMemberDTO;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use LogicException;
@@ -59,6 +61,22 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             $session = $this->requestStack->getSession();
             $session->getFlashBag()->add('danger', $e->getMessage());
         }
+    }
+
+    public function createMemberFromInvitation(NewMemberDTO $memberDTO): User
+    {
+        $user = User::fromInvitation($memberDTO->email);
+
+        $hashedPassword = $this->passwordHasher->hashPassword($user, bin2hex(random_bytes(10)));
+
+        $user->setPassword($hashedPassword);
+
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
+
+        $this->messageBus->dispatch(new InviationNotification());
+
+        return $user;
     }
 
     public function update(User $user): void
