@@ -22,5 +22,9 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    App\Services\Mailer\NewMemberMailer:
+        arguments:
+            $loginLinkHandler: '@security.authenticator.login_link_handler.main'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

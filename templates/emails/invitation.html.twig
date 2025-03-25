@@ -1,0 +1,44 @@
+<div class="middle">
+    <div class="card">
+        <h3 class="title">Nouvelle invitation</h3>
+        <p>Bonjour {{ user.email }}</p>
+        <p>Vous venez d'être invité par {{ creator }} pour participer au secret santa <b>{{ secretSantaTitle }}</b></p>
+        <p>Vous pouvez vous connecté avec le <a href="{{ authLink }}">lien*</a> suivant pour voir la liste des participants et ainsi remplir votre liste de cadeau</p>
+        <i>* Le lien n'est valable que pendant 1 heure.</i>
+    </div>
+</div>
+
+{% apply inline_css %}
+    <style>
+        .middle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 800px;
+            min-height: 250px;
+            padding: 16px;
+            border-radius: 4px;
+            background-color: oklch(0.969 0.015 12.422);
+        }
+
+        .title {
+            font-size: 36px;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        i {
+            font-size: 12px;
+        }
+    </style>
+{% endapply %}

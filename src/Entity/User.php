@@ -46,7 +46,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $password;
 
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
-    private bool $isInvited;
+    private bool $isInvited = false;
 
     /**
      * @var Collection<int, SecretSanta> $secretSantas
@@ -66,7 +66,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         $user
             ->setEmail($email)
-            ->setIsInvited(true);
+            ->setIsInvited(true)
+            ->setRoles([Role::GUEST]);
 
         return $user;
     }
@@ -105,11 +106,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = Role::ROLE_USER->value;
-
-        return array_unique($roles);
+        return array_unique($this->roles);
     }
 
     /**
@@ -117,7 +114,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function setRoles(array $roles): static
     {
-        $this->roles = array_map(fn ($role) => Role::ROLE_USER->value, $roles);
+        $this->roles = array_map(fn (Role $role) => $role->value, $roles);
 
         return $this;
     }
@@ -151,9 +148,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->isVerified;
     }
 
-    public function setIsVerified(bool $isVerified): void
+    public function setIsVerified(bool $isVerified): User
     {
         $this->isVerified = $isVerified;
+
+        return $this;
     }
 
     /**

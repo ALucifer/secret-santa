@@ -2,14 +2,19 @@
 
 namespace App\MessageHandler\InvationHandler;
 
-use LogicException;
+use App\Services\Mailer\NewMemberMailer;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 class InvitationNotificationHandler
 {
-    public function __invoke(InviationNotification $message): void
+    public function __construct(
+        private NewMemberMailer $mailer,
+    ) {
+    }
+
+    public function __invoke(InvitationNotification $message): void
     {
-        throw new LogicException('Not implemented');
+        $this->mailer->sendInvitation($message->user(), $message->secretSanta());
     }
 }

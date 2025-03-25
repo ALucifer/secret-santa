@@ -5,6 +5,8 @@ namespace App\EventListener\Security;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
 
@@ -16,6 +18,7 @@ class AuthenticationListener
 
     public function __construct(
         private JWTTokenManagerInterface $jwtManager,
+        private RouterInterface $router,
     ) {
     }
 
@@ -29,7 +32,9 @@ class AuthenticationListener
 
         $jwt = $this->jwtManager->create($event->getUser());
 
-        $response
+        $redirectResponse = new RedirectResponse($this->router->generate('user_profile'));
+
+        $redirectResponse
             ->headers
             ->setCookie(
                 Cookie::create(self::AUTH_COOKIE)
@@ -37,6 +42,8 @@ class AuthenticationListener
                     ->withSameSite('strict')
                     ->withHttpOnly(false)
             );
+
+        $event->setResponse($redirectResponse);
     }
 
     public function onLogout(LogoutEvent $event): void

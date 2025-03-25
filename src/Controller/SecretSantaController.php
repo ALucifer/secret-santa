@@ -57,7 +57,6 @@ class SecretSantaController extends AbstractController
     public function view(
         SecretSanta $secretSanta,
     ): Response {
-
         return $this->render(
             'secret-santa/view.html.twig',
             [

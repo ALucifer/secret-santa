@@ -16,7 +16,7 @@ class UserChecker implements UserCheckerInterface
             return;
         }
 
-        if (!$user->isVerified()) {
+        if (!$user->isVerified() && !$user->isInvited()) {
             throw new CustomUserMessageAccountStatusException('Account is not verified.');
         }
     }

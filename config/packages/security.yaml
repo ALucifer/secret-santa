@@ -27,6 +27,10 @@ security:
             form_login:
                 login_path: app_login
                 check_path: app_login
+            login_link:
+                check_route: login_check
+                signature_properties: ['id', 'email']
+                lifetime: 3600
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 

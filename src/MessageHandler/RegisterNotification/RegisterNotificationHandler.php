@@ -6,6 +6,7 @@ namespace App\MessageHandler\RegisterNotification;
 use App\Repository\TokenRepository;
 use App\Repository\UserRepository;
 use App\Services\Mailer\AccountValidationMailer;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Throwable;
 
@@ -16,6 +17,7 @@ class RegisterNotificationHandler
         private UserRepository $userRepository,
         private TokenRepository $tokenRepository,
         private AccountValidationMailer $mailer,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -27,7 +29,9 @@ class RegisterNotificationHandler
 
             $this->mailer->sendAccountValidationMail($user, $token);
         } catch (Throwable $e) {
-            dd($e->getMessage());
+            $this->logger->error(
+                sprintf('Register Message handler failed: %s', $e->getMessage()),
+            );
         }
     }
 }

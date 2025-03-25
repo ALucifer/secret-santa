@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use App\MessageHandler\InvationHandler\InviationNotification;
+use App\MessageHandler\InvationHandler\InvitationNotification;
 use App\MessageHandler\RegisterNotification\RegisterNotification;
+use App\Security\Role;
 use App\Services\Request\NewMemberDTO;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -63,18 +64,32 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         }
     }
 
-    public function createMemberFromInvitation(NewMemberDTO $memberDTO): User
+    public function createUserFromInvitation(NewMemberDTO $memberDTO): User
     {
         $user = User::fromInvitation($memberDTO->email);
 
         $hashedPassword = $this->passwordHasher->hashPassword($user, bin2hex(random_bytes(10)));
 
-        $user->setPassword($hashedPassword);
+        $user
+            ->setPassword($hashedPassword);
 
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
 
-        $this->messageBus->dispatch(new InviationNotification());
+        return $user;
+    }
+
+    public function verifyMember(User $user, array $data): User
+    {
+        $hashPassword = $this->passwordHasher->hashPassword($user, $data['password']);
+
+        $user
+            ->setPassword($hashPassword)
+            ->setIsVerified(true)
+            ->setRoles([Role::USER]);
+
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
 
         return $user;
     }

@@ -6,12 +6,11 @@ use App\Entity\Token;
 use App\Entity\User;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
-use Throwable;
 
 class AccountValidationMailer
 {
     public function __construct(
-        private MailerInterface $mailer
+        private MailerInterface $mailer,
     ) {
     }
 
@@ -27,10 +26,6 @@ class AccountValidationMailer
                 'token' => $token,
             ]);
 
-        try {
-            $this->mailer->send($email);
-        } catch (Throwable $e) {
-            dd($e->getMessage());
-        }
+        $this->mailer->send($email);
     }
 }

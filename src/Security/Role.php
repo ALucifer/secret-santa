@@ -4,5 +4,6 @@ namespace App\Security;
 
 enum Role: string
 {
-    case ROLE_USER = 'ROLE_USER';
+    case USER = 'ROLE_USER';
+    case GUEST = 'ROLE_GUEST';
 }

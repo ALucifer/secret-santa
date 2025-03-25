@@ -1,5 +1,7 @@
 <template>
-  <div class="flex">
+  <div
+    class="flex"
+  >
     <CardItem @[!showForm&&`click`]="showForm = true" class="h-[76px]">
       <AppInput
         v-if="showForm"

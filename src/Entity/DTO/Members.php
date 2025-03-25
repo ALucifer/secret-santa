@@ -19,11 +19,11 @@ class Members
      */
     public static function fromEntity(array $members): self
     {
-        return new self([]
-//            array_map(
-//                fn (SecretSantaMember $member) => Member::fromMember($member),
-//                $members,
-//            ),
+        return new self(
+            array_map(
+                fn (SecretSantaMember $member) => Member::fromMember($member),
+                $members,
+            ),
         );
     }
 }
