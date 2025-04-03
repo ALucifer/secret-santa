@@ -23,6 +23,7 @@ services:
       - frontend
     ports:
       - "9000:9000"
+      - "9003:9003"
     volumes:
       - ./:/var/www/html
     extra_hosts:

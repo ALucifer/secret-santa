@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\SecretSanta;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,6 +22,18 @@ class SecretSantaType extends AbstractType
                     'attr' => [
                         'placeholder' => 'Titre de votre secret santa.',
                     ]
+                ]
+            )
+            ->add(
+                'registerMe',
+                CheckboxType::class,
+                [
+                    'label' => 'S\'inscrire',
+                    'row_attr' => [
+                        'class' => 'flex flex-row-reverse'
+                    ],
+                    'mapped' => false,
+                    'required' => false,
                 ]
             );
     }

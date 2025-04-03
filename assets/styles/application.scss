@@ -1,0 +1,31 @@
+.application {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  gap: 16px;
+  width: 60%;
+  height: 80%;
+  background-color: gainsboro;
+  padding: 8px;
+  border-radius: 12px;
+
+  &--bg-hidden {
+    background-color: initial;
+  }
+
+  .menu {
+    width: 25px;
+    height: 25px;
+  }
+
+  &__title {
+    font-size: 32px;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
+  }
+}

@@ -27,7 +27,7 @@ class SecretSanta
     /**
      * @var Collection<int, SecretSantaMember> $members
      */
-    #[ORM\OneToMany(targetEntity: SecretSantaMember::class, mappedBy: 'secretSanta')]
+    #[ORM\OneToMany(targetEntity: SecretSantaMember::class, mappedBy: 'secretSanta', cascade: ['persist', 'remove'])]
     private Collection $members;
 
     public function __construct()
@@ -77,6 +77,15 @@ class SecretSanta
     public function setMembers(Collection $members): SecretSanta
     {
         $this->members = $members;
+        return $this;
+    }
+
+    public function addMember(SecretSantaMember $member): SecretSanta
+    {
+        if (!$this->members->contains($member)) {
+            $this->members->add($member);
+        }
+
         return $this;
     }
 }

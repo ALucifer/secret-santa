@@ -1,12 +1,12 @@
 <template>
   <CardItem
-      @mouseleave="showAction = false"
-      @mouseover="showAction = true"
+    @mouseleave="showAction = false"
+    @mouseover="showAction = true"
   >
     {{ member.email }}
     <transition mode="out-in" name="slide-left">
       <span
-        v-if="showAction"
+        v-if="showAction && isOwner"
         @click="deleteMember"
         class="absolute flex items-center justify-center bg-red-600 inset-y-0 right-0 left-[80%] z-10 text-white"
       >X</span>
@@ -16,9 +16,11 @@
 
 <script setup lang="ts">
 import CardItem from "@app/components/CardItem.vue";
-import { ref } from "vue";
+import {inject, ref} from "vue";
 
 const props = defineProps<{ member: { id: number, email: string } }>()
+
+const isOwner = inject('isOwner')
 
 const emits = defineEmits<{
   (e: 'member:delete', id: number)

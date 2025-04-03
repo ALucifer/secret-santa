@@ -44,7 +44,16 @@ class RegisterType extends AbstractType
 
                 ]
             )
-            ->add('submit', SubmitType::class)
+            ->add(
+                'submit',
+                SubmitType::class,
+                [
+                    'label' => 'Envoyer',
+                    'attr' => [
+                        'class' => 'bg-teal-600 hover:bg-teal-500 text-emerald-200 w-full'
+                    ]
+                ]
+            )
         ;
     }
 }

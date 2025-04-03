@@ -79,6 +79,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $user;
     }
 
+    /**
+     * @param User $user
+     * @param array{password: string} $data
+     * @return User
+     */
     public function verifyMember(User $user, array $data): User
     {
         $hashPassword = $this->passwordHasher->hashPassword($user, $data['password']);

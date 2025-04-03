@@ -41,22 +41,6 @@
     align-items: center;
 }
 
-.application {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    width: 60%;
-    height: 80%;
-    background-color: gainsboro;
-    padding: 8px;
-    border-radius: 12px;
-
-    .menu {
-        width: 25px;
-        height: 25px;
-    }
-}
-
-.application__content {
-    flex: 1;
+.card__title {
+    font-size: 22px;
 }

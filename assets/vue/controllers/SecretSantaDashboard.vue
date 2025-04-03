@@ -12,7 +12,7 @@
         :member="member"
         @member:delete="deleteMember"
       />
-      <NewMember @member:new="(e) => submit(e.member)"  />
+      <NewMember v-if="isOwner" @member:new="(e) => submit(e.member)"  />
     </div>
   </div>
 
@@ -24,9 +24,11 @@ import { useCookie } from "@app/composables/useCookie";
 import { useFetch } from "@app/composables/useFetch";
 import MemberItem from "@app/components/MemberItem.vue";
 import { Member } from "@app/types";
-import { ref } from "vue";
+import {provide, ref} from "vue";
 
-const props = defineProps<{ santaId: number }>()
+const props = defineProps<{ santaId: number, isOwner: boolean }>()
+
+provide('isOwner', props.isOwner)
 
 const error = ref(false)
 
@@ -47,7 +49,7 @@ async function deleteMember(id: number) {
     )
 
     data.value!.members = data.value!.members.filter((m) => m.id !== id)
-  } catch (e: any) {
+  } catch {
     error.value = true
 
     setTimeout(() => error.value = false, 10000)
@@ -70,7 +72,7 @@ async function submit(member: string) {
 
     const newMember = await response.json()
     data.value!.members.push(newMember)
-  } catch (e: any) {
+  } catch {
     error.value = true
 
     setTimeout(() => error.value = false, 10000)

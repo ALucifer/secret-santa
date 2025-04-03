@@ -9,6 +9,7 @@ use App\Repository\TokenRepository;
 use App\Repository\UserRepository;
 use App\Security\Role;
 use LogicException;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -74,7 +75,8 @@ class SecurityController extends AbstractController
     public function verifyEmail(
         Request $request,
         TokenRepository $tokenRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        LoggerInterface $logger,
     ): Response {
         try {
             $token = $tokenRepository->findOneByOrFail(['token' => $request->get('token')]);
@@ -90,8 +92,9 @@ class SecurityController extends AbstractController
             $userRepository->update($user);
             $tokenRepository->invalidToken($token);
         } catch (NotFoundHttpException $e) {
-            dd($e->getMessage());
+            $logger->error($e->getMessage());
         }
+
         return $this->render('security/verify-email.html.twig');
     }
 
@@ -100,7 +103,7 @@ class SecurityController extends AbstractController
         Request $request,
         Security $security,
         UserRepository $userRepository
-    ): Response {
+    ): ?Response {
         $form = $this->createForm(ChangePasswordType::class);
 
         $form->handleRequest($request);
@@ -108,7 +111,10 @@ class SecurityController extends AbstractController
         $user = $security->getUser();
 
         if ($form->isSubmitted() && $form->isValid() && $user && $user instanceof User) {
-            $user = $userRepository->verifyMember($user, $form->getData());
+            /** @var array{ password: string } $data */
+            $data = $form->getData();
+
+            $user = $userRepository->verifyMember($user, $data);
 
             return $security->login($user, 'login_link');
         }

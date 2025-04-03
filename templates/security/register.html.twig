@@ -1,14 +1,12 @@
-{% extends 'base.html.twig' %}
+{% extends 'security/index.html.twig' %}
 
-{% block body%}
-    <div class="flex w-md">
+{% block content %}
+    <div class="flex flex-col">
+        <h2 class="text-center">Inscription</h2>
         {{ form(form, { 'attr': { 'class': 'w-full' }}) }}
-        {% for label, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="flash-{{ label }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endfor %}
     </div>
+{% endblock %}
+
+{% block information %}
+<p class="text-center">Si vous avez déjà un compte, connectez-vous <a href="{{ url('app_login') }}">ici</a></p>
 {% endblock %}

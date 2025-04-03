@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\SecretSanta;
 use App\Entity\User;
 use App\Form\SecretSantaType;
+use App\Repository\SecretSantaMemberRepository;
 use App\Repository\SecretSantaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -18,8 +19,12 @@ use LogicException;
 class SecretSantaController extends AbstractController
 {
     #[Route('/secret-santa/new', name: 'secret_santa')]
-    public function create(Request $request, Security $security, SecretSantaRepository $secretSantaRepository): Response
-    {
+    public function create(
+        Request $request,
+        Security $security,
+        SecretSantaRepository $secretSantaRepository,
+        SecretSantaMemberRepository $secretSantaMemberRepository,
+    ): Response {
         $form = $this->createForm(SecretSantaType::class);
         $form->handleRequest($request);
 
@@ -35,7 +40,11 @@ class SecretSantaController extends AbstractController
 
             $secretSanta->setOwner($user);
 
-            $secretSantaRepository->create($secretSanta);
+            $secretSanta = $secretSantaRepository->create($secretSanta);
+
+            if ($form['registerMe'] && $form['registerMe']->getData()) {
+                $secretSantaMemberRepository->addMember($secretSanta, $user);
+            }
 
             return $this->redirectToRoute(
                 'secret_santa_view',
