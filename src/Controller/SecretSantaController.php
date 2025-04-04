@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\SecretSanta;
+use App\Entity\SecretSantaMember;
 use App\Entity\User;
 use App\Form\SecretSantaType;
 use App\Repository\SecretSantaMemberRepository;
@@ -71,6 +72,20 @@ class SecretSantaController extends AbstractController
             [
                 'secretSanta' => $secretSanta,
             ],
+        );
+    }
+
+    #[Route('/secret-santa/{secretSanta}/members/{secretSantaMember}/wishlist', name: 'secret_santa_member_wishlist')]
+    public function memberList(
+        SecretSanta $secretSanta,
+        SecretSantaMember $secretSantaMember,
+    ) {
+        return $this->render(
+            'secret-santa/member-wishlist.html.twig',
+            [
+                'user' => $secretSantaMember->getUser(),
+                'secretSanta' => $secretSanta,
+            ]
         );
     }
 }

@@ -12,7 +12,7 @@
         :member="member"
         @member:delete="deleteMember"
       />
-      <NewMember v-if="isOwner" @member:new="(e) => submit(e.member)"  />
+      <NewMember v-if="isOwner" @member:new="submit" />
     </div>
   </div>
 
@@ -56,7 +56,7 @@ async function deleteMember(id: number) {
   }
 }
 
-async function submit(member: string) {
+async function submit(event: { member: string }) {
   try {
     const response = await fetch(
       `/api/secret-santa/${props.santaId}/register/member`,
@@ -66,7 +66,7 @@ async function submit(member: string) {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + readCookie('AUTH_TOKEN')
           },
-          body: JSON.stringify({ email: member }),
+          body: JSON.stringify({ email: event.member }),
         }
     )
 

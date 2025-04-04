@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "strict": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "strict": true,                     // ✅ recommandé pour profiter de l'inférence de types
     "jsx": "preserve",
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -11,7 +11,10 @@
     "paths": {
       "@app/*": ["./*"]
     },
-    "types": ["vue"]
+    "types": ["vue"],
+    "skipLibCheck": true,              // ✅ évite les erreurs dans node_modules
+    "allowSyntheticDefaultImports": true, // ✅ pour import Vue proprement
+    "useDefineForClassFields": true,    // ✅ nécessaire pour certaines features Vue 3
   },
   "include": [
     "assets/**/*.ts",

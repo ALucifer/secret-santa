@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Liste de souhaite de {{ user.email }} pour le secret santa {{ secretSanta.label }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+
+
+{% block body %}
+    <div class="middle flex-col gap-2">
+        <div>
+            <ul>
+                <li>Futur cadeau</li>
+                <li>Futur cadeau</li>
+                <li>Futur cadeau</li>
+                <li>Futur cadeau</li>
+                <li>Futur cadeau</li>
+                <li>Futur cadeau</li>
+                <li>Futur cadeau</li>
+                <li>Futur cadeau</li>
+            </ul>
+        </div>
+        <div {{ vue_component('NewWishItem') }}></div>
+    </div>
+{% endblock %}
+
