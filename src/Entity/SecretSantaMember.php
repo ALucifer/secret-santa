@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SecretSantaMemberRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SecretSantaMemberRepository::class)]
@@ -18,6 +19,14 @@ class SecretSantaMember
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     private User $user;
+
+    #[ORM\Column(type: Types::STRING)]
+    private string $state;
+
+    public function __construct()
+    {
+        $this->state = 'wait_approval';
+    }
 
     public function getId(): ?int
     {
@@ -43,6 +52,18 @@ class SecretSantaMember
     public function setUser(User $user): SecretSantaMember
     {
         $this->user = $user;
+        return $this;
+    }
+
+    public function getState(): string
+    {
+        return $this->state;
+    }
+
+    public function setState(string $state): SecretSantaMember
+    {
+        $this->state = $state;
+
         return $this;
     }
 }

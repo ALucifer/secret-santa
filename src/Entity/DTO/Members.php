@@ -4,7 +4,7 @@ namespace App\Entity\DTO;
 
 use App\Entity\SecretSantaMember;
 
-class Members
+class Members implements \JsonSerializable
 {
     /**
      * @param Member[] $members
@@ -25,5 +25,10 @@ class Members
                 $members,
             ),
         );
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->members;
     }
 }

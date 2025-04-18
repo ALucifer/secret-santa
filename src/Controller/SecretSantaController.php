@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\DTO\Members;
 use App\Entity\SecretSanta;
 use App\Entity\SecretSantaMember;
 use App\Entity\User;
@@ -71,6 +72,7 @@ class SecretSantaController extends AbstractController
             'secret-santa/view.html.twig',
             [
                 'secretSanta' => $secretSanta,
+                'members' => Members::fromEntity($secretSanta->getMembers()->toArray()),
             ],
         );
     }

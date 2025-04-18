@@ -5,35 +5,39 @@
         Une erreur est survenu
       </div>
     </transition>
-    <div class="flex flex-wrap gap-2" v-if="data">
+    <div class="flex flex-wrap gap-2">
       <MemberItem
-        v-for="member in data.members"
+        v-for="member in members"
         :key="member.id"
         :member="member"
         @member:delete="deleteMember"
       />
       <NewMember v-if="isOwner" @member:new="submit" />
     </div>
+    <Tooltip message="Ma liste de cadeau" class="absolute bottom-[25px] right-[25px] hover:cursor-pointer">
+      <DocumentTextIcon />
+    </Tooltip>
   </div>
-
 </template>
 
 <script setup lang="ts">
 import NewMember from "@app/components/NewMember.vue";
 import { useCookie } from "@app/composables/useCookie";
-import { useFetch } from "@app/composables/useFetch";
 import MemberItem from "@app/components/MemberItem.vue";
 import { Member } from "@app/types";
+import Tooltip from "@app/components/Tooltip.vue";
+import DocumentTextIcon from "@app/icons/DocumentTextIcon.vue";
 import {provide, ref} from "vue";
 
-const props = defineProps<{ santaId: number, isOwner: boolean }>()
+const props = defineProps<{ santaId: number, isOwner: boolean, data: Member[] }>()
+
+const members = ref<Member[]>(props.data)
 
 provide('isOwner', props.isOwner)
 
 const error = ref(false)
 
 const { readCookie } = useCookie()
-const { data } = useFetch<{ members: Member[] }>(`/api/secret-santa/${props.santaId}/members`)
 
 async function deleteMember(id: number) {
   try {
@@ -48,7 +52,7 @@ async function deleteMember(id: number) {
       }
     )
 
-    data.value!.members = data.value!.members.filter((m) => m.id !== id)
+    members.value = members.value.filter((member) => member.id !== id)
   } catch {
     error.value = true
 
@@ -71,7 +75,7 @@ async function submit(event: { member: string }) {
     )
 
     const newMember = await response.json()
-    data.value!.members.push(newMember)
+    members.value.push(newMember)
   } catch {
     error.value = true
 

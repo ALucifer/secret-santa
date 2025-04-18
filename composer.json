@@ -35,6 +35,7 @@
         "symfony/ux-vue": "^2.23",
         "symfony/validator": "7.2.*",
         "symfony/webpack-encore-bundle": "^2.2",
+        "symfony/workflow": "7.2.*",
         "symfony/yaml": "7.2.*",
         "twig/cssinliner-extra": "^3.20",
         "twig/extra-bundle": "^3.20"

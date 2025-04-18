@@ -22,7 +22,7 @@ const { type = 'text', invalid, modelValue, showActions = true } = defineProps<{
   type: String,
   invalid: boolean,
   modelValue: any,
-  showActions: boolean,
+  showActions?: boolean,
 }>()
 defineEmits(['send', 'update:modelValue'])
 

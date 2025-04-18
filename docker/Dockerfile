@@ -29,6 +29,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     wget \
     librabbitmq-dev \
     libpq-dev \
+    graphviz \
     && pecl install amqp \
     && docker-php-ext-configure intl \
     && docker-php-ext-install \
