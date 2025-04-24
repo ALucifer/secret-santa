@@ -7,6 +7,7 @@ services:
       - php
     networks:
       - frontend
+      - secretSanta
     labels:
       - traefik.enable=true
       - traefik.http.routers.secretsanta.rule=Host(`dev.secret-santa.com`)
@@ -20,7 +21,7 @@ services:
       context: docker
       dockerfile: ./Dockerfile
     networks:
-      - frontend
+      - secretSanta
     ports:
       - "9000:9000"
       - "9003:9003"
@@ -28,6 +29,11 @@ services:
       - ./:/var/www/html
     extra_hosts:
       - host.docker.internal:host-gateway
+    healthcheck:
+      test: [ "CMD", "php", "-r", "echo 'ok';" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
   node:
     container_name: secretesanta_node
@@ -49,34 +55,11 @@ services:
       retries: 5
       start_period: 60s
     networks:
-      - frontend
+      - secretSanta
     ports:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data:rw
-
-  phppgadmin:
-    image: dockage/phppgadmin:latest
-    container_name: secretesanta_phppgadmin
-    depends_on:
-      - database
-    environment:
-      SERVER_1_HOST: database
-      SERVER_1_PORT: 5432
-      SERVER_1_DESC: "test"
-      SERVER_1_DEFAULTDB: "app"  # Doit correspondre à POSTGRES_DB
-      SERVER_1_USER: "user"     # Doit correspondre à POSTGRES_USER
-      SERVER_1_PASS: "password"     # Doit correspondre à POSTGRES_PASSWORD
-      HIDE_pg_catalog: "false"
-      HIDE_information_schema: "false"
-      HIDE_pg_toast: "false"
-    networks:
-      - frontend
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.secret-pma.rule=Host(`pma.secretsanta.com`)
-      - traefik.http.routers.secret-pma.entrypoints=web
-
   ###> symfony/mailer ###
   mailer:
     image: axllent/mailpit
@@ -106,6 +89,7 @@ services:
 networks:
   frontend:
     external: true
+  secretSanta:
 
 volumes:
   db_data:
