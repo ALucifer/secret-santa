@@ -1,0 +1,49 @@
+<?php
+
+namespace App\DataFixtures;
+
+use App\Entity\SecretSantaMember;
+use App\Repository\SecretSantaRepository;
+use App\Repository\UserRepository;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
+use Random\Randomizer;
+
+class MemberFixtures extends Fixture implements DependentFixtureInterface
+{
+    public function __construct(
+      private SecretSantaRepository $secretSantaRepository,
+      private UserRepository $userRepository
+    ) {
+    }
+
+    public function load(ObjectManager $manager): void
+    {
+        $secrets = $this->secretSantaRepository->findAll();
+        $users = $this->userRepository->findAll();
+
+        $random = new Randomizer();
+
+        foreach ($secrets as $secret) {
+            $keys = $random->pickArrayKeys($users, $random->getInt(1, count($users)));
+
+            foreach ($keys as $key) {
+                $member = new SecretSantaMember();
+                $member->setUser($users[$key])->setSecretSanta($secret);
+
+                $manager->persist($member);
+            }
+        }
+
+        $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            UserFixtures::class,
+            SecretSantaFixtures::class,
+        ];
+    }
+}
