@@ -17,10 +17,14 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 
-#[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[UniqueEntity('email', 'Cet email est déjà utilisé.')]
+#[
+    ORM\Entity(repositoryClass: UserRepository::class),
+    ORM\Table(name: '`user`'),
+    ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email']),
+]
+#[
+    UniqueEntity('email', 'Cet email est déjà utilisé.')
+]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -58,6 +62,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->secretSantas = new ArrayCollection();
+        $this->roles = [Role::USER];
     }
 
     public static function fromInvitation(string $email): User
