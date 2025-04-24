@@ -77,7 +77,12 @@ class SecretSantaController extends AbstractController
         );
     }
 
-    #[Route('/secret-santa/{secretSanta}/members/{secretSantaMember}/wishlist', name: 'secret_santa_member_wishlist')]
+    #[Route(
+        path: '/secret-santa/{secretSanta}/members/{secretSantaMember}/wishlist',
+        name: 'secret_santa_member_wishlist',
+        options: ['expose' => true],
+        host: '%app.host%'
+    )]
     public function memberList(
         SecretSanta $secretSanta,
         SecretSantaMember $secretSantaMember,

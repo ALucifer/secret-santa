@@ -50,6 +50,9 @@ watch:
 dev:
 	$(NODE) npm run dev
 
+js-routing:
+	$(SYMFONY) fos:js-routing:dump --format=json --target=assets/js/routes.json
+
 node-bash:
 	$(NODE) bash
 

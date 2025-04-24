@@ -1,5 +1,6 @@
 const path = require('path');
 const Encore = require('@symfony/webpack-encore');
+const FosRouting = require('fos-router/webpack/FosRouting');
 
 if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
@@ -36,8 +37,15 @@ Encore
     .enablePostCssLoader()
     .enableTypeScriptLoader()
     .addAliases({
-        '@app': path.resolve(__dirname, 'assets/vue')
+        '@app': path.resolve(__dirname, 'assets/vue'),
+        '@js': path.resolve(__dirname, 'assets/js'),
     })
+    .addPlugin(
+        new FosRouting(
+            { target: './assets/js/routes.json' },
+            false
+        )
+    )
 ;
 
 module.exports = Encore.getWebpackConfig();

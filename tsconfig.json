@@ -7,9 +7,10 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowJs": true,
-    "baseUrl": "./assets/vue",
+    "baseUrl": "./assets",
     "paths": {
-      "@app/*": ["./*"]
+      "@app/*": ["./vue/*"],
+      "@js/*": ["./js/*"],
     },
     "types": ["vue"],
     "skipLibCheck": true,              // ✅ évite les erreurs dans node_modules

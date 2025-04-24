@@ -14,6 +14,7 @@
       <component
         :is="componentForm"
         class="flex"
+        @submit="handleSubmit($event)"
       />
     </div>
   </div>
@@ -25,21 +26,29 @@ import EventForm from "@app/components/Form/EventForm.vue";
 import MoneyForm from "@app/components/Form/MoneyForm.vue";
 import GiftForm from "@app/components/Form/GiftForm.vue";
 import ArrayLeftIcon from "@app/icons/ArrayLeftIcon.vue";
+import { WishItemForm } from "@app/types";
 import { computed, ref } from "vue";
+
 
 const currentAction = ref()
 
 const componentForm = computed(
-    () => {
-      switch (currentAction.value) {
-        case "event":
-          return EventForm
-        case 'money':
-          return MoneyForm
-        case 'gift':
-          return GiftForm
-        default:
-          return null
-      }
-    })
+  () => {
+    switch (currentAction.value) {
+      case "event":
+        return EventForm
+      case 'money':
+        return MoneyForm
+      case 'gift':
+        return GiftForm
+      default:
+        return null
+    }
+  }
+)
+
+function handleSubmit(event: WishItemForm) {
+  console.log(event)
+  currentAction.value = null
+}
 </script>
