@@ -6,7 +6,7 @@ use App\Entity\SecretSanta;
 use App\Entity\User;
 use App\Services\Pagination\Pagination;
 use App\Services\Pagination\Paginator;
-use App\Services\Request\PaginationDTO;
+use App\Services\Request\DTO\PaginationDTO;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;

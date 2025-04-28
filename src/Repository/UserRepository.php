@@ -3,10 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use App\MessageHandler\InvationHandler\InvitationNotification;
 use App\MessageHandler\RegisterNotification\RegisterNotification;
 use App\Security\Role;
-use App\Services\Request\NewMemberDTO;
+use App\Services\Request\DTO\NewMemberDTO;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use LogicException;

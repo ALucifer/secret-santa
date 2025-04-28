@@ -8,7 +8,7 @@ use App\Entity\SecretSanta;
 use App\Entity\SecretSantaMember;
 use App\Repository\SecretSantaMemberRepository;
 use App\Repository\UserRepository;
-use App\Services\Request\NewMemberDTO;
+use App\Services\Request\DTO\NewMemberDTO;
 use Assert\Assertion;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

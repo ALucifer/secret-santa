@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Form\SecretSantaType;
 use App\Repository\SecretSantaRepository;
 use App\Services\Request\Attribute\PrefixPagination;
-use App\Services\Request\PaginationDTO;
+use App\Services\Request\DTO\PaginationDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
