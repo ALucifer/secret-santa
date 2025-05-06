@@ -19,7 +19,7 @@
 import { computed } from "vue";
 
 const { type = 'text', invalid, modelValue, showActions = true } = defineProps<{
-  type?: String,
+  type?: string,
   invalid: boolean,
   modelValue: any,
   showActions?: boolean,
