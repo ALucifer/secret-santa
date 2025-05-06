@@ -6,15 +6,21 @@ use App\Entity\DTO\Member;
 use App\Entity\DTO\Members;
 use App\Entity\SecretSanta;
 use App\Entity\SecretSantaMember;
+use App\Entity\State;
+use App\Entity\Task;
+use App\MessageHandler\NewWishItem\NewWishItem as NewWishItemMessage;
 use App\Repository\SecretSantaMemberRepository;
+use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use App\Services\Request\DTO\NewMemberDTO;
+use App\Services\Request\DTO\NewWishItem;
 use Assert\Assertion;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Throwable;
@@ -73,5 +79,40 @@ class SecretSantaController extends AbstractController
         Assertion::allIsInstanceOf($members, SecretSantaMember::class);
 
         return $this->json(Members::fromEntity($members));
+    }
+
+    #[Route('/api/task/{id}', name: 'task', methods: ['GET'])]
+    public function task(
+        Task $task,
+    ): JsonResponse {
+        return $this->json($task);
+    }
+
+    #[Route(
+        '/api/secret-santa/members/{id}/wish',
+        name: 'newWish',
+        options: ['expose' => true],
+        methods: ['POST']
+    )]
+    public function newWish(
+        SecretSantaMember $secretSantaMember,
+        #[MapRequestPayload] NewWishItem $newWishItem,
+        MessageBusInterface $messageBus,
+        TaskRepository $taskRepository,
+    ): JsonResponse {
+        $task = new Task();
+        $task->setState(State::PENDING);
+
+        $taskRepository->save($task);
+
+        $messageBus->dispatch(
+            new NewWishItemMessage(
+                $newWishItem,
+                $secretSantaMember->getId(),
+                $task->getId()
+            ),
+        );
+
+        return $this->json($task);
     }
 }

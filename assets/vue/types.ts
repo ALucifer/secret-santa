@@ -4,13 +4,24 @@ export interface Member {
     invitationAccepted: boolean,
 }
 
-export enum WishItemFormType {
+interface Money {
+    price: number
+}
+interface Gift {
+    url: string
+}
+interface Event {
+    date: Date,
+    name: string
+}
+
+export enum WishType {
     GIFT = 'GIFT',
     MONEY= 'MONEY',
     EVENT = 'EVENT',
 }
 
 export interface WishItemForm {
-    type: WishItemFormType,
-    data: any
+    type: WishType,
+    data: Money | Gift | Event
 }

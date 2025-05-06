@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use LogicException;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[IsGranted('ROLE_USER')]
 class SecretSantaController extends AbstractController
@@ -86,12 +87,14 @@ class SecretSantaController extends AbstractController
     public function memberList(
         SecretSanta $secretSanta,
         SecretSantaMember $secretSantaMember,
+        SerializerInterface $serializer
     ) {
         return $this->render(
             'secret-santa/member-wishlist.html.twig',
             [
-                'user' => $secretSantaMember->getUser(),
+                'member' => $secretSantaMember,
                 'secretSanta' => $secretSanta,
+                'whishItems' => $serializer->normalize($secretSantaMember->getWishItems()->toArray(), 'json', [ 'groups' => 'default'])
             ]
         );
     }

@@ -8,8 +8,12 @@ doctrine:
 
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
+        mapping_types:
+            wishitem_enum: wishitem_enum
+            state_enum: state_enum
         types:
             wishitem_enum: App\Doctrine\WishitemType
+            state_enum: App\Doctrine\StateType
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true

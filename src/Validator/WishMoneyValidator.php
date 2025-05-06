@@ -25,10 +25,13 @@ class WishMoneyValidator extends ConstraintValidator
                 $value,
                 new Assert\Collection(
                     fields: [
-                        'price' => new Assert\GreaterThan(
-                            value: 0,
-                            message: 'The price must be greater than 0',
-                        ),
+                        'price' => [
+                            new Assert\Type('integer'),
+                            new Assert\GreaterThan(
+                                value: 0,
+                                message: 'The price must be greater than 0',
+                            )
+                        ],
                     ],
                     allowExtraFields: false,
                     extraFieldsMessage: 'Le champs {{ field }} n\'est pas valide.',

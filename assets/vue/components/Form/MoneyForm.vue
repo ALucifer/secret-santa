@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import AppInput from "@app/components/AppInput.vue";
-import {WishItemForm, WishItemFormType} from "@app/types";
+import {WishItemForm, WishType} from "@app/types";
 import {ref} from "vue";
 
 const moneyValue = ref<number>(0)
@@ -21,6 +21,7 @@ function handleSend(): void {
     inputState.value = true;
     return
   }
-  emits('submit', { type: WishItemFormType.MONEY, data: { value: moneyValue.value }})
+
+  emits('submit', { type: WishType.MONEY, data: { price: +moneyValue.value }})
 }
 </script>

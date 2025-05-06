@@ -26,9 +26,11 @@ import EventForm from "@app/components/Form/EventForm.vue";
 import MoneyForm from "@app/components/Form/MoneyForm.vue";
 import GiftForm from "@app/components/Form/GiftForm.vue";
 import ArrayLeftIcon from "@app/icons/ArrayLeftIcon.vue";
-import { WishItemForm } from "@app/types";
 import { computed, ref } from "vue";
+import { useFetch } from "@app/composables/useFetch";
+import Routing from 'fos-router'
 
+const props = defineProps<{ memberId: number }>()
 
 const currentAction = ref()
 
@@ -47,8 +49,14 @@ const componentForm = computed(
   }
 )
 
-function handleSubmit(event: WishItemForm) {
-  console.log(event)
+function handleSubmit(event) {
+  useFetch(
+      Routing.generate('newWish', { id: props.memberId }),
+      {
+        method: 'POST',
+        body: JSON.stringify(event)
+      }
+  )
   currentAction.value = null
 }
 </script>

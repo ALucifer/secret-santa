@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SecretSantaMemberRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -23,9 +25,13 @@ class SecretSantaMember
     #[ORM\Column(type: Types::STRING)]
     private string $state;
 
+    #[ORM\OneToMany(targetEntity: WishitemMember::class, mappedBy: 'member')]
+    private Collection $wishItems;
+
     public function __construct()
     {
         $this->state = 'wait_approval';
+        $this->wishItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -66,4 +72,35 @@ class SecretSantaMember
 
         return $this;
     }
+
+    public function getWishItems(): Collection
+    {
+        return $this->wishItems;
+    }
+
+    public function addWishItem(WishitemMember $wishItem): SecretSantaMember
+    {
+        if (!$this->wishItems->contains($wishItem)) {
+            $this->wishItems->add($wishItem);
+            $wishItem->setMember($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWishItem(WishitemMember $wishItem): SecretSantaMember
+    {
+        if ($this->wishItems->contains($wishItem)) {
+            $this->wishItems->removeElement($wishItem);
+        }
+
+        return $this;
+    }
+
+    public function setWishItems(Collection $wishItems): void
+    {
+        $this->wishItems = $wishItems;
+    }
+
+
 }

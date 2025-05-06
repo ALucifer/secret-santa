@@ -4,9 +4,9 @@
       <AppInput
         type="text"
         placeholder="Entrez le nom de votre evement"
-        :invalid="stateForm.label"
+        :invalid="stateForm.name"
         :showActions="false"
-        v-model="form.label"
+        v-model="form.name"
       />
       <AppInput
         type="date"
@@ -25,15 +25,15 @@
 <script setup lang="ts">
 import {reactive, ref} from "vue";
 import AppInput from "@app/components/AppInput.vue";
-import {WishItemForm, WishItemFormType} from "@app/types";
+import {WishItemForm, WishType} from "@app/types";
 
 const stateForm = ref({
-  label: false,
+  name: false,
   date: false,
 })
 
 const form = reactive({
-    label: '',
+    name: '',
     date: new Date(),
 })
 
@@ -42,15 +42,15 @@ const emits = defineEmits<{
 }>()
 
 function handleSubmit(): void {
-  if (form.label === '' && form.label.length < 3) {
-    stateForm.value.label = true
+  if (form.name === '' && form.name.length < 3) {
+    stateForm.value.name = true
 
     return
   }
 
   emits('submit', {
-    type: WishItemFormType.EVENT,
-    data: form
+    type: WishType.EVENT,
+    data: { ...form }
   })
 }
 </script>
