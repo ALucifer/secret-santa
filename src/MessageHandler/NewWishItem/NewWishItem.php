@@ -5,7 +5,7 @@ namespace App\MessageHandler\NewWishItem;
 use Symfony\Component\Messenger\Attribute\AsMessage;
 use App\Services\Request\DTO\NewWishItem as NewWishItemDTO;
 
-#[AsMessage(['async'])]
+#[AsMessage(['alexis'])]
 class NewWishItem
 {
     public function __construct(

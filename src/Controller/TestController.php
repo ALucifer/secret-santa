@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\WishitemMember;
+use App\Entity\SecretSantaMember;
+use App\Entity\State;
+use App\Entity\Task;
+use App\Repository\TaskRepository;
 use App\Services\Request\DTO\NewWishItem;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,20 +16,27 @@ use App\MessageHandler\NewWishItem\NewWishItem as NewWishItemMessage;
 
 class TestController extends AbstractController
 {
-    #[Route('/test', name: 'test')]
+    #[Route('/test/{secretSantaMember}', name: 'test')]
     public function testAction(
-        #[MapRequestPayload]
-        NewWishItem $newWishItem,
+        SecretSantaMember $secretSantaMember,
+        #[MapRequestPayload] NewWishItem $newWishItem,
         MessageBusInterface $messageBus,
+        TaskRepository $taskRepository,
     ): Response
     {
-        dd($newWishItem);
+        $task = new Task();
+        $task->setState(State::PENDING);
+
+        $taskRepository->save($task);
+
         $messageBus->dispatch(
             new NewWishItemMessage(
-                WishitemMember::fromRequestDTO($newWishItem)
+                $newWishItem,
+                $secretSantaMember->getId(),
+                $task->getId()
             ),
         );
 
-        return $this->json(['envoyé']);
+        return $this->json($task);
     }
 }

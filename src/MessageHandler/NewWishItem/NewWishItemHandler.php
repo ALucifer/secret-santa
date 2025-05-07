@@ -62,6 +62,7 @@ class NewWishItemHandler
     private function handleGift(WishitemMember $wishItemMember): void
     {
         $client = HttpClient::create();
+
         $response = $client->request(
             'GET',
             $wishItemMember->getData()['url'],
@@ -70,17 +71,18 @@ class NewWishItemHandler
         $html = $response->getContent();
         $crawler = new Crawler($html);
 
-        $ogTitle = $crawler->filterXPath('//meta[@property="og:title"]');
-        $ogImage = $crawler->filterXPath('//meta[@property="og:image"]');
+        $ogTitle = $crawler->filterXPath('//meta[@name="og:title"]');
+        $ogImage = $crawler->filterXPath('//meta[@name="og:image"]');
 
-        $wishItemMember->setData([ ...$wishItemMember->getData(), 'image' => 'placeholder']);
+
+        $wishItemMember->setData([ ...$wishItemMember->getData()]);
 
         if ($ogTitle->count() > 0) {
-            $wishItemMember->setData([ ...$wishItemMember->getData(), 'title' => $ogTitle->attr('content')]);
+            $wishItemMember->setData([ ...$wishItemMember->getData(), 'title' => $ogTitle->first()->attr('content')]);
         }
 
         if ($ogImage->count() > 0) {
-            $wishItemMember->setData([ ...$wishItemMember->getData(), 'image' => $ogImage->attr('content')]);
+            $wishItemMember->setData([ ...$wishItemMember->getData(), 'image' => $ogImage->first()->attr('content')]);
         }
     }
 }

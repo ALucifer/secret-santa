@@ -23,9 +23,9 @@
   </div>
 </template>
 <script setup lang="ts">
-import WishGift from "@app/components/WishGift.vue";
-import WishMoney from "@app/components/WishMoney.vue";
-import WishEvent from "@app/components/WishEvent.vue";
+import WishGift from "@app/components/Wish/WishGift.vue";
+import WishMoney from "@app/components/Wish/WishMoney.vue";
+import WishEvent from "@app/components/Wish/WishEvent.vue";
 
 enum Type {
   MONEY = 'MONEY',
