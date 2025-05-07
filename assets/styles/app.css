@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 
+/** Ne pas supprimer sinon boucle infini a la compilation des assets */
+@source not "../../public/*";
+
 @theme {
     --color-white: oklch(100% 0 0);
     --color-red: oklch(57% 0.209 22.65);

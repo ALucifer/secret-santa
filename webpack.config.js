@@ -46,6 +46,9 @@ Encore
             false
         )
     )
+    .configureWatchOptions((watchOptions) => {
+        watchOptions.ignored = '/public/build/'
+    })
 ;
 
 module.exports = Encore.getWebpackConfig();
