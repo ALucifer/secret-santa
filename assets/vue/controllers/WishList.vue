@@ -1,8 +1,8 @@
 <template>
   <div>
     <h2>Ma liste d'envie</h2>
-    <ul class="flex flex-col gap-2">
-      <li v-for="item in items" :key="item.id">
+    <div class="grid grid-cols-2 gap-4">
+      <template v-for="item in wishItems" :key="item.id">
         <component
           :is="WishEvent"
           v-if="item.type === Type.EVENT"
@@ -18,14 +18,25 @@
           v-else
           v-bind="item.data"
         />
-      </li>
-    </ul>
+      </template>
+      <template v-for="(item, key) in taskStore.items" :key="key">
+        <WishLoader
+            :type="item.data.type"
+            :taskId="item.id"
+            @loaded="addNewItem"
+        />
+      </template>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
 import WishGift from "@app/components/Wish/WishGift.vue";
 import WishMoney from "@app/components/Wish/WishMoney.vue";
 import WishEvent from "@app/components/Wish/WishEvent.vue";
+import { useTaskStore } from "@app/stores/task"
+import WishLoader from "@app/components/Wish/WishLoader.vue";
+import { ref } from "vue";
+import { TaskResponse } from "@app/types";
 
 enum Type {
   MONEY = 'MONEY',
@@ -50,5 +61,13 @@ interface Item {
   data: Money | Gift | Event
 }
 
-defineProps<{ items: Item[] }>()
+const props = defineProps<{ items: Item[] }>()
+
+const wishItems = ref<Item[]>(props.items)
+
+const taskStore = useTaskStore()
+
+function addNewItem(item: TaskResponse) {
+  wishItems.value.push({ type: item.data.type, id: item.data.id, data: item.data.data })
+}
 </script>

@@ -25,3 +25,15 @@ export interface WishItemForm {
     type: WishType,
     data: Money | Gift | Event
 }
+
+export enum State {
+    PENDING = 'PENDING',
+    SUCCESS = 'SUCCESS',
+    ERROR = 'ERROR',
+}
+
+export interface TaskResponse {
+    id: number
+    state: State,
+    data: Array<any>,
+}

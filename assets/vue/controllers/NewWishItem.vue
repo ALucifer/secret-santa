@@ -26,9 +26,10 @@ import EventForm from "@app/components/Form/EventForm.vue";
 import MoneyForm from "@app/components/Form/MoneyForm.vue";
 import GiftForm from "@app/components/Form/GiftForm.vue";
 import ArrayLeftIcon from "@app/icons/ArrayLeftIcon.vue";
-import { computed, ref } from "vue";
+import {computed, onMounted, ref} from "vue";
 import { useFetch } from "@app/composables/useFetch";
 import Routing from 'fos-router'
+import { useTaskStore } from "@app/stores/task";
 
 const props = defineProps<{ memberId: number }>()
 
@@ -49,8 +50,10 @@ const componentForm = computed(
   }
 )
 
-function handleSubmit(event) {
-  useFetch(
+const { add } = useTaskStore()
+
+async function handleSubmit(event: Event) {
+  const response = await useFetch(
       Routing.generate('newWish', { id: props.memberId }),
       {
         method: 'POST',
@@ -58,5 +61,7 @@ function handleSubmit(event) {
       }
   )
   currentAction.value = null
+
+  add(response.data.value)
 }
 </script>

@@ -81,7 +81,12 @@ class SecretSantaController extends AbstractController
         return $this->json(Members::fromEntity($members));
     }
 
-    #[Route('/api/task/{id}', name: 'task', methods: ['GET'])]
+    #[Route(
+        '/api/task/{id}',
+        name: 'task',
+        options: ['expose' => true],
+        methods: ['GET']),
+    ]
     public function task(
         Task $task,
     ): JsonResponse {
@@ -102,6 +107,7 @@ class SecretSantaController extends AbstractController
     ): JsonResponse {
         $task = new Task();
         $task->setState(State::PENDING);
+        $task->setData(['type' => $newWishItem->type]);
 
         $taskRepository->save($task);
 

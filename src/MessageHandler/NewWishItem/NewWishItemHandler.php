@@ -13,6 +13,7 @@ use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Throwable;
 
 #[AsMessageHandler]
 class NewWishItemHandler
@@ -63,26 +64,48 @@ class NewWishItemHandler
     {
         $client = HttpClient::create();
 
-        $response = $client->request(
-            'GET',
-            $wishItemMember->getData()['url'],
-        );
+        try {
+            $response = $client->request(
+                'GET',
+                $wishItemMember->getData()['url'],
+                [
+                    'headers' => [
+                        'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+                        'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                        'Accept-Language' => 'fr-FR,fr;q=0.9',
+                        'Referer' => 'https://www.google.com',
+                    ],
+                ]
+            );
 
-        $html = $response->getContent();
-        $crawler = new Crawler($html);
+            $html = $response->getContent();
+            $crawler = new Crawler($html);
 
-        $ogTitle = $crawler->filterXPath('//meta[@name="og:title"]');
-        $ogImage = $crawler->filterXPath('//meta[@name="og:image"]');
+            $ogNameTitle = $crawler->filterXPath('//meta[@name="og:title"]');
+            $ogPropertyTitle = $crawler->filterXPath('//meta[@property="og:title"]');
+            $ogNameImage = $crawler->filterXPath('//meta[@name="og:image"]');
+            $ogPropertyImage = $crawler->filterXPath('//meta[@property="og:image"]');
 
+            $wishItemMember->setData([ ...$wishItemMember->getData()]);
 
-        $wishItemMember->setData([ ...$wishItemMember->getData()]);
+            if ($ogNameTitle->count() > 0) {
+                $wishItemMember->setData([ ...$wishItemMember->getData(), 'title' => $ogNameTitle->first()->attr('content')]);
+            }
 
-        if ($ogTitle->count() > 0) {
-            $wishItemMember->setData([ ...$wishItemMember->getData(), 'title' => $ogTitle->first()->attr('content')]);
+            if ($ogPropertyTitle->count() > 0) {
+                $wishItemMember->setData([ ...$wishItemMember->getData(), 'title' => $ogPropertyTitle->first()->attr('content')]);
+            }
+
+            if ($ogNameImage->count() > 0) {
+                $wishItemMember->setData([ ...$wishItemMember->getData(), 'image' => $ogNameImage->first()->attr('content')]);
+            }
+
+            if ($ogPropertyImage->count() > 0) {
+                $wishItemMember->setData([ ...$wishItemMember->getData(), 'image' => $ogPropertyImage->first()->attr('content')]);
+            }
+        } catch (Throwable $e) {
+            $this->logger->error($e->getMessage());
         }
 
-        if ($ogImage->count() > 0) {
-            $wishItemMember->setData([ ...$wishItemMember->getData(), 'image' => $ogImage->first()->attr('content')]);
-        }
     }
 }

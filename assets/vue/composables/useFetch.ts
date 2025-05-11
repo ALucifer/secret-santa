@@ -6,17 +6,18 @@ interface Options {
     headers: {
         'Authorization'?: string,
         'Content-Type': string,
-    }
+    },
+    body?: string,
 }
 
 const defaultOptions: Options = {
     method: 'GET',
     headers: {
         "Content-Type": "application/json",
-    }
+    },
 }
 
-export function useFetch<T>(url: string, options?: Options) {
+export async function useFetch<T>(url: string, options?: Options) {
     const data = ref<T | null>(null)
 
     const { readCookie } = useCookie()
@@ -31,9 +32,13 @@ export function useFetch<T>(url: string, options?: Options) {
         }
     };
 
-    fetch(url, mergedOptions)
-        .then((response) => response.json())
-        .then((items) => data.value = items)
+    try {
+        const response = await fetch(url, mergedOptions)
+
+        data.value = await response.json()
+    } catch {
+        console.log('erreur dans le fetch')
+    }
 
     return {
         data
