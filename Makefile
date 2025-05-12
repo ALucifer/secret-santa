@@ -56,6 +56,8 @@ js-routing:
 node-bash:
 	$(NODE) bash
 
+messenger:
+	$(SYMFONY) messenger:consume
 ## —— Composer 🧙 ——————————————————————————————————————————————————————————————
 composer: ## Run composer, pass the parameter "c=" to run a given command, example: make composer c='req symfony/orm-pack'
 	@$(eval c ?=)
