@@ -99,6 +99,7 @@ class SecretSantaController extends AbstractController
         options: ['expose' => true],
         methods: ['POST']
     )]
+    #[IsGranted('NEW', 'secretSantaMember')]
     public function newWish(
         SecretSantaMember $secretSantaMember,
         #[MapRequestPayload] NewWishItem $newWishItem,

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Ma liste d'envie</h2>
+    <h2 class="text-3xl font-bold text-center text-gray-900 mb-6">Ma liste d'envie</h2>
     <div class="grid grid-cols-2 gap-4">
       <template v-for="item in wishItems" :key="item.id">
         <component

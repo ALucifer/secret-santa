@@ -1,16 +1,20 @@
 <template>
-  <div class="bg-stone-200 w-[600px] h-[150px] relative">
+  <div class="flex flex-col bg-stone-200 w-[600px] min-h-[150px] relative" v-if="total < 10">
     <ArrayLeftIcon
       v-if="currentAction"
       @click="currentAction = null"
       class="absolute top-[5px] left-[5px]"
     />
+    <p
+      v-if="formError"
+      class="pt-2 text-center text-sm text-red-600 font-medium"
+    >Une erreur est survenue lors de l'envoi du formulaire.</p>
     <ActionList
       v-if="!currentAction"
       v-model="currentAction"
-      class="flex h-full justify-center"
+      class="flex h-[150px] justify-center"
     />
-    <div v-else class="flex gap-2 items-center justify-center h-full">
+    <div v-else class="flex flex-1 gap-2 items-center justify-center">
       <component
         :is="componentForm"
         class="flex"
@@ -26,17 +30,21 @@ import EventForm from "@app/components/Form/EventForm.vue";
 import MoneyForm from "@app/components/Form/MoneyForm.vue";
 import GiftForm from "@app/components/Form/GiftForm.vue";
 import ArrayLeftIcon from "@app/icons/ArrayLeftIcon.vue";
-import {computed, onMounted, ref} from "vue";
+import { computed, ref } from "vue";
 import { useFetch } from "@app/composables/useFetch";
 import Routing from 'fos-router'
 import { useTaskStore } from "@app/stores/task";
 
-const props = defineProps<{ memberId: number }>()
+const props = defineProps<{ memberId: number, wishCount: number }>()
 
 const currentAction = ref()
+const formError = ref<boolean>(false)
+const total = ref(props.wishCount)
 
 const componentForm = computed(
   () => {
+    formError.value = false
+
     switch (currentAction.value) {
       case "event":
         return EventForm
@@ -53,7 +61,7 @@ const componentForm = computed(
 const { add } = useTaskStore()
 
 async function handleSubmit(event: Event) {
-  const response = await useFetch(
+  const { data, error } = await useFetch(
       Routing.generate('newWish', { id: props.memberId }),
       {
         method: 'POST',
@@ -62,6 +70,12 @@ async function handleSubmit(event: Event) {
   )
   currentAction.value = null
 
-  add(response.data.value)
+  if (error.value) {
+    formError.value = true
+    return
+  }
+
+  add(data.value)
+  total.value++
 }
 </script>

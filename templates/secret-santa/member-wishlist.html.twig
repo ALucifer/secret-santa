@@ -11,7 +11,9 @@
 {% block body %}
     <div class="middle flex-col gap-2">
         <div {{ vue_component('WishList', { items: whishItems }) }}></div>
-        <div {{ vue_component('NewWishItem', { memberId: member.id }) }}></div>
+        {% if (whishItems|length) < 10 %}
+            <div {{ vue_component('NewWishItem', { memberId: member.id, wishCount: whishItems|length }) }}></div>
+        {% endif %}
     </div>
 {% endblock %}
 

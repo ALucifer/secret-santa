@@ -19,6 +19,7 @@ const defaultOptions: Options = {
 
 export async function useFetch<T>(url: string, options?: Options) {
     const data = ref<T | null>(null)
+    const error = ref<boolean>(false)
 
     const { readCookie } = useCookie()
 
@@ -37,10 +38,11 @@ export async function useFetch<T>(url: string, options?: Options) {
 
         data.value = await response.json()
     } catch {
-        console.log('erreur dans le fetch')
+        error.value = true
     }
 
     return {
-        data
+        data,
+        error
     }
 }
