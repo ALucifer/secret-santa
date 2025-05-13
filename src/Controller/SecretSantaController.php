@@ -84,6 +84,7 @@ class SecretSantaController extends AbstractController
         options: ['expose' => true],
         host: '%app.host%'
     )]
+    #[IsGranted('show', 'secretSantaMember')]
     public function memberList(
         SecretSanta $secretSanta,
         SecretSantaMember $secretSantaMember,
