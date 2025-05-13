@@ -14,6 +14,11 @@ class WishitemType extends Type
         return "wishitem_enum";
     }
 
+    /**
+     * @param string $value
+     * @param AbstractPlatform $platform
+     * @return WishitemTypeEnum
+     */
     public function convertToPHPValue($value, AbstractPlatform $platform): WishitemTypeEnum
     {
         return WishitemTypeEnum::from($value);

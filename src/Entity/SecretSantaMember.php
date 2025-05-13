@@ -25,6 +25,9 @@ class SecretSantaMember
     #[ORM\Column(type: Types::STRING)]
     private string $state;
 
+    /**
+     * @var Collection<int, WishitemMember> $wishItems
+     */
     #[ORM\OneToMany(targetEntity: WishitemMember::class, mappedBy: 'member')]
     private Collection $wishItems;
 
@@ -73,6 +76,9 @@ class SecretSantaMember
         return $this;
     }
 
+    /**
+     * @return Collection<int, WishitemMember>
+     */
     public function getWishItems(): Collection
     {
         return $this->wishItems;
@@ -97,6 +103,10 @@ class SecretSantaMember
         return $this;
     }
 
+    /**
+     * @param Collection<int, WishitemMember> $wishItems
+     * @return void
+     */
     public function setWishItems(Collection $wishItems): void
     {
         $this->wishItems = $wishItems;

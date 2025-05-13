@@ -13,6 +13,11 @@ class StateType extends Type
         return 'state_enum';
     }
 
+    /**
+     * @param string $value
+     * @param AbstractPlatform $platform
+     * @return State
+     */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         return State::from($value);

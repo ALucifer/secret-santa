@@ -8,10 +8,13 @@ enum WishitemType: string
     case EVENT = 'EVENT';
     case GIFT = 'GIFT';
 
+    /**
+     * @return array<string>
+     */
     public static function values(): array
     {
         return array_map(
-            fn($i) => $i->value,
+            fn($item) => $item->value,
             self::cases()
         );
     }

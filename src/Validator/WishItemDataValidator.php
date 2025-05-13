@@ -8,6 +8,7 @@ use App\Validator\Constraints\WishEvent;
 use App\Validator\Constraints\WishGift;
 use App\Validator\Constraints\WishItemData;
 use App\Validator\Constraints\WishMoney;
+use LogicException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -15,12 +16,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class WishItemDataValidator extends ConstraintValidator
 {
-    /**
-     * @param NewWishItem $value
-     * @param Constraint $constraint
-     * @return void
-     */
-    public function validate($value, Constraint $constraint)
+    public function validate(mixed $value, Constraint $constraint)
     {
         if (!$constraint instanceof WishItemData) {
             throw new UnexpectedTypeException($constraint, WishItemData::class);
@@ -34,7 +30,7 @@ class WishItemDataValidator extends ConstraintValidator
             WishitemType::EVENT->value => new WishEvent(),
             WishitemType::MONEY->value => new WishMoney(),
             WishitemType::GIFT->value => new WishGift(),
-            default => throw new \LogicException(sprintf('%s validation is not supported', $value->type)),
+            default => throw new LogicException(sprintf('%s validation is not supported', $value->type)),
         };
 
         $errors = $this

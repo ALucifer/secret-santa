@@ -3,6 +3,7 @@
 namespace App\Services\Pagination;
 
 use Doctrine\ORM\QueryBuilder;
+use LogicException;
 
 class Paginator
 {
@@ -13,7 +14,7 @@ class Paginator
         string $queryParam,
     ): Pagination {
         if ($page < 0) {
-            throw new \LogicException('Page must be greater than 0');
+            throw new LogicException('Page must be greater than 0');
         }
 
         $totalQuery = clone $query;

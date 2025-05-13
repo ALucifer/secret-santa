@@ -11,8 +11,13 @@ class NewWishItem
 {
     #[Assert\Choice(callback: [WishitemType::class, 'values'], message: 'Wishitem type is not valid.')]
     public readonly string $type;
+    /** @var array<mixed>  */
     public readonly array $data;
 
+    /**
+     * @param string $type
+     * @param array<mixed> $data
+     */
     public function __construct(
         string $type,
         array $data,

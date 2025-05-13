@@ -17,12 +17,15 @@ class WishitemMember
         ORM\Column
     ]
     #[Groups(['default'])]
-    private ?int $id = null;
+    private ?int $id = null; // @phpstan-ignore property.unusedType
 
     #[ORM\Column(type: 'wishitem_enum')]
     #[Groups(['default'])]
     private WishitemType $type;
 
+    /**
+     * @var array<mixed> $data
+     */
     #[ORM\Column(type: Types::JSON)]
     #[Groups(['default'])]
     private array $data;
@@ -43,6 +46,9 @@ class WishitemMember
         return $wishItem;
     }
 
+    /**
+     * @return array{id: int|null, type: WishitemType, data: array<mixed>}
+     */
     public function toArray(): array
     {
         return [
@@ -69,11 +75,17 @@ class WishitemMember
         return $this;
     }
 
+    /**
+     * @return array{url: string}|array<mixed>
+     */
     public function getData(): array
     {
         return $this->data;
     }
 
+    /**
+     * @param array<mixed> $data
+     */
     public function setData(array $data): self
     {
         $this->data = $data;

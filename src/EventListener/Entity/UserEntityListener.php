@@ -16,7 +16,7 @@ class UserEntityListener
     ) {
     }
 
-    public function onPrePersist(User $user, PrePersistEventArgs $event)
+    public function onPrePersist(User $user, PrePersistEventArgs $event): void
     {
         $password = $this->userPasswordHasher->hashPassword($user, $user->getPassword());
 

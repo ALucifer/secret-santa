@@ -88,7 +88,7 @@ phpstan:
 	$(CCODE) phpstan analyse src --level 9
 
 phpmd:
-	$(CCODE) phpmd src text phpmd.xml
+	$(CCODE) phpmd src/ text phpmd.xml
 
 phpcs:
 	$(CCODE) phpcs src

@@ -3,6 +3,7 @@
 namespace App\Validator;
 
 use App\Validator\Constraints\WishEvent;
+use DateTimeImmutable;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -12,6 +13,12 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 class WishEventValidator extends ConstraintValidator
 {
 
+    /**
+     * @param array{ date: string, name: string } $value
+     * @param Constraint $constraint
+     * @return void
+     * @throws \Exception
+     */
     public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof WishEvent) {
@@ -46,7 +53,7 @@ class WishEventValidator extends ConstraintValidator
             ->context
             ->getValidator()
             ->validate(
-                new \DateTimeImmutable($value['date']),
+                new DateTimeImmutable($value['date']),
                 new Assert\GreaterThan('today'),
             );
 

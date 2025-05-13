@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use LogicException;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 #[IsGranted('ROLE_USER')]
 class SecretSantaController extends AbstractController
@@ -87,14 +87,14 @@ class SecretSantaController extends AbstractController
     public function memberList(
         SecretSanta $secretSanta,
         SecretSantaMember $secretSantaMember,
-        SerializerInterface $serializer
-    ) {
+        NormalizerInterface $normalizer
+    ): Response {
         return $this->render(
             'secret-santa/member-wishlist.html.twig',
             [
                 'member' => $secretSantaMember,
                 'secretSanta' => $secretSanta,
-                'whishItems' => $serializer->normalize($secretSantaMember->getWishItems()->toArray(), 'json', [ 'groups' => 'default'])
+                'whishItems' => $normalizer->normalize($secretSantaMember->getWishItems()->toArray(), 'json', [ 'groups' => 'default'])
             ]
         );
     }

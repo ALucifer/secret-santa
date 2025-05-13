@@ -12,11 +12,12 @@ class Task
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private ?int $id = null; // @phpstan-ignore property.unusedType
 
     #[Orm\Column(type: 'state_enum', nullable: false)]
     private State $state;
 
+    /** @var array<mixed>  */
     #[ORM\Column(type: Types::JSON)]
     private array $data;
 
@@ -42,11 +43,18 @@ class Task
         return $this;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getData(): array
     {
         return $this->data;
     }
 
+    /**
+     * @param array<mixed> $data
+     * @return $this
+     */
     public function setData(array $data): self
     {
         $this->data = $data;

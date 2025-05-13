@@ -16,6 +16,7 @@ use App\Services\Request\DTO\NewMemberDTO;
 use App\Services\Request\DTO\NewWishItem;
 use Assert\Assertion;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -78,7 +79,7 @@ class SecretSantaController extends AbstractController
         $members = $secretSanta->getMembers()->toArray();
         Assertion::allIsInstanceOf($members, SecretSantaMember::class);
 
-        return $this->json(Members::fromEntity($members));
+        return $this->json(Members::fromEntity($members)); // @phpmd ignore StaticAccess
     }
 
     #[Route(
@@ -111,6 +112,10 @@ class SecretSantaController extends AbstractController
         $task->setData(['type' => $newWishItem->type]);
 
         $taskRepository->save($task);
+
+        if (null === $task->getId() || null === $secretSantaMember->getId()) {
+            throw new RuntimeException('Task ID and Secret Santa can not be null');
+        }
 
         $messageBus->dispatch(
             new NewWishItemMessage(

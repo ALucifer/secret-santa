@@ -62,7 +62,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->secretSantas = new ArrayCollection();
-        $this->roles = [Role::USER];
+        $this->roles = [Role::USER->value];
     }
 
     public static function fromInvitation(string $email): User

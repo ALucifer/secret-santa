@@ -44,7 +44,7 @@ class WishGiftValidator extends ConstraintValidator
             $this
                 ->context
                 ->buildViolation($error->getMessage())
-                ->atPath($propertyPath ?? $error->getPropertyPath())
+                ->atPath($error->getPropertyPath())
                 ->addViolation();
         }
     }

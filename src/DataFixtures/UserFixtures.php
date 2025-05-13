@@ -30,7 +30,7 @@ class UserFixtures extends Fixture
             $user
                 ->setEmail("user{$i}@mail.com")
                 ->setPassword("user{$i}")
-                ->setIsVerified($random->getInt(0,1));
+                ->setIsVerified((bool) $random->getInt(0,1));
 
             $manager->persist($user);
         }

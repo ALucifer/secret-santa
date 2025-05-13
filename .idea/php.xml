@@ -210,6 +210,8 @@
     </PhpStan_settings>
   </component>
   <component name="PhpStanOptionsConfiguration">
+    <option name="config" value="phpmd.xml" />
+    <option name="fullProject" value="true" />
     <option name="transferred" value="true" />
   </component>
   <component name="PhpUnit">
