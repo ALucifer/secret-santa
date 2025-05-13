@@ -22,6 +22,10 @@
     background-position: center; /* Centre l’image */
     background-repeat: no-repeat; /* Empêche la répétition */
     background-image: url('../images/home.jpeg');
+
+    @media (width < 48rem) {
+        padding-top: 75px;
+    }
 }
 
 .site__name {
@@ -30,11 +34,21 @@
     font-style: normal;
     font-size: 100px;
     color: oklch(57% 0.209 22.65);
+
+    @media (width < 48rem) {
+        font-weight: 400;
+        font-size: 64px;
+    }
 }
 
 .site__description {
     font-family: "Mountains of Christmas", serif;
     font-size: 30px;
+
+    @media (width < 48rem) {
+        font-weight: 400;
+        font-size: 24px;
+    }
 }
 
 .middle {
@@ -42,6 +56,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    @media (width < 48rem) {
+        padding: 16px;
+    }
 }
 
 .card__title {

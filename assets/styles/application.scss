@@ -9,6 +9,10 @@
   padding: 8px;
   border-radius: 12px;
 
+  @media (width < 48rem) {
+    width: 100%;
+  }
+
   &--bg-hidden {
     background-color: initial;
   }
