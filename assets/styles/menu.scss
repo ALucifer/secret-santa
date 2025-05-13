@@ -23,12 +23,19 @@
 
 .action {
   &__link {
-    padding: 4px 8px;
-    border-radius: 4px;
+    @media (width >= 48rem) {
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
 
     &--login {
       background-color: oklch(79.2% 0.16 72.34);
       color: oklch(47.62% 0.0794 205.4);
+
+      @media (width < 48rem) {
+        padding: 4px 8px;
+        border-radius: 4px;
+      }
 
       &:hover {
         background-color: oklch(0.824 0.149 76.833);
@@ -37,8 +44,14 @@
     }
 
     &--logout {
-      background-color: oklch(57% 0.209 22.65);
-      color: oklch(100% 0 0);
+      @media (width >= 48rem) {
+        background-color: oklch(57% 0.209 22.65);
+        color: oklch(100% 0 0);
+      }
+
+      @media (width < 48rem) {
+        color: oklch(57% 0.209 22.65);
+      }
     }
   }
 }
