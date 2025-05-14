@@ -33,10 +33,18 @@ class WishVoter extends Voter
      */
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
-        if ($attribute !== 'NEW') {
+        if ($attribute !== 'NEW' && $attribute !== 'DELETE') {
             throw new RuntimeException('Unsupported attribute: ' . $attribute);
         }
 
+        return match ($attribute) {
+            'NEW' => $this->handleNew($subject),
+            default => false,
+        };
+    }
+
+    private function handleNew(SecretSantaMember $subject): bool
+    {
         return $subject->getWishItems()->count() < 10;
     }
 }

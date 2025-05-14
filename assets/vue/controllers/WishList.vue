@@ -7,23 +7,26 @@
           :is="WishEvent"
           v-if="item.type === Type.EVENT"
           v-bind="item.data"
+          @remove="handleRemove(item.id)"
         />
         <component
           :is="WishGift"
           v-else-if="item.type === Type.GIFT"
           v-bind="item.data"
+          @remove="handleRemove(item.id)"
         />
         <component
           :is="WishMoney"
           v-else
           v-bind="item.data"
+          @remove="handleRemove(item.id)"
         />
       </template>
       <template v-for="(item, key) in taskStore.items" :key="key">
         <WishLoader
-            :type="item.data.type"
-            :taskId="item.id"
-            @loaded="addNewItem"
+          :type="item.data.type"
+          :taskId="item.id"
+          @loaded="addNewItem"
         />
       </template>
     </div>
@@ -37,6 +40,9 @@ import { useTaskStore } from "@app/stores/task"
 import WishLoader from "@app/components/Wish/WishLoader.vue";
 import { ref } from "vue";
 import { TaskResponse } from "@app/types";
+import {useFetch} from "@app/composables/useFetch";
+import Routing from "fos-router";
+import {useWishStore} from "@app/stores/wish";
 
 enum Type {
   MONEY = 'MONEY',
@@ -69,5 +75,22 @@ const taskStore = useTaskStore()
 
 function addNewItem(item: TaskResponse) {
   wishItems.value.push({ type: item.data.type, id: item.data.id, data: item.data.data })
+}
+
+const { decrease } = useWishStore()
+
+async function handleRemove(itemId: number) {
+  try {
+    await useFetch(
+        Routing.generate('delete_wish', { id: itemId }),
+        {
+          method: 'DELETE'
+        }
+    )
+    wishItems.value = wishItems.value.filter((item: Item) => item.id !== itemId)
+    taskStore.remove(itemId)
+    decrease()
+  } catch {
+  }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <WishContainer>
+  <WishContainer @remove="$emit('remove')">
     <template #icon><MoneyIcon /></template>
     <template #content>
       <p>De l'argent :</p>
@@ -12,4 +12,5 @@ import WishContainer from "@app/components/Wish/WishContainer.vue";
 import MoneyIcon from "@app/icons/MoneyIcon.vue";
 
 defineProps<{ price: number }>()
+defineEmits(['remove'])
 </script>

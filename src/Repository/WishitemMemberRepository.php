@@ -23,4 +23,10 @@ class WishitemMemberRepository extends ServiceEntityRepository
 
         return $wishitemMember;
     }
+
+    public function delete(WishitemMember $wishitemMember): void
+    {
+        $this->getEntityManager()->remove($wishitemMember);
+        $this->getEntityManager()->flush();
+    }
 }

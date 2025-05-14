@@ -1,5 +1,5 @@
 <template>
-  <WishContainer>
+  <WishContainer @remove="$emit('remove')">
     <template #icon>
       <CalendarIcon />
     </template>
@@ -18,6 +18,7 @@ import WishContainer from "@app/components/Wish/WishContainer.vue";
 import { useDateFormat } from "@vueuse/core";
 
 const props = defineProps<{ name: string, date: string }>()
+defineEmits(['remove'])
 
 const dateFormatted = useDateFormat(props.date, 'DD MMM YYYY')
 </script>

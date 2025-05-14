@@ -1,5 +1,5 @@
 <template>
-  <WishContainer :content-container-css-classes="containerClass">
+  <WishContainer :content-container-css-classes="containerClass" :useAction="false">
     <template #icon>
       <Spinner />
     </template>
@@ -44,7 +44,7 @@ import {useTaskStore} from "@app/stores/task";
 const props = defineProps<{ type: WishType, taskId: number }>()
 
 const emits = defineEmits<{
-  (e: 'loaded', data: TaskResponse)
+  (e: 'loaded', data: TaskResponse),
 }>()
 
 const containerClass = ref(
@@ -57,6 +57,8 @@ const intervalNeeded = ref<boolean>(true)
 const dataFromInterval = ref<TaskResponse>()
 
 const { remove } = useTaskStore()
+
+const retryCount = ref<number>(0)
 
 onMounted(() => {
   const intervalId = setInterval(
@@ -73,6 +75,12 @@ onMounted(() => {
         intervalNeeded.value = false
         dataFromInterval.value = response.data.value
       }
+
+      if (retryCount.value > 10) {
+        intervalNeeded.value = false
+      }
+
+      retryCount.value++
     }, 5000
   )
 

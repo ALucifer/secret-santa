@@ -1,10 +1,11 @@
 <template>
-  <WishContainer content-container-css-classes="flex-1 flex flex-col justify-between overflow-hidden">
+  <WishContainer content-container-css-classes="flex-1 flex flex-col justify-between overflow-hidden" @remove="$emit('remove')">
     <template #icon>
       <img
         v-if="image"
         :src="image"
         @error="onError"
+        alt="image {{ title }}"
       >
       <GiftIcon v-else />
     </template>
@@ -23,6 +24,7 @@ import GiftIcon from "@app/icons/GiftIcon.vue";
 import {ref} from "vue";
 
 const props = defineProps<{ title: string, url: string, image?: string }>()
+defineEmits(['remove'])
 
 const image = ref(props.image)
 

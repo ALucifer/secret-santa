@@ -16,7 +16,6 @@ document.addEventListener('vue:before-mount', (e) => {
             app: any;
         }>;
 
-
         const {
             app, // The Vue application instance
         } = event.detail;

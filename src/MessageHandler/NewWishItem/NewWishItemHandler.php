@@ -1,5 +1,4 @@
 <?php
-
 namespace App\MessageHandler\NewWishItem;
 
 use App\Entity\State;
