@@ -20,6 +20,10 @@ document.addEventListener('turbo:submit-end', function (event) {
     removeCsrfToken(event.detail.formSubmission.formElement);
 });
 
+document.addEventListener("turbo:before-prefetch", (event) => {
+    event.preventDefault()
+})
+
 export function generateCsrfToken (formElement) {
     const csrfField = formElement.querySelector('input[data-controller="csrf-protection"], input[name="_csrf_token"]');
 
