@@ -6,32 +6,24 @@ use App\Entity\DTO\Member;
 use App\Entity\DTO\Members;
 use App\Entity\SecretSanta;
 use App\Entity\SecretSantaMember;
-use App\Entity\State;
-use App\Entity\Task;
-use App\MessageHandler\NewWishItem\NewWishItem as NewWishItemMessage;
 use App\Repository\SecretSantaMemberRepository;
-use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use App\Services\Request\DTO\NewMemberDTO;
-use App\Services\Request\DTO\NewWishItem;
-use App\ValueResolver\WishValueResolver;
 use Assert\Assertion;
 use Psr\Log\LoggerInterface;
-use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\HttpKernel\Attribute\ValueResolver;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Throwable;
 
 #[IsGranted("ROLE_USER")]
+#[Route(path: '/api')]
 class SecretSantaController extends AbstractController
 {
-    #[Route('/api/secret-santa/{id}/register/member', name: 'registerMember', methods: ['POST'])]
+    #[Route('/secret-santa/{id}/register/member', name: 'registerMember', methods: ['POST'])]
     public function registerFromSecret(
         SecretSanta $secretSanta,
         #[MapRequestPayload(validationFailedStatusCode: Response::HTTP_NOT_FOUND)] NewMemberDTO $newMemberDTO,
@@ -54,7 +46,7 @@ class SecretSantaController extends AbstractController
         return $this->json(Member::fromMember($member));
     }
 
-    #[Route('/api/secret-santa/{secretId}/delete/member/{secretSantaMember}', name: 'deleteMember', methods: ['DELETE', 'GET'])]
+    #[Route('/secret-santa/{secretId}/delete/member/{secretSantaMember}', name: 'deleteMember', methods: ['DELETE', 'GET'])]
     public function deleteMember(
         SecretSanta $secretId,
         SecretSantaMember $secretSantaMember,
@@ -75,59 +67,12 @@ class SecretSantaController extends AbstractController
         }
     }
 
-    #[Route('/api/secret-santa/{id}/members', name: 'members', methods: ['GET'])]
+    #[Route('/secret-santa/{id}/members', name: 'members', methods: ['GET'])]
     public function members(SecretSanta $secretSanta): JsonResponse
     {
         $members = $secretSanta->getMembers()->toArray();
         Assertion::allIsInstanceOf($members, SecretSantaMember::class);
 
         return $this->json(Members::fromEntity($members)); // @phpmd ignore StaticAccess
-    }
-
-    #[Route(
-        '/api/task/{id}',
-        name: 'task',
-        options: ['expose' => true],
-        methods: ['GET']),
-    ]
-    public function task(
-        Task $task,
-    ): JsonResponse {
-        return $this->json($task);
-    }
-
-    #[Route(
-        '/api/secret-santa/members/{id}/wish',
-        name: 'newWish',
-        options: ['expose' => true],
-        methods: ['POST']
-    )]
-    #[IsGranted('NEW', 'secretSantaMember')]
-    public function newWish(
-        SecretSantaMember $secretSantaMember,
-        #[ValueResolver(WishValueResolver::class)] NewWishItem $newWishItem,
-        MessageBusInterface $messageBus,
-        TaskRepository $taskRepository,
-    ): JsonResponse {
-
-        $task = new Task();
-        $task->setState(State::PENDING);
-        $task->setData(['type' => $newWishItem->type]);
-
-        $taskRepository->save($task);
-
-        if (null === $task->getId() || null === $secretSantaMember->getId()) {
-            throw new RuntimeException('Task ID and Secret Santa can not be null');
-        }
-
-        $messageBus->dispatch(
-            new NewWishItemMessage(
-                $newWishItem,
-                $secretSantaMember->getId(),
-                $task->getId()
-            ),
-        );
-
-        return $this->json($task);
     }
 }

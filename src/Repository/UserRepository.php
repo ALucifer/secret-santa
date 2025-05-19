@@ -6,12 +6,10 @@ use App\Entity\User;
 use App\MessageHandler\RegisterNotification\RegisterNotification;
 use App\Security\Role;
 use App\Services\Request\DTO\NewMemberDTO;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use LogicException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -20,9 +18,9 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Throwable;
 
 /**
- * @extends ServiceEntityRepository<User>
+ * @extends AbstractRepository<User>
  */
-class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class UserRepository extends AbstractRepository implements PasswordUpgraderInterface
 {
     public function __construct(
         ManagerRegistry $registry,
@@ -104,17 +102,5 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         } catch (Throwable $e) {
             dd($e->getMessage());
         }
-    }
-
-    /**
-     * @param array<string, mixed> $criteria
-     * @param array<string, string>|null $orderBy
-     * @return User
-     */
-    public function findOneByOrFail(array $criteria, ?array $orderBy = null): User
-    {
-        $user = $this->findOneBy($criteria, $orderBy);
-
-        return $user ?? throw new NotFoundHttpException('User not found.');
     }
 }

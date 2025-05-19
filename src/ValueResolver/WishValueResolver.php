@@ -20,6 +20,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+// TODO: retravailler cette partie, faire en sorte qu'une classe se charge de transformer on bon objet suite à une validation
 class WishValueResolver implements ValueResolverInterface
 {
     public function __construct(
@@ -28,6 +29,11 @@ class WishValueResolver implements ValueResolverInterface
     ) {
     }
 
+    /**
+     * @param Request $request
+     * @param ArgumentMetadata $argument
+     * @return iterable<NewWishItem>
+     */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
         $type = $argument->getType();
@@ -36,6 +42,9 @@ class WishValueResolver implements ValueResolverInterface
             return [];
         }
 
+        /**
+         * @var array{ type: string, data: array<Event|Gift|Money> } $jsonData
+         */
         $jsonData = json_decode($request->getContent(), true);
 
         $object = match (strtoupper($jsonData['type'])) {
@@ -61,6 +70,13 @@ class WishValueResolver implements ValueResolverInterface
         ];
     }
 
+    /**
+     * @param array<Event|Gift|Money> $data
+     * @param Constraint $constraint
+     * @param string $type
+     * @return WishDTOInterface
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     */
     private function handleWish(array $data, Constraint $constraint, string $type): WishDTOInterface
     {
         $violations = $this->validator->validate($data, $constraint);
@@ -69,6 +85,12 @@ class WishValueResolver implements ValueResolverInterface
             throw new ValidationFailedException($data, $violations);
         }
 
-        return $this->denormalizer->denormalize($data, $type);
+        $object = $this->denormalizer->denormalize($data, $type);
+
+        if (!$object instanceof WishDTOInterface) {
+            throw new LogicException('Normalizer should return WishDTOInterface object');
+        }
+
+        return $object;
     }
 }

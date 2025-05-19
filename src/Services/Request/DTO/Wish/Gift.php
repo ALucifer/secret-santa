@@ -9,6 +9,9 @@ readonly class Gift implements WishDTOInterface
     ) {
     }
 
+    /**
+     * @return string[]
+     */
     public function toArray(): array
     {
         return [

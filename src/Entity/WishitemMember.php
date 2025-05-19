@@ -3,6 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\WishitemMemberRepository;
+use App\Services\Request\DTO\Wish\Event;
+use App\Services\Request\DTO\Wish\Gift;
+use App\Services\Request\DTO\Wish\Money;
+use App\Services\Request\DTO\Wish\WishDTOInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Services\Request\DTO\NewWishItem;
@@ -24,7 +28,7 @@ class WishitemMember
     private WishitemType $type;
 
     /**
-     * @var array{ url: string} | array{ price: int } | array{ name: string, date: string } $data
+     * @var array<string, mixed> $data
      */
     #[ORM\Column(type: Types::JSON)]
     #[Groups(['default'])]
@@ -47,7 +51,7 @@ class WishitemMember
     }
 
     /**
-     * @return array{id: int|null, type: WishitemType, data: array<mixed>}
+     * @return array{id: int|null, type: WishitemType, data: array<string, mixed> }
      */
     public function toArray(): array
     {
@@ -76,7 +80,7 @@ class WishitemMember
     }
 
     /**
-     * @return array{ url: string} | array{ price: int } | array{ name: string, date: string }
+     * @return array<string, mixed>
      */
     public function getData(): array
     {
@@ -84,7 +88,7 @@ class WishitemMember
     }
 
     /**
-     * @param array{ url: string} | array{ price: int } | array{ name: string, date: string } $data
+     * @param array<string, mixed> $data
      */
     public function setData(array $data): self
     {

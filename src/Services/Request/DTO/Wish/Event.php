@@ -10,6 +10,9 @@ readonly class Event implements WishDTOInterface
     ) {
     }
 
+    /**
+     * @return array{ name: string, date: \DateTimeImmutable }
+     */
     public function toArray(): array
     {
         return [

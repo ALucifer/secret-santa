@@ -8,8 +8,8 @@ use App\Services\Request\DTO\Wish\WishDTOInterface;
 readonly class NewWishItem
 {
     public function __construct(
-        public readonly WishitemType $type,
-        public readonly WishDTOInterface $data,
+        public WishitemType $type,
+        public WishDTOInterface $data,
     ) {
     }
 }

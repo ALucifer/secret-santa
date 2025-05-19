@@ -9,6 +9,9 @@ readonly class Money implements WishDTOInterface
     ) {
     }
 
+    /**
+     * @return int[]
+     */
     public function toArray(): array
     {
         return [
