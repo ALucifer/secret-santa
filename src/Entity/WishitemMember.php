@@ -24,7 +24,7 @@ class WishitemMember
     private WishitemType $type;
 
     /**
-     * @var array<mixed> $data
+     * @var array{ url: string} | array{ price: int } | array{ name: string, date: string } $data
      */
     #[ORM\Column(type: Types::JSON)]
     #[Groups(['default'])]
@@ -37,8 +37,8 @@ class WishitemMember
     {
         $wishItem = new self();
 
-        $wishItem->setType(WishitemType::from($newWishItem->type))
-            ->setData($newWishItem->data)
+        $wishItem->setType($newWishItem->type)
+            ->setData($newWishItem->data->toArray())
             ->setMember($member);
 
         $member->addWishItem($wishItem);
@@ -76,7 +76,7 @@ class WishitemMember
     }
 
     /**
-     * @return array{url: string}|array<mixed>
+     * @return array{ url: string} | array{ price: int } | array{ name: string, date: string }
      */
     public function getData(): array
     {
@@ -84,7 +84,7 @@ class WishitemMember
     }
 
     /**
-     * @param array<mixed> $data
+     * @param array{ url: string} | array{ price: int } | array{ name: string, date: string } $data
      */
     public function setData(array $data): self
     {

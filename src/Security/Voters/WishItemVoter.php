@@ -30,8 +30,7 @@ class WishItemVoter extends Voter
     {
         $user = $token->getUser();
 
-
-        if (!$user && !$user instanceof User) {
+        if (!$user instanceof User) {
             return false;
         }
 

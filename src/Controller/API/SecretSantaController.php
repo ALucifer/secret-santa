@@ -14,6 +14,7 @@ use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use App\Services\Request\DTO\NewMemberDTO;
 use App\Services\Request\DTO\NewWishItem;
+use App\ValueResolver\WishValueResolver;
 use Assert\Assertion;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -21,6 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\HttpKernel\Attribute\ValueResolver;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -103,10 +105,11 @@ class SecretSantaController extends AbstractController
     #[IsGranted('NEW', 'secretSantaMember')]
     public function newWish(
         SecretSantaMember $secretSantaMember,
-        #[MapRequestPayload] NewWishItem $newWishItem,
+        #[ValueResolver(WishValueResolver::class)] NewWishItem $newWishItem,
         MessageBusInterface $messageBus,
         TaskRepository $taskRepository,
     ): JsonResponse {
+
         $task = new Task();
         $task->setState(State::PENDING);
         $task->setData(['type' => $newWishItem->type]);

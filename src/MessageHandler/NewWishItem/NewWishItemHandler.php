@@ -27,7 +27,7 @@ class NewWishItemHandler
 
     public function __invoke(NewWishItem $wishItem): void
     {
-        $this->logger->info(sprintf("Traitement de WishItem de type %s", $wishItem->wishItem()->type));
+        $this->logger->info(sprintf("Traitement de WishItem de type %s", $wishItem->wishItem()->type->value));
         $member = $this->memberRepository->find($wishItem->memberId());
 
         if (!$member) {
@@ -36,7 +36,7 @@ class NewWishItemHandler
 
         $wishItemEntity = WishitemMember::fromRequestDTOAndMember($wishItem->wishItem(), $member);
 
-        if ($wishItem->wishItem()->type === WishitemType::GIFT->value) {
+        if ($wishItem->wishItem()->type === WishitemType::GIFT) {
             $this->handleGift($wishItemEntity);
         }
 

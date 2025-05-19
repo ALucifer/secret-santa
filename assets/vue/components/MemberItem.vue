@@ -3,7 +3,7 @@
     @mouseleave="showAction = false"
     @mouseover="showAction = true"
   >
-    <Tooltip v-if="!member.invitationAccepted" message="Le membre n'a pas encore accepté l'invitation">
+    <Tooltip v-if="!member.invitationAccepted && isOwner" message="Le membre n'a pas encore accepté l'invitation">
       <WarningIcon stroke="red" />
     </Tooltip>
     {{ member.email }}

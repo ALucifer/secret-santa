@@ -6,9 +6,8 @@
 
 <script setup lang="ts">
 import Routing from 'fos-router'
-import { ref } from "vue";
 
 const props = defineProps<{ routeName: string, parameters: any }>()
 
-const link = ref(Routing.generate(props.routeName, props.parameters))
+const link = Routing.generate(props.routeName, props.parameters, true)
 </script>

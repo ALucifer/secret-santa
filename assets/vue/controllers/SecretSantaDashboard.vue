@@ -14,7 +14,7 @@
       />
       <NewMember v-if="isOwner" @member:new="submit" />
     </div>
-    <Tooltip v-if="authenticatedUserMember" message="Ma liste de cadeau" class="absolute bottom-[25px] right-[25px] hover:cursor-pointer">
+    <Tooltip v-show="authenticatedUserMember" message="Ma liste de cadeau" class="absolute bottom-[25px] right-[25px] hover:cursor-pointer">
       <AppLink route-name="secret_santa_member_wishlist" :parameters="{ secretSanta: santaId, secretSantaMember: authenticatedUserMember.id }" >
         <DocumentTextIcon />
       </AppLink>
@@ -27,10 +27,10 @@ import NewMember from "@app/components/NewMember.vue";
 import { useCookie } from "@app/composables/useCookie";
 import MemberItem from "@app/components/MemberItem.vue";
 import { Member } from "@app/types";
-import Tooltip from "@app/components/Tooltip.vue";
 import DocumentTextIcon from "@app/icons/DocumentTextIcon.vue";
-import {computed, provide, ref} from "vue";
 import AppLink from "@app/components/global/AppLink.vue";
+import Tooltip from "@app/components/Tooltip.vue";
+import { computed, provide, ref } from "vue";
 
 const props = defineProps<{
   santaId: number,

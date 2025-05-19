@@ -7,7 +7,7 @@
       <slot></slot>
     </div>
     <teleport to="body">
-      <span v-if="showTooltip" class="tooltip" :style="style">{{ message }}</span>
+      <span v-show="showTooltip" class="tooltip" :style="style">{{ message }}</span>
     </teleport>
   </div>
 </template>

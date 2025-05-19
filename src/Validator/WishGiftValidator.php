@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class WishGiftValidator extends ConstraintValidator
 {
-
     public function validate(mixed $value, Constraint $constraint)
     {
         if (!$constraint instanceof WishGift) {

@@ -3,9 +3,13 @@
 namespace App\Security\Voters;
 
 use App\Entity\SecretSantaMember;
+use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+/**
+ * @extends Voter<string, SecretSantaMember>
+ */
 class MemberVoter extends Voter
 {
 
@@ -30,6 +34,12 @@ class MemberVoter extends Voter
      */
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
-        return $token->getUser()->getId() === $subject->getUser()->getId();
+        $user = $token->getUser();
+
+        if (!$user instanceof User) {
+            return false;
+        }
+
+        return $user->getId() === $subject->getUser()->getId();
     }
 }
