@@ -12,6 +12,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class WishMoneyValidator extends ConstraintValidator
 {
+    /**
+     * @param mixed $value
+     * @param Constraint $constraint
+     * @return void
+     */
     public function validate(mixed $value, Constraint $constraint)
     {
         if (!$constraint instanceof WishMoney) {
@@ -44,6 +49,11 @@ class WishMoneyValidator extends ConstraintValidator
         }
     }
 
+    /**
+     * @param ConstraintViolationListInterface $errors
+     * @param string|null $propertyPath
+     * @return void
+     */
     private function handleErrors(ConstraintViolationListInterface $errors, ?string $propertyPath = null): void
     {
         foreach ($errors as $error) {

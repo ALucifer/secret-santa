@@ -12,6 +12,9 @@ class AppExtension extends AbstractExtension
     ) {
     }
 
+    /**
+     * @return TwigFunction[]
+     */
     public function getFunctions()
     {
         return [
@@ -19,6 +22,10 @@ class AppExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * @param string $path
+     * @return string
+     */
     public function getSantaUrl(string $path): string
     {
       return $this->host . $path;

@@ -18,6 +18,10 @@ class MemberFixtures extends Fixture implements DependentFixtureInterface
     ) {
     }
 
+    /**
+     * @param ObjectManager $manager
+     * @return void
+     */
     public function load(ObjectManager $manager): void
     {
         $secrets = $this->secretSantaRepository->findAll();
@@ -39,6 +43,9 @@ class MemberFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
+    /**
+     * @return \class-string[]
+     */
     public function getDependencies(): array
     {
         return [

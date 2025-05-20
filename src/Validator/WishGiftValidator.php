@@ -11,6 +11,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class WishGiftValidator extends ConstraintValidator
 {
+    /**
+     * @param mixed $value
+     * @param Constraint $constraint
+     * @return void
+     */
     public function validate(mixed $value, Constraint $constraint)
     {
         if (!$constraint instanceof WishGift) {
@@ -37,6 +42,10 @@ class WishGiftValidator extends ConstraintValidator
         }
     }
 
+    /**
+     * @param ConstraintViolationListInterface $errors
+     * @return void
+     */
     private function handleErrors(ConstraintViolationListInterface $errors): void
     {
         foreach ($errors as $error) {

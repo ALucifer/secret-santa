@@ -95,3 +95,6 @@ phpcs:
 
 phpunit:
 	$(CCODE) phpunit
+
+phpmetrics:
+	$(CCODE) phpmetrics --report-html="./report" ./src

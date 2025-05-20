@@ -12,6 +12,10 @@ class UserFixtures extends Fixture
     public const DEFAULT_USER = 'default_user';
     public const CURRENT_USER = 'current_user';
 
+    /**
+     * @param ObjectManager $manager
+     * @return void
+     */
     public function load(ObjectManager $manager): void
     {
         $currentUser = new User();

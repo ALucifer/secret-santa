@@ -21,3 +21,4 @@ yarn-error.log
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
 graph.svg
+report/

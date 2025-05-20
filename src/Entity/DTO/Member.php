@@ -7,6 +7,11 @@ use LogicException;
 
 class Member
 {
+    /**
+     * @param int $id
+     * @param string $email
+     * @param bool $invitationAccepted
+     */
     public function __construct(
         public readonly int $id,
         public readonly string $email,
@@ -14,6 +19,10 @@ class Member
     ) {
     }
 
+    /**
+     * @param SecretSantaMember $member
+     * @return self
+     */
     public static function fromMember(SecretSantaMember $member): self
     {
         return new self(

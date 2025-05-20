@@ -12,6 +12,10 @@ use Random\Randomizer;
 
 class SecretSantaFixtures extends Fixture implements DependentFixtureInterface
 {
+    /**
+     * @param ObjectManager $manager
+     * @return void
+     */
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
@@ -35,6 +39,9 @@ class SecretSantaFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
+    /**
+     * @return \class-string[]
+     */
     public function getDependencies(): array
     {
         return [

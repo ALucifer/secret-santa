@@ -14,6 +14,12 @@ class AccountValidationMailer
     ) {
     }
 
+    /**
+     * @param User $user
+     * @param Token $token
+     * @return void
+     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
+     */
     public function sendAccountValidationMail(User $user, Token $token): void
     {
         $email = new TemplatedEmail();

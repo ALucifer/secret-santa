@@ -19,6 +19,12 @@ class NewMemberMailer
     ) {
     }
 
+    /**
+     * @param User $user
+     * @param SecretSanta $secretSanta
+     * @return void
+     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
+     */
     public function sendInvitation(User $user, SecretSanta $secretSanta): void
     {
         $email = new TemplatedEmail();

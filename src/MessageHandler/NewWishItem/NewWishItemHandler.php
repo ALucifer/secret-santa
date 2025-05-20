@@ -17,6 +17,12 @@ use Throwable;
 #[AsMessageHandler]
 class NewWishItemHandler
 {
+    /**
+     * @param WishitemMemberRepository $repository
+     * @param SecretSantaMemberRepository $memberRepository
+     * @param TaskRepository $taskRepository
+     * @param LoggerInterface $logger
+     */
     public function __construct(
         private WishitemMemberRepository $repository,
         private SecretSantaMemberRepository $memberRepository,
@@ -25,6 +31,10 @@ class NewWishItemHandler
     ) {
     }
 
+    /**
+     * @param NewWishItem $wishItem
+     * @return void
+     */
     public function __invoke(NewWishItem $wishItem): void
     {
         $this->logger->info(sprintf("Traitement de WishItem de type %s", $wishItem->wishItem()->type->value));
@@ -45,6 +55,11 @@ class NewWishItemHandler
         $this->updateTask($wishItem->taskId(), $wishItemEntity);
     }
 
+    /**
+     * @param int $taskId
+     * @param WishitemMember $wishItem
+     * @return void
+     */
     private function updateTask(int $taskId, WishitemMember $wishItem): void
     {
         $task = $this->taskRepository->find($taskId);
@@ -59,6 +74,10 @@ class NewWishItemHandler
         $this->taskRepository->update($task);
     }
 
+    /**
+     * @param WishitemMember $wishItemMember
+     * @return void
+     */
     private function handleGift(WishitemMember $wishItemMember): void
     {
         $client = HttpClient::create();
