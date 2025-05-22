@@ -36,7 +36,7 @@
 
 {% block form_errors %}
     {% if errors|length > 0 %}
-        <ul>
+        <ul class="flex flex-col gap-2 mb-2">
             {% for error in errors %}
                 <li class="text-red-900 text-xs">{{ error.message }}</li>
             {% endfor %}

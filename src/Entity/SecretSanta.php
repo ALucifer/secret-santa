@@ -8,6 +8,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SecretSantaRepository::class)]
 class SecretSanta
@@ -17,6 +18,11 @@ class SecretSanta
     #[ORM\Column]
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
+    #[
+        Assert\NotNull(message: 'Le titre doit être défini.'),
+        Assert\Length(min: 5, minMessage: 'Le titre dois faire au minimum 5 charactères.'),
+        Assert\NotBlank(message: 'Le titre ne dois pas être vide.'),
+    ]
     #[ORM\Column(type: Types::STRING, length: 60)]
     private string $label;
 

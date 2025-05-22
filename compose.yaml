@@ -81,8 +81,13 @@ services:
     ###< symfony/mailer ###
 
   cleancode:
-    image: jakzal/phpqa
+#    image: jakzal/phpqa
+    build:
+      context: docker/cleancode
+      dockerfile: ./Dockerfile
     container_name: secretsanta_cleancode
+    networks:
+      - secretSanta
     volumes:
       - .:/app
       - ./docker/cleancode/99-custom.ini:/usr/local/etc/php/conf.d/99-custom.ini:ro

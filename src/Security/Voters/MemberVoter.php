@@ -19,7 +19,7 @@ class MemberVoter extends Voter
             return false;
         }
 
-        if ($attribute != 'show') {
+        if ($attribute != 'SHOW') {
             return false;
         }
 

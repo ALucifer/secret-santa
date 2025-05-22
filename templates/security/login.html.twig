@@ -1,7 +1,7 @@
 {% extends 'security/index.html.twig' %}
 
 {% block content %}
-    <form action="{{ path('app_login') }}" method="post" class="flex flex-col gap-2">
+    <form action="{{ path('app_login') }}" method="post" class="flex flex-col gap-2" name="form_login">
         <input
             type="email"
             id="username"
@@ -18,9 +18,10 @@
             required
             placeholder="Mot de passe"
         />
+        <p>Mot de passe oublié ? Cliquez <a class="underline" href="{{ url('app_forgot_password') }}">ici</a></p>
 
         {% if error %}
-            <div class="text-red-900">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            <div class="text-red-900">Login/Mot de passe incorrect.</div>
         {% endif %}
 
 
@@ -33,5 +34,5 @@
 {% endblock %}
 
 {% block information %}
-<p class="text-center">Vous n'avez pas encore de compte ? <br>Créez en un <a href="{{ url('register') }}">ici</a></p>
+<p class="text-center">Vous n'avez pas encore de compte ? <br>Créez en un <a class="underline" href="{{ url('register') }}">ici</a></p>
 {% endblock %}

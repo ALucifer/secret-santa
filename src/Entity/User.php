@@ -14,7 +14,9 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\PasswordStrength;
 
 
 #[
@@ -33,7 +35,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
     #[ORM\Column(length: 180)]
-    #[NotBlank]
+    #[NotBlank(message: 'Email obligatoire.')]
     #[Email]
     private string $email;
 
@@ -47,6 +49,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private bool $isVerified = false;
 
     #[ORM\Column()]
+    #[NotBlank(message: 'Mot de passe obligatoire.')]
+    #[Length(min: 8, minMessage: 'Votre mot de passe doit faire au minimum 8 charactères.')]
+    #[PasswordStrength(message: 'Votre mot de passe à une sécurité trop faible.')]
     private string $password;
 
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]

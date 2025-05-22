@@ -45,8 +45,8 @@ class RegisterType extends AbstractType
                         'attr' => [
                             'placeholder' => 'Confirmer le mot de passe'
                         ]
-                    ]
-
+                    ],
+                    'invalid_message' => 'Votre confirmation de mot de passe doit correspondre à votre mot de passe.'
                 ]
             )
             ->add(

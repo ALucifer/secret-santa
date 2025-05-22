@@ -21,51 +21,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 #[IsGranted('ROLE_USER')]
 class SecretSantaController extends AbstractController
 {
-    #[Route('/secret-santa/new', name: 'secret_santa')]
-    public function create(
-        Request $request,
-        Security $security,
-        SecretSantaRepository $secretSantaRepository,
-        SecretSantaMemberRepository $secretSantaMemberRepository,
-    ): Response {
-        $form = $this->createForm(SecretSantaType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            /** @var SecretSanta $secretSanta */
-            $secretSanta = $form->getData();
-
-            $user = $security->getUser();
-
-            if (!$user instanceof User) {
-                throw new LogicException(sprintf('User must be an instance of %s.', User::class));
-            }
-
-            $secretSanta->setOwner($user);
-
-            $secretSanta = $secretSantaRepository->create($secretSanta);
-
-            if ($form['registerMe'] && $form['registerMe']->getData()) {
-                $secretSantaMemberRepository->addMember($secretSanta, $user);
-            }
-
-            return $this->redirectToRoute(
-                'secret_santa_view',
-                [
-                    'id' => $secretSanta->getId()
-                ]
-            );
-        }
-
-        return $this->render(
-            'secret-santa/create.html.twig',
-            [
-                'form' => $form->createView(),
-            ],
-        );
-    }
-
     #[Route('/secret-santa/{id}', name: 'secret_santa_view')]
+    #[IsGranted('SHOW', 'secretSanta')]
     public function view(
         SecretSanta $secretSanta,
     ): Response {
@@ -84,7 +41,7 @@ class SecretSantaController extends AbstractController
         options: ['expose' => true],
         host: '%app.host%'
     )]
-    #[IsGranted('show', 'secretSantaMember')]
+    #[IsGranted('SHOW', 'secretSantaMember')]
     public function memberList(
         SecretSanta $secretSanta,
         SecretSantaMember $secretSantaMember,

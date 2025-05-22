@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Attributes\AnonymousUser;
 use App\Entity\User;
 use App\Form\ChangePasswordType;
 use App\Form\RegisterType;
@@ -21,6 +22,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
     #[Route('/register', name: 'register', methods: ['GET', 'POST'])]
+    #[AnonymousUser(redirectRouteName: 'user_profile')]
     public function register(Request $request, UserRepository $userRepository): Response
     {
         $form = $this->createForm(RegisterType::class, new User());
@@ -45,6 +47,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/login', name: 'app_login')]
+    #[AnonymousUser(redirectRouteName: 'user_profile')]
     public function login(AuthenticationUtils $authenticationUtils, Security $security): Response
     {
         if ($security->getUser()) {
@@ -92,6 +95,7 @@ class SecurityController extends AbstractController
             $tokenRepository->invalidToken($token);
         } catch (NotFoundHttpException $e) {
             $logger->error($e->getMessage());
+            return new Response('test', Response::HTTP_UNAUTHORIZED);
         }
 
         return $this->render('security/verify-email.html.twig');
@@ -124,5 +128,10 @@ class SecurityController extends AbstractController
                 'form' => $form->createView(),
             ]
         );
+    }
+
+    #[Route('/forgot-password', name: 'app_forgot_password')]
+    public function forgotPassword(): Response {
+        return $this->render('security/forgot-password.html.twig');
     }
 }
