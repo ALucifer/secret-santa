@@ -17,7 +17,10 @@
     </head>
     <body>
         {{ render_esi(url('esi_menu')) }}
-        {% block body %}{% endblock %}
+        <div class="middle">
+            {% block breadcrumb %}{% endblock %}
+            {% block body %}{% endblock %}
+        </div>
         {% block modal %}{% endblock %}
     </body>
 </html>

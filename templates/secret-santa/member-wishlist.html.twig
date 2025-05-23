@@ -8,10 +8,21 @@
     {{ encore_entry_script_tags('app') }}
 {% endblock %}
 
+{% block breadcrumb %}
+    {%
+        set urls = [
+        { "label" : "Accueil", "url" : url('home') },
+        { "label" : "Profile", "url" : url('user_profile') },
+        { "label" : secretSanta.label, "url": url('secret_santa_view', { id: secretSanta.id } ) },
+        { "label" : 'wishlist' },
+    ]
+    %}
+    {% include 'include/breadcrumb.html.twig' with { items: urls } %}
+{% endblock %}
+
+
 {% block body %}
-    <div class="middle flex-col gap-2">
-        <div {{ vue_component('WishList', { items: whishItems }) }}></div>
-        <div {{ vue_component('NewWishItem', { memberId: member.id, wishCount: whishItems|length }) }}></div>
-    </div>
+    <div {{ vue_component('WishList', { items: whishItems }) }}></div>
+    <div {{ vue_component('NewWishItem', { memberId: member.id, wishCount: whishItems|length }) }}></div>
 {% endblock %}
 

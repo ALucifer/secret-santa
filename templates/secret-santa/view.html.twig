@@ -9,31 +9,39 @@
     {{ encore_entry_script_tags('app') }}
 {% endblock %}
 
+{% block breadcrumb %}
+    {%
+        set urls = [
+            { "label" : "Accueil", "url" : url('home') },
+            { "label" : "Profile", "url" : url('user_profile') },
+            { "label" : secretSanta.label },
+        ]
+    %}
+    {% include 'include/breadcrumb.html.twig' with { items: urls } %}
+{% endblock %}
 
 {% block body %}
-    <div class="middle">
-        <div class="application">
-            <div class="flex items-center">
-                <a href="{{ url('user_profile') }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-[24px]">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
-                    </svg>
-                </a>
-                <h3 class="mx-auto">{{ secretSanta.label }}</h3>
-            </div>
-            <div
-                class="application__content"
-                {{ vue_component(
-                    'SecretSantaDashboard',
-                    {
-                        santaId: secretSanta.id,
-                        isOwner: secretSanta.owner.id == app.user.id,
-                        authenticatedUserEmail: app.user.email,
-                        data: members
-                    }
-                ) }}
-            >
-            </div>
+    <div class="application">
+        <div class="flex items-center">
+            <a href="{{ url('user_profile') }}">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-[24px]">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
+                </svg>
+            </a>
+            <h3 class="mx-auto">{{ secretSanta.label }}</h3>
+        </div>
+        <div
+            class="application__content"
+            {{ vue_component(
+                'SecretSantaDashboard',
+                {
+                    santaId: secretSanta.id,
+                    isOwner: secretSanta.owner.id == app.user.id,
+                    authenticatedUserEmail: app.user.email,
+                    data: members
+                }
+            ) }}
+        >
         </div>
     </div>
 {% endblock %}

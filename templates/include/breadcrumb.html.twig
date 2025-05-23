@@ -1,0 +1,29 @@
+<nav class="flex text-gray-700 text-sm" aria-label="Breadcrumb">
+    <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        {% for item in items %}
+            <li class="inline-flex items-center">
+                {% if not loop.last %}
+                    <a href="{{ item.url }}" class="inline-flex items-center text-gray-500 hover:text-gray-700">
+                        {% if loop.first %}
+                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 2L2 10h3v6h4v-4h2v4h4v-6h3L10 2z" />
+                        </svg>
+                        {% else %}
+                            <svg class="w-4 h-4 text-gray-400 mx-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M7.05 4.05a1 1 0 011.414 0L13 8.586l-4.536 4.535a1 1 0 01-1.414-1.414L10.172 9 7.05 5.879a1 1 0 010-1.414z" />
+                            </svg>
+                        {% endif %}
+                        {{ item.label }}
+                    </a>
+                {% else %}
+                    <div class="flex items-center space-x-1">
+                        <svg class="w-4 h-4 text-gray-400 mx-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M7.05 4.05a1 1 0 011.414 0L13 8.586l-4.536 4.535a1 1 0 01-1.414-1.414L10.172 9 7.05 5.879a1 1 0 010-1.414z" />
+                        </svg>
+                        <span class="ml-1 text-gray-400">{{ item.label }}</span>
+                    </div>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ol>
+</nav>

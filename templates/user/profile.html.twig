@@ -10,42 +10,50 @@
     {{ encore_entry_script_tags('profile') }}
 {% endblock %}
 
+{% block breadcrumb %}
+    {%
+        set urls = [
+        { "label" : "Accueil", "url" : url('home') },
+        { "label" : "Profile" },
+    ]
+    %}
+    {% include 'include/breadcrumb.html.twig' with { items: urls } %}
+{% endblock %}
+
 {% block body %}
-    <div class="middle">
-        <div class="application application--bg-hidden">
-            <div class="flex absolute top-0 right-0" {{ vue_component('ProfileMenu') }}></div>
-            <div class="application__content {% if userItems|length <= 0 and invitedSecretSantas|length <= 0 %}middle{% endif %}">
-                {% if userItems.items|length <= 0 and invitedSecretSantas.items|length <= 0 %}
-                    <p>Vous n'avez actuellement pas de secret santa, créer le votre !</p>
-                {% else %}
-                    {% if userItems.items|length > 0 %}
-                        {% include('user/includes/secret-santa-list.html.twig') with { title: 'Vos secrets santa', items: userItems.items } %}
-                        {% if userItems.pages > 1 %}
-                            <div class="flex justify-center">
-                                {% include 'include/pagination.html.twig' with {
-                                    routeName: 'user_profile',
-                                    pages: userItems.pages,
-                                    currentPage: userItems.currentPage,
-                                    queryParam: userItems.queryParam,
-                                } %}
-                            </div>
-                        {% endif %}
-                    {% endif %}
-                    {% if invitedSecretSantas %}
-                        {% include('user/includes/secret-santa-list.html.twig') with { title: 'Ils t\'ont invité', items: invitedSecretSantas.items } %}
-                        {% if invitedSecretSantas.pages > 1 %}
-                            <div class="flex justify-center">
-                                {% include 'include/pagination.html.twig' with {
-                                    routeName: 'user_profile',
-                                    pages: invitedSecretSantas.pages,
-                                    currentPage: invitedSecretSantas.currentPage,
-                                    queryParam: invitedSecretSantas.queryParam,
-                                } %}
-                            </div>
-                        {% endif %}
+    <div class="application application--bg-hidden">
+        <div class="flex absolute top-0 right-0" {{ vue_component('ProfileMenu') }}></div>
+        <div class="application__content {% if userItems|length <= 0 and invitedSecretSantas|length <= 0 %}middle{% endif %}">
+            {% if userItems.items|length <= 0 and invitedSecretSantas.items|length <= 0 %}
+                <p>Vous n'avez actuellement pas de secret santa, créer le votre !</p>
+            {% else %}
+                {% if userItems.items|length > 0 %}
+                    {% include('user/includes/secret-santa-list.html.twig') with { title: 'Vos secrets santa', items: userItems.items } %}
+                    {% if userItems.pages > 1 %}
+                        <div class="flex justify-center">
+                            {% include 'include/pagination.html.twig' with {
+                                routeName: 'user_profile',
+                                pages: userItems.pages,
+                                currentPage: userItems.currentPage,
+                                queryParam: userItems.queryParam,
+                            } %}
+                        </div>
                     {% endif %}
                 {% endif %}
-            </div>
+                {% if invitedSecretSantas %}
+                    {% include('user/includes/secret-santa-list.html.twig') with { title: 'Ils t\'ont invité', items: invitedSecretSantas.items } %}
+                    {% if invitedSecretSantas.pages > 1 %}
+                        <div class="flex justify-center">
+                            {% include 'include/pagination.html.twig' with {
+                                routeName: 'user_profile',
+                                pages: invitedSecretSantas.pages,
+                                currentPage: invitedSecretSantas.currentPage,
+                                queryParam: invitedSecretSantas.queryParam,
+                            } %}
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
         </div>
     </div>
 {% endblock %}
