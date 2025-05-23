@@ -40,39 +40,6 @@ function deleteMember() {
 </script>
 
 <style scoped>
-.slide-left-enter-from {
-  transform: translateX(100%);
-}
-.slide-left-enter-active {
-  transition: transform 0.4s ease;
-}
-.slide-left-enter-to {
-  transform: translateX(0);
-}
-
-.slide-left-leave-from {
-  transform: translateX(0);
-}
-.slide-left-leave-active {
-  transition: transform 0.4s ease;
-}
-.slide-left-leave-to {
-  transform: translateX(100%);
-}
-
-/* transition hooks */
-.expand-enter-active, .expand-leave-active {
-  transition: all 0.3s ease;
-}
-.expand-enter-from, .expand-leave-to {
-  opacity: 0;
-  transform: scale(0.9);
-}
-.expand-enter-to, .expand-leave-from {
-  opacity: 1;
-  transform: scale(1);
-}
-
 /* transition classes */
 .slide-fade-enter-active {
   transition: all 0.5s ease;

@@ -14,7 +14,7 @@
       />
       <NewMember v-if="isOwner" @member:new="submit" />
     </div>
-    <Tooltip v-show="authenticatedUserMember" message="Ma liste de cadeau" class="absolute bottom-[25px] right-[25px] hover:cursor-pointer">
+    <Tooltip v-if="authenticatedUserMember" message="Ma liste de cadeau" class="absolute bottom-[25px] right-[25px] hover:cursor-pointer">
       <AppLink route-name="secret_santa_member_wishlist" :parameters="{ secretSanta: santaId, secretSantaMember: authenticatedUserMember.id }" >
         <DocumentTextIcon />
       </AppLink>
