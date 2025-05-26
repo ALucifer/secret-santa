@@ -36,6 +36,12 @@ class SecretSantaRepository extends ServiceEntityRepository
         return $secretSanta;
     }
 
+    public function update(SecretSanta $secretSanta): void
+    {
+        $this->getEntityManager()->persist($secretSanta);
+        $this->getEntityManager()->flush();
+    }
+
     public function findInvitedUserInSecretSanta(User $user, PaginationDTO $paginationDTO): Pagination
     {
         $query = $this

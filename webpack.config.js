@@ -13,7 +13,8 @@ Encore
     .addEntry('menu', './assets/menu.js')
     .addEntries({
         security: './assets/security.js',
-        profile: './assets/profile.js'
+        profile: './assets/profile.js',
+        modal: './assets/modal.js'
     })
     .splitEntryChunks()
     .enableVueLoader(() => {}, { version: 3 })

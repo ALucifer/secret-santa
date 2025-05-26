@@ -1,0 +1,18 @@
+<div class="middle">
+    <p>
+        Bonjour {{ authenticatedUserEmail }}, vous participez actuellement au secret santa <b>{{ secretSanta.label }}</b>, vous avez tiré {{ santaEmail }}.
+        Voici un lien vers la liste de souhait établis par {{ santaEmail }}
+    </p>
+</div>
+
+{% apply inline_css %}
+    <style>
+        .middle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+{% endapply %}

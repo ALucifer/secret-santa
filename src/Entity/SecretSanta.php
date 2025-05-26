@@ -36,6 +36,9 @@ class SecretSanta
     #[ORM\OneToMany(targetEntity: SecretSantaMember::class, mappedBy: 'secretSanta', cascade: ['persist', 'remove'])]
     private Collection $members;
 
+    #[ORM\Column(type: Types::STRING)]
+    private string $state;
+
     public function __construct()
     {
         $this->members = new ArrayCollection();
@@ -93,5 +96,24 @@ class SecretSanta
         }
 
         return $this;
+    }
+
+    public function getState(): string
+    {
+        return $this->state;
+    }
+
+    public function setState(string $state): void
+    {
+        $this->state = $state;
+    }
+
+    public function canBeStarted(): bool
+    {
+        return $this->members->filter(
+            function (SecretSantaMember $member) {
+                return $member->getState() === 'approved';
+            }
+        )->count() >= 3;
     }
 }

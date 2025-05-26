@@ -72,7 +72,7 @@ services:
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
     networks:
-      - frontend
+      - secretSanta
     labels:
       - traefik.enable=true
       - traefik.http.routers.secret-mailer.rule=Host(`mailer.secretsanta.com`)

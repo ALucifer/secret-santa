@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */
 class SecretSantaVoter extends Voter
 {
-    private const ATTRIBUTE_ALLOWED = ['SHOW'];
+    private const ATTRIBUTE_ALLOWED = ['SHOW', 'START'];
 
     protected function supports(string $attribute, mixed $subject): bool
     {
@@ -29,6 +29,15 @@ class SecretSantaVoter extends Voter
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
+        return match ($attribute) {
+            'SHOW' => $this->handleShow($subject, $token),
+            'START' => $this->handleStart($subject, $token),
+            default => false,
+        };
+    }
+
+    private function handleShow(mixed $subject, TokenInterface $token): bool
+    {
         $userAuthenticated = $token->getUser();
 
         $isOwner = $userAuthenticated->getId() === $subject->getOwner()->getId();
@@ -43,5 +52,17 @@ class SecretSantaVoter extends Voter
 
 
         return $isOwner || $member->count() > 0;
+    }
+
+    /**
+     * @param SecretSanta $subject
+     * @param TokenInterface $token
+     * @return bool
+     */
+    private function handleStart(mixed $subject, TokenInterface $token): bool
+    {
+        $userAuthenticated = $token->getUser();
+
+        return $userAuthenticated->getId() === $subject->getOwner()->getId();
     }
 }

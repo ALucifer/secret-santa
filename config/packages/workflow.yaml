@@ -16,3 +16,22 @@ framework:
                     from: wait_approval
                     to: approved
 
+        secret_workflow:
+            type: 'state_machine'
+            supports:
+                - App\Entity\SecretSanta
+            initial_marking: standby
+            marking_store:
+                type: 'method'
+                property: 'state'
+            places:
+                - standby
+                - started
+                - finish
+            transitions:
+                to_started:
+                    from: standby
+                    to: started
+                to_finished:
+                    from: started
+                    to: finished

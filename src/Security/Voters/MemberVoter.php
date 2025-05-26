@@ -40,6 +40,19 @@ class MemberVoter extends Voter
             return false;
         }
 
-        return $user->getId() === $subject->getUser()->getId();
+        $isSanta = $subject
+            ->getSecretSanta()
+            ->getMembers()
+            ->filter(
+                function (SecretSantaMember $member) use ($user, $subject) {
+                    if (!$member->getSanta()) {
+                        return false;
+                    }
+
+                    return $user->getId() === $member->getUser()->getId() && $member->getSanta()->getId() === $subject->getId();
+                })
+        ->first();
+
+        return $user->getId() === $subject->getUser()->getId() || $isSanta;
     }
 }

@@ -31,6 +31,10 @@ class SecretSantaMember
     #[ORM\OneToMany(targetEntity: WishitemMember::class, mappedBy: 'member')]
     private Collection $wishItems;
 
+    #[ORM\OneToOne(targetEntity: SecretSantaMember::class)]
+    #[ORM\JoinColumn(name: 'santa_id', referencedColumnName: 'id')]
+    private SecretSantaMember|null $santa = null;
+
     public function __construct()
     {
         $this->state = 'wait_approval';
@@ -112,5 +116,13 @@ class SecretSantaMember
         $this->wishItems = $wishItems;
     }
 
+    public function getSanta(): ?SecretSantaMember
+    {
+        return $this->santa;
+    }
 
+    public function setSanta(?SecretSantaMember $santa): void
+    {
+        $this->santa = $santa;
+    }
 }

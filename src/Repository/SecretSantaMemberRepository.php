@@ -36,6 +36,12 @@ class SecretSantaMemberRepository extends ServiceEntityRepository
         return $member;
     }
 
+    public function update(SecretSantaMember $secretSantaMember): void
+    {
+        $this->getEntityManager()->persist($secretSantaMember);
+        $this->getEntityManager()->flush();
+    }
+
     public function addMember(SecretSanta $secretSanta, User $user): void
     {
         $member = new SecretSantaMember();

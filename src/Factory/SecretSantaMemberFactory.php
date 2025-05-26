@@ -2,13 +2,13 @@
 
 namespace App\Factory;
 
-use App\Entity\SecretSanta;
+use App\Entity\SecretSantaMember;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
- * @extends PersistentProxyObjectFactory<SecretSanta>
+ * @extends PersistentProxyObjectFactory<SecretSantaMember>
  */
-final class SecretSantaFactory extends PersistentProxyObjectFactory
+final class SecretSantaMemberFactory extends PersistentProxyObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -21,7 +21,7 @@ final class SecretSantaFactory extends PersistentProxyObjectFactory
 
     public static function class(): string
     {
-        return SecretSanta::class;
+        return SecretSantaMember::class;
     }
 
     /**
@@ -32,9 +32,10 @@ final class SecretSantaFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'label' => self::faker()->text(60),
-            'owner' => UserFactory::new(),
-            'state' => self::faker()->randomElement(['standby', 'started'])
+            'state' => self::faker()->text(),
+            'user' => UserFactory::new(),
+            'secretSanta' => SecretSantaFactory::new(),
+            'santa' => null,
         ];
     }
 
@@ -44,7 +45,7 @@ final class SecretSantaFactory extends PersistentProxyObjectFactory
     protected function initialize(): static
     {
         return $this
-            // ->afterInstantiate(function(SecretSanta $secretSanta): void {})
+            // ->afterInstantiate(function(SecretSantaMember $secretSantaMember): void {})
         ;
     }
 }
