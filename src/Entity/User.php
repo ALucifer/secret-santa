@@ -64,9 +64,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Ignore]
     private Collection $secretSantas;
 
+    /**
+     * @var Collection<int, Token> $tokens
+     */
+    #[ORM\OneToMany(targetEntity: Token::class, mappedBy: 'user')]
+    private Collection $tokens;
+
     public function __construct()
     {
         $this->secretSantas = new ArrayCollection();
+        $this->tokens = new ArrayCollection();
         $this->roles = [Role::USER->value];
     }
 
@@ -172,6 +179,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->secretSantas;
     }
+
+    /**
+     * @return Collection<int, Token>
+     */
+    public function getTokens(): Collection
+    {
+        return $this->tokens;
+    }
+
 
     public function isInvited(): bool
     {

@@ -2,8 +2,11 @@
 
 namespace App\Tests\Controller;
 
+use App\Factory\TokenFactory;
 use App\Factory\UserFactory;
 use App\Security\Role;
+use DateInterval;
+use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -146,9 +149,6 @@ class SecurityControllerTest extends WebTestCase
         $this->assertEquals($forgotLink, $link->link()->getUri());
     }
 
-    /**
-     * @group test
-     */
     public function testShouldRenderInvalidPasswordWhenEmailIsNotVerified()
     {
         UserFactory::createOne([
@@ -184,6 +184,59 @@ class SecurityControllerTest extends WebTestCase
                 $input->attributes->getNamedItem('class')->nodeValue
             );
         }
+    }
+
+    public function testShouldRender404WhenTokenIsNotSet()
+    {
+        $this->client->request('GET', '/email/verify');
+
+        $this->assertResponseStatusCodeSame(404);
+    }
+
+    public function testShouldRedirectAndIndicateInvalidLink()
+    {
+        $token = TokenFactory::createOne([
+            'token' => bin2hex(random_bytes(16)),
+            'validUntil' => (new DateTimeImmutable('now'))->sub(new DateInterval('PT1H')),
+            'user' => UserFactory::createOne()
+        ]);
+
+        $this->client->request('GET', '/email/verify/' . $token->getToken());
+
+        $this->assertResponseRedirects('/login');
+
+        $crawler = $this->client->followRedirect();
+
+        $items = $crawler->filterXPath('//p[@role="status"][@aria-atomic="true"]');
+
+        $this->assertEquals(
+            'Lien invalide.',
+            $items->first()->text()
+
+        );
+    }
+
+    public function testShouldRedirectionAndIndicateUserCanLogNow()
+    {
+        $token = TokenFactory::createOne([
+            'token' => bin2hex(random_bytes(16)),
+            'validUntil' => (new DateTimeImmutable('now'))->add(new DateInterval('PT1H')),
+            'user' => UserFactory::createOne()
+        ]);
+
+        $this->client->request('GET', '/email/verify/' . $token->getToken());
+
+        $this->assertResponseRedirects('/login');
+
+        $crawler = $this->client->followRedirect();
+
+        $items = $crawler->filterXPath('//p[@role="status"][@aria-atomic="true"]');
+
+        $this->assertEquals(
+            'Votre email à bien été vérifié, vous pouvez maintenant vous connecter.',
+            $items->first()->text()
+
+        );
     }
 
     public function urlsRedirectedToProfile(): array

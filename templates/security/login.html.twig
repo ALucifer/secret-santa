@@ -1,5 +1,19 @@
 {% extends 'security/index.html.twig' %}
 
+{% block flash_messages %}
+    <div>
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <p
+                    class="w-full rounded-sm p-2 text-center bg-teal-300 text-slate-500"
+                    role="status"
+                    aria-atomic="true"
+                >{{ message }}</p>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endblock %}
+
 {% block content %}
     <form action="{{ path('app_login') }}" method="post" class="flex flex-col gap-2" name="form_login">
         <input

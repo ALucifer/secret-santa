@@ -1,3 +1,51 @@
-<div>
-    <a href="{{ santa_url(path('app_security_verifyemail', { 'token': token.token })) }}">Valider mon compte !</a>
+<div class="middle">
+    <div class="card">
+        <h1>Bienvenue !</h1>
+        <p>Afin de valider votre compte et d'ainsi avoir accès à notre site, merci de bien vouloir valider votre compte</p>
+        <p>Le lien suivant vous permettra de valider votre compte et de vous connecter par la suite.</p>
+        <a href="{{ santa_url(path('app_security_verifyemail', { 'token': token.token })) }}" class="button-validation">Valider mon compte</a>
+    </div>
 </div>
+
+{% apply inline_css %}
+    <style>
+        .middle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 800px;
+            min-height: 250px;
+            padding: 16px;
+            border-radius: 4px;
+            background-color: oklch(0.969 0.015 12.422);
+        }
+
+        .title {
+            font-size: 36px;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        i {
+            font-size: 12px;
+        }
+
+        .button-validation {
+            padding: 16px;
+            border-radius: 4px;
+            background: oklch(64.8% 0.2 131.684);
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+{% endapply %}

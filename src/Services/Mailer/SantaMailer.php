@@ -14,19 +14,22 @@ class SantaMailer
     ) {
     }
 
-    public function send(string $authenticatedUserEmail, SecretSanta $secretSanta, string $santaEmail): void
+    public function send(string $userEmail, SecretSanta $secretSanta, string $santaEmail): void
     {
         $email = new TemplatedEmail();
 
         $email
             ->from('no-reply@secret-santa.com')
-            ->to($authenticatedUserEmail)
-            ->subject('Votre santa vient d\'arriver !')
+            ->to($userEmail)
+            ->subject(
+                sprintf('🎁 Secret Santa %s - C\'est parti ! 🎄', $secretSanta->getLabel())
+            )
             ->htmlTemplate('emails/santa.html.twig')
             ->context([
-                'authenticatedUserEmail' => $authenticatedUserEmail,
-                'secretSanta' => $secretSanta,
+                'userEmail' => $userEmail,
+                'planner' => $secretSanta->getOwner(),
                 'santaEmail' => $santaEmail,
+                'secretSantaId' => $secretSanta->getId(),
             ]);
 
         try {

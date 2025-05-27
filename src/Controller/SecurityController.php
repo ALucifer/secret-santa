@@ -73,19 +73,18 @@ class SecurityController extends AbstractController
         throw new LogicException('This code should never be reached');
     }
 
-    #[Route('/email/verify', name: 'app_security_verifyemail')]
+    #[Route('/email/verify/{token}', name: 'app_security_verifyemail')]
     public function verifyEmail(
-        Request $request,
+        string $token,
         TokenRepository $tokenRepository,
         UserRepository $userRepository,
-        LoggerInterface $logger,
     ): Response {
         try {
-            $token = $tokenRepository->findOneByOrFail(['token' => $request->get('token')]);
+            $token = $tokenRepository->findOneByOrFail(['token' => $token]);
 
             if (!$token->isValid()) {
-                $this->addFlash('error', 'Invalid token');
-                return $this->redirectToRoute('home');
+                $this->addFlash('error', 'Lien invalide.');
+                return $this->redirectToRoute('app_login');
             }
 
             $user = $userRepository->findOneByOrFail(['id' => $token->getUser()->getId()]);
@@ -93,12 +92,13 @@ class SecurityController extends AbstractController
 
             $userRepository->update($user);
             $tokenRepository->invalidToken($token);
+
+            $this->addFlash('success', 'Votre email à bien été vérifié, vous pouvez maintenant vous connecter.');
         } catch (NotFoundHttpException $e) {
-            $logger->error($e->getMessage());
-            return new Response('test', Response::HTTP_UNAUTHORIZED);
+            $this->addFlash('error', 'Lien invalide.');
         }
 
-        return $this->render('security/verify-email.html.twig');
+        return $this->redirectToRoute('app_login');
     }
 
     #[Route('/members/change-password', name: 'app_members_change_password')]
