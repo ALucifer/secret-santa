@@ -33,6 +33,16 @@ class TokenRepository extends ServiceEntityRepository
         return $token;
     }
 
+    public function createForgotPasswordToken(User $user): Token
+    {
+        $token = Token::createForgotpasswordToken($user);
+
+        $this->getEntityManager()->persist($token);
+        $this->getEntityManager()->flush();
+
+        return $token;
+    }
+
     public function invalidToken(Token $token): void
     {
         $token->setValidUntil(new DateTimeImmutable('now'));

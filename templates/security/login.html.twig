@@ -2,13 +2,21 @@
 
 {% block flash_messages %}
     <div>
-        {% for label, messages in app.flashes %}
+        {% for label, messages in app.flashes(['success', 'error']) %}
             {% for message in messages %}
-                <p
-                    class="w-full rounded-sm p-2 text-center bg-teal-300 text-slate-500"
-                    role="status"
-                    aria-atomic="true"
-                >{{ message }}</p>
+                {% if label == 'success' %}
+                    <p
+                        class="w-full rounded-sm p-2 text-center bg-teal-300 text-slate-500"
+                        role="status"
+                        aria-atomic="true"
+                    >{{ message }}</p>
+                {% elseif label == 'error' %}
+                    <p
+                        class="w-full rounded-sm p-2 text-center bg-red-300 text-red-50"
+                        role="status"
+                        aria-atomic="true"
+                    >{{ message }}</p>
+                {% endif %}
             {% endfor %}
         {% endfor %}
     </div>

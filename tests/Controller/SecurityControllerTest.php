@@ -239,6 +239,56 @@ class SecurityControllerTest extends WebTestCase
         );
     }
 
+    /**
+     * @dataProvider formForgotPasswordErrors
+     */
+    public function testShouldHandlerErrorsInForgotpassword(array $formValues, array $errorsExpected)
+    {
+        $crawler = $this->client->request('GET', '/forgot-password');
+
+        $form = $crawler->filterXPath('//form')->first()->form();
+
+        $form->setValues($formValues);
+
+        $crawler = $this->client->submit($form);
+
+        $errors = $crawler->filterXPath('//form//li');
+
+        foreach ($errors as $error) {
+            $this->assertContains($error->textContent, $errorsExpected);
+        }
+    }
+
+    public function testShouldNotSendEmailWhenUserDoesNotExist()
+    {
+        $crawler = $this->client->request('GET', '/forgot-password');
+
+        $form = $crawler->filterXPath('//form')->first()->form();
+
+        $form->setValues(['forgot_password[email]' => 'user2@mail.com']);
+
+        $this->client->submit($form);
+
+        $this->assertEmailCount(0);
+    }
+
+    public function testShouldSendEmailWhenUserExists()
+    {
+        $crawler = $this->client->request('GET', '/forgot-password');
+
+        $form = $crawler->filterXPath('//form')->first()->form();
+
+        $form->setValues(['forgot_password[email]' => 'user@mail.com']);
+
+        $this->client->submit($form);
+
+        $this->assertEmailCount(1);
+
+        $email = $this->getMailerMessage();
+
+        $this->stringContains('Mot de passe perdu ?', $email->toString());
+    }
+
     public function urlsRedirectedToProfile(): array
     {
         return [
@@ -287,6 +337,18 @@ class SecurityControllerTest extends WebTestCase
                     'Votre mot de passe à une sécurité trop faible.'
                 ]
             ],
+        ];
+    }
+
+    public function formForgotPasswordErrors(): array
+    {
+        return [
+            [
+                [], ['Votre email ne peut pas être vide.']
+            ],
+            [
+                ['forgot_password[email]' => 'test'], ['Email invalide.']
+            ]
         ];
     }
 }

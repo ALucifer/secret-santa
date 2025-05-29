@@ -1,12 +1,12 @@
 {% extends 'security/index.html.twig' %}
 
 {% block content %}
-    <div class="flex flex-col">
-        <h2 class="text-center">Inscription</h2>
-        {{ form(form, { 'attr': { 'class': 'w-full' }}) }}
+    <div class="flex flex-col gap-2">
+        <h2 class="text-center text-3xl font-bold text-gray-800 mb-6">Inscription</h2>
+        {{ form(form) }}
     </div>
 {% endblock %}
 
 {% block information %}
-<p class="text-center">Si vous avez déjà un compte, connectez-vous <a href="{{ url('app_login') }}">ici</a></p>
+<p class="text-center">Si vous avez déjà un compte, connectez-vous <a class="underline" href="{{ url('app_login') }}">ici</a></p>
 {% endblock %}

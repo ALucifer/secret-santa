@@ -39,6 +39,12 @@ class ChangePasswordType extends AbstractType
             ->add(
                 'submit',
                 SubmitType::class,
+                [
+                    'label' => 'Envoyer',
+                    'attr' => [
+                        'class' => 'bg-teal-500 text-gray-500 hover:bg-teal-300 w-full',
+                    ],
+                ]
             );
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TokenRepository;
+use DateInterval;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -29,6 +30,17 @@ class Token
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'tokens')]
     private User $user;
+
+    public static function createForgotpasswordToken(User $user): self
+    {
+        $self = new self();
+
+        $self->user = $user;
+        $self->validUntil = (new DateTimeImmutable('now'))->add(DateInterval::createFromDateString('30 minutes'));
+        $self->token = bin2hex(random_bytes(32));
+
+        return $self;
+    }
 
     #[ORM\PrePersist]
     public function onPrePersist(): void
