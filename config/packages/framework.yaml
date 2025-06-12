@@ -4,6 +4,8 @@ framework:
     esi: true
     # Note that the session will be started ONLY if you read or write from it.
     session: true
+    router:
+        default_uri: '%env(HOST)%'
 
     #esi: true
     #fragments: true

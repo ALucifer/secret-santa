@@ -27,6 +27,8 @@ class NonAuthenticatedOnlyListener
             return;
         }
 
+        $event->
+
         /** @var AnonymousUser $attribute */
         $attribute = $attributes[0];
 

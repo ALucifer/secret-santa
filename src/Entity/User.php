@@ -70,6 +70,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Token::class, mappedBy: 'user')]
     private Collection $tokens;
 
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $lastActivity;
+
+    #[ORM\Column(type: Types::STRING, length: 50, nullable: true)]
+    private ?string $pseudo;
+
     public function __construct()
     {
         $this->secretSantas = new ArrayCollection();
@@ -198,5 +204,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->isInvited = $isInvited;
         return $this;
+    }
+
+    public function getLastActivity(): \DateTimeImmutable
+    {
+        return $this->lastActivity;
+    }
+
+    public function setLastActivity(\DateTimeImmutable $lastActivity): void
+    {
+        $this->lastActivity = $lastActivity;
+    }
+
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(?string $pseudo): void
+    {
+        $this->pseudo = $pseudo;
     }
 }
