@@ -80,6 +80,7 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
      * @param User $user
      * @param array{password: string} $data
      * @return User
+     * @todo: remove this
      */
     public function verifyMember(User $user, array $data): User
     {

@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Attributes\BypassUserRequirements;
+use App\Attributes\PrefixPagination;
 use App\Entity\SecretSanta;
 use App\Entity\User;
 use App\Form\SecretSantaType;
+use App\Form\UserRequirementsType;
 use App\Repository\SecretSantaMemberRepository;
 use App\Repository\SecretSantaRepository;
-use App\Services\Request\Attribute\PrefixPagination;
 use App\Services\Request\DTO\PaginationDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -64,6 +66,20 @@ class UserController extends AbstractController
                 'userItems' => $secretSantaRepository->findPaginatedUserSecretsSanta($user, $paginationUserDTO),
                 'form' => $form->createView(),
             ],
+        );
+    }
+
+    #[Route('/profile/complete', name: 'profile_incomplete')]
+    #[IsGranted('ROLE_USER')]
+    #[BypassUserRequirements]
+    public function incompletProfile(): Response
+    {
+        $form = $this->createForm(UserRequirementsType::class);
+        return $this->render(
+            'user/incomplet.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
         );
     }
 }

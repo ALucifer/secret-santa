@@ -14,7 +14,8 @@ Encore
     .addEntries({
         security: './assets/security.js',
         profile: './assets/profile.js',
-        modal: './assets/modal.js'
+        modal: './assets/modal.js',
+        'profile-incomplet': './assets/profile-incomplet.js',
     })
     .splitEntryChunks()
     .enableVueLoader(() => {}, { version: 3 })

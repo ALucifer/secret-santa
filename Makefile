@@ -77,6 +77,8 @@ migrate:
 migration:
 	$(SYMFONY) make:migration
 
+fixtures:
+	$(SYMFONY) doctrine:fixtures:load
 
 ## —— Clean code ——————————————————————————————————————————————————————————————
 

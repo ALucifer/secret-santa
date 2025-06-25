@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('profile-incomplet') }}
+{% endblock %}
+
+{% block body %}
+    <div class="split-container">
+        <img src="{{ asset('build/images/home.762418e2.jpeg') }}" alt="" class="split-image">
+        <div class="test">a</div>
+        <div class="test">a</div>
+    </div>
+{% endblock %}
+

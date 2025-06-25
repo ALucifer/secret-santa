@@ -132,6 +132,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($this->roles);
     }
 
+    public function hasRole(Role $role): bool
+    {
+        return in_array($role->value, $this->roles, true);
+    }
+
     /**
      * @param Role[] $roles
      */

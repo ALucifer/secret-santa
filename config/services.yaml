@@ -17,4 +17,3 @@ services:
     App\Services\Mailer\NewMemberMailer:
         arguments:
             $loginLinkHandler: '@security.authenticator.login_link_handler.main'
-
