@@ -2,7 +2,7 @@
 
 namespace App\Entity\DTO;
 
-use App\Entity\SecretSantaMember;
+use App\Entity\Member;
 
 class Members implements \JsonSerializable
 {
@@ -15,13 +15,13 @@ class Members implements \JsonSerializable
     }
 
     /**
-     * @param SecretSantaMember[] $members
+     * @param Member[] $members
      */
     public static function fromEntity(array $members): self
     {
         return new self(
             array_map(
-                fn (SecretSantaMember $member) => Member::fromMember($member),
+                fn (Member $member) => Member::fromMember($member),
                 $members,
             ),
         );

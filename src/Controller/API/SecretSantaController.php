@@ -5,7 +5,7 @@ namespace App\Controller\API;
 use App\Entity\DTO\Member;
 use App\Entity\DTO\Members;
 use App\Entity\SecretSanta;
-use App\Entity\SecretSantaMember;
+use App\Entity\Member as EntityMember;
 use App\Repository\SecretSantaMemberRepository;
 use App\Repository\UserRepository;
 use App\Services\Request\DTO\NewMemberDTO;
@@ -49,7 +49,7 @@ class SecretSantaController extends AbstractController
     #[Route('/secret-santa/{secretId}/delete/member/{secretSantaMember}', name: 'deleteMember', methods: ['DELETE', 'GET'])]
     public function deleteMember(
         SecretSanta $secretId,
-        SecretSantaMember $secretSantaMember,
+        EntityMember $secretSantaMember,
         SecretSantaMemberRepository $secretSantaMemberRepository,
         LoggerInterface $logger,
     ): JsonResponse {
@@ -71,7 +71,7 @@ class SecretSantaController extends AbstractController
     public function members(SecretSanta $secretSanta): JsonResponse
     {
         $members = $secretSanta->getMembers()->toArray();
-        Assertion::allIsInstanceOf($members, SecretSantaMember::class);
+        Assertion::allIsInstanceOf($members, Member::class);
 
         return $this->json(Members::fromEntity($members)); // @phpmd ignore StaticAccess
     }

@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\DTO\Members;
 use App\Entity\SecretSanta;
-use App\Entity\SecretSantaMember;
+use App\Entity\Member;
 use App\MessageHandler\SantaHandler\Santa;
 use App\Repository\SecretSantaMemberRepository;
 use App\Repository\SecretSantaRepository;
@@ -30,7 +30,7 @@ class SecretSantaController extends AbstractController
         $members = $secretSanta
             ->getMembers()
             ->filter(
-                function (SecretSantaMember $member) use ($secretSanta) {
+                function (Member $member) use ($secretSanta) {
                     if ($secretSanta->getState() !== 'started') {
                         return true;
                     }
@@ -55,8 +55,8 @@ class SecretSantaController extends AbstractController
     )]
     #[IsGranted('SHOW', 'secretSantaMember')]
     public function memberList(
-        SecretSanta $secretSanta,
-        SecretSantaMember $secretSantaMember,
+        SecretSanta         $secretSanta,
+        Member              $secretSantaMember,
         NormalizerInterface $normalizer
     ): Response {
         return $this->render(
@@ -86,7 +86,7 @@ class SecretSantaController extends AbstractController
         try {
             $secret_workflow->apply($secretSanta, 'to_started');
 
-            $members = $secretSanta->getMembers()->filter(function (SecretSantaMember $member) { return $member->getState() === 'approved'; })->getValues();
+            $members = $secretSanta->getMembers()->filter(function (Member $member) { return $member->getState() === 'approved'; })->getValues();
             $shuffled = $randomizeCollection->randomizeCollection($members);
 
             foreach ($members as $key => $member) {

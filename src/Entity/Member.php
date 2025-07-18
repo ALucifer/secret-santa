@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SecretSantaMemberRepository::class)]
-class SecretSantaMember
+class Member
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -31,9 +31,9 @@ class SecretSantaMember
     #[ORM\OneToMany(targetEntity: WishitemMember::class, mappedBy: 'member')]
     private Collection $wishItems;
 
-    #[ORM\OneToOne(targetEntity: SecretSantaMember::class)]
+    #[ORM\OneToOne(targetEntity: Member::class)]
     #[ORM\JoinColumn(name: 'santa_id', referencedColumnName: 'id')]
-    private SecretSantaMember|null $santa = null;
+    private Member|null $santa = null;
 
     public function __construct()
     {
@@ -51,7 +51,7 @@ class SecretSantaMember
         return $this->secretSanta;
     }
 
-    public function setSecretSanta(SecretSanta $secretSanta): SecretSantaMember
+    public function setSecretSanta(SecretSanta $secretSanta): Member
     {
         $this->secretSanta = $secretSanta;
         return $this;
@@ -62,7 +62,7 @@ class SecretSantaMember
         return $this->user;
     }
 
-    public function setUser(User $user): SecretSantaMember
+    public function setUser(User $user): Member
     {
         $this->user = $user;
         return $this;
@@ -73,7 +73,7 @@ class SecretSantaMember
         return $this->state;
     }
 
-    public function setState(string $state): SecretSantaMember
+    public function setState(string $state): Member
     {
         $this->state = $state;
 
@@ -88,7 +88,7 @@ class SecretSantaMember
         return $this->wishItems;
     }
 
-    public function addWishItem(WishitemMember $wishItem): SecretSantaMember
+    public function addWishItem(WishitemMember $wishItem): Member
     {
         if (!$this->wishItems->contains($wishItem)) {
             $this->wishItems->add($wishItem);
@@ -98,7 +98,7 @@ class SecretSantaMember
         return $this;
     }
 
-    public function removeWishItem(WishitemMember $wishItem): SecretSantaMember
+    public function removeWishItem(WishitemMember $wishItem): Member
     {
         if ($this->wishItems->contains($wishItem)) {
             $this->wishItems->removeElement($wishItem);
@@ -116,12 +116,12 @@ class SecretSantaMember
         $this->wishItems = $wishItems;
     }
 
-    public function getSanta(): ?SecretSantaMember
+    public function getSanta(): ?Member
     {
         return $this->santa;
     }
 
-    public function setSanta(?SecretSantaMember $santa): void
+    public function setSanta(?Member $santa): void
     {
         $this->santa = $santa;
     }

@@ -3,7 +3,7 @@
 namespace App\Controller\API;
 
 use App\Controller\AbstractMessengerController;
-use App\Entity\SecretSantaMember;
+use App\Entity\Member;
 use App\Entity\State;
 use App\Entity\Task;
 use App\Entity\WishitemMember;
@@ -48,7 +48,7 @@ class WishController extends AbstractMessengerController
     )]
     #[IsGranted('NEW', 'secretSantaMember')]
     public function newWish(
-        SecretSantaMember $secretSantaMember,
+        Member $secretSantaMember,
         #[ValueResolver(WishValueResolver::class)] NewWishItem $newWishItem,
         TaskRepository $taskRepository,
     ): JsonResponse {

@@ -2,19 +2,19 @@
 
 namespace App\Security\Voters;
 
-use App\Entity\SecretSantaMember;
+use App\Entity\Member;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use RuntimeException;
 
 /**
- * @extends Voter<string, SecretSantaMember>
+ * @extends Voter<string, Member>
  */
 class WishVoter extends Voter
 {
     protected function supports(string $attribute, mixed $subject): bool
     {
-        if (!$subject instanceof SecretSantaMember) {
+        if (!$subject instanceof Member) {
             return false;
         }
 
@@ -27,7 +27,7 @@ class WishVoter extends Voter
 
     /**
      * @param string $attribute
-     * @param SecretSantaMember $subject
+     * @param Member $subject
      * @param TokenInterface $token
      * @return bool
      */
@@ -43,7 +43,7 @@ class WishVoter extends Voter
         };
     }
 
-    private function handleNew(SecretSantaMember $subject): bool
+    private function handleNew(Member $subject): bool
     {
         return $subject->getWishItems()->count() < 10;
     }

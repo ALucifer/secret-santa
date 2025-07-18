@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\SecretSanta;
-use App\Entity\SecretSantaMember;
+use App\Entity\Member;
 use App\Entity\User;
 use App\MessageHandler\InvationHandler\InvitationNotification;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -11,7 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
- * @extends ServiceEntityRepository<SecretSantaMember>
+ * @extends ServiceEntityRepository<Member>
  */
 class SecretSantaMemberRepository extends ServiceEntityRepository
 {
@@ -19,12 +19,12 @@ class SecretSantaMemberRepository extends ServiceEntityRepository
         ManagerRegistry $registry,
         private MessageBusInterface $messageBus,
     ) {
-        parent::__construct($registry, SecretSantaMember::class);
+        parent::__construct($registry, Member::class);
     }
 
-    public function create(SecretSanta $secretSanta, User $user): SecretSantaMember
+    public function create(SecretSanta $secretSanta, User $user): Member
     {
-        $member = new SecretSantaMember();
+        $member = new Member();
         $member
             ->setSecretSanta($secretSanta)
             ->setUser($user);
@@ -36,7 +36,7 @@ class SecretSantaMemberRepository extends ServiceEntityRepository
         return $member;
     }
 
-    public function update(SecretSantaMember $secretSantaMember): void
+    public function update(Member $secretSantaMember): void
     {
         $this->getEntityManager()->persist($secretSantaMember);
         $this->getEntityManager()->flush();
@@ -44,7 +44,7 @@ class SecretSantaMemberRepository extends ServiceEntityRepository
 
     public function addMember(SecretSanta $secretSanta, User $user): void
     {
-        $member = new SecretSantaMember();
+        $member = new Member();
         $member
             ->setSecretSanta($secretSanta)
             ->setUser($user);
@@ -55,7 +55,7 @@ class SecretSantaMemberRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
-    public function delete(SecretSantaMember $secretSantaMember): void
+    public function delete(Member $secretSantaMember): void
     {
         $this->getEntityManager()->remove($secretSantaMember);
         $this->getEntityManager()->flush();

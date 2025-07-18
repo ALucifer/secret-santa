@@ -2,20 +2,20 @@
 
 namespace App\Security\Voters;
 
-use App\Entity\SecretSantaMember;
+use App\Entity\Member;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * @extends Voter<string, SecretSantaMember>
+ * @extends Voter<string, Member>
  */
 class MemberVoter extends Voter
 {
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        if (!$subject instanceof SecretSantaMember) {
+        if (!$subject instanceof Member) {
             return false;
         }
 
@@ -28,7 +28,7 @@ class MemberVoter extends Voter
 
     /**
      * @param string $attribute
-     * @param SecretSantaMember $subject
+     * @param Member $subject
      * @param TokenInterface $token
      * @return bool
      */
@@ -44,7 +44,7 @@ class MemberVoter extends Voter
             ->getSecretSanta()
             ->getMembers()
             ->filter(
-                function (SecretSantaMember $member) use ($user, $subject) {
+                function (Member $member) use ($user, $subject) {
                     if (!$member->getSanta()) {
                         return false;
                     }
