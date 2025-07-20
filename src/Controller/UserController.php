@@ -33,7 +33,7 @@ class UserController extends AbstractController
     ): Response {
         $user = $security->getUser();
 
-        if (!$user || !$user instanceof User) {
+        if (!$user instanceof User) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -63,8 +63,8 @@ class UserController extends AbstractController
         return $this->render(
             'user/profile.html.twig',
             [
-                'invitedSecretSantas' => $secretSantaRepository->findInvitedUserInSecretSanta($user, $paginationInvitedDTO),
                 'userItems' => $secretSantaRepository->findPaginatedUserSecretsSanta($user, $paginationUserDTO),
+                'invitedSecretSantas' => $secretSantaRepository->findPaginatedUserInvitedInSecretSanta($user, $paginationInvitedDTO),
                 'form' => $form->createView(),
             ],
         );

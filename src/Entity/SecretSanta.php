@@ -33,7 +33,11 @@ class SecretSanta
     /**
      * @var Collection<int, SecretSantaMember> $members
      */
-    #[ORM\OneToMany(targetEntity: SecretSantaMember::class, mappedBy: 'secretSanta', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(
+        targetEntity: SecretSantaMember::class,
+        mappedBy: 'secretSanta',
+        cascade: ['persist', 'remove'],
+    )]
     private Collection $members;
 
     #[ORM\Column(type: Types::STRING)]

@@ -16,7 +16,7 @@ class SecretSantaMember
     #[ORM\Column]
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
-    #[ORM\ManyToOne(targetEntity: SecretSanta::class)]
+    #[ORM\ManyToOne(targetEntity: SecretSanta::class, inversedBy: 'members')]
     private SecretSanta $secretSanta;
 
     #[ORM\ManyToOne(targetEntity: User::class)]

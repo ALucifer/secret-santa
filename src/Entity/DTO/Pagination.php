@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Pagination;
+namespace App\Entity\DTO;
 
 final readonly class Pagination
 {
