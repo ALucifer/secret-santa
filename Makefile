@@ -46,10 +46,10 @@ watch:
 dev:
 	$(NODE) npm run dev
 
-js-routing:
+js-routing: ## Generate JS routing
 	$(SYMFONY) fos:js-routing:dump --format=json --target=assets/js/routes.json
 
-node-bash:
+node-bash: ## Connect to node container
 	$(NODE) bash
 
 messenger:
