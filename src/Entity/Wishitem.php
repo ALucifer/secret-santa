@@ -13,7 +13,7 @@ use App\Services\Request\DTO\NewWishItem;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: WishitemMemberRepository::class)]
-class WishitemMember
+class Wishitem
 {
     #[
         ORM\Id,

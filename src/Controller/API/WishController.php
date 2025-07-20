@@ -6,7 +6,7 @@ use App\Controller\AbstractMessengerController;
 use App\Entity\Member;
 use App\Entity\State;
 use App\Entity\Task;
-use App\Entity\WishitemMember;
+use App\Entity\Wishitem;
 use App\MessageHandler\NewWishItem\NewWishItem as NewWishItemMessage;
 use App\Repository\TaskRepository;
 use App\Repository\WishitemMemberRepository;
@@ -27,7 +27,7 @@ class WishController extends AbstractMessengerController
     #[IsGranted("DELETE", "wishitemMember")]
     #[Route(path: '/wish/{id}', name: 'delete_wish', options: ['expose' => true], methods: ['DELETE'])]
     public function delete(
-        WishitemMember $wishitemMember,
+        Wishitem                 $wishitemMember,
         WishitemMemberRepository $wishitemMemberRepository,
     ): Response {
         try {

@@ -3,19 +3,19 @@
 namespace App\Security\Voters;
 
 use App\Entity\User;
-use App\Entity\WishitemMember;
+use App\Entity\Wishitem;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * @extends Voter<string, WishitemMember>
+ * @extends Voter<string, Wishitem>
  */
 class WishItemVoter extends Voter
 {
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        if (!$subject instanceof WishitemMember) {
+        if (!$subject instanceof Wishitem) {
             return false;
         }
 
