@@ -24,14 +24,26 @@ class UserRequirementsType extends AbstractType
         if ($requirements->has(UserRequirementsEnumFlag::PSEUDO)) {
             $builder->add(
                 'pseudo',
-                TextType::class
+                TextType::class,
+                [
+                    'label' => false,
+                    'attr' => [
+                        'placeholder' => 'Pseudo',
+                    ]
+                ]
             );
         }
 
         if ($requirements->has(UserRequirementsEnumFlag::PASSWORD)) {
             $builder->add(
                 'password',
-                PasswordType::class, []
+                PasswordType::class,
+                [
+                    'label' => false,
+                    'attr' => [
+                        'placeholder' => 'Mot de passe',
+                    ]
+                ]
             );
         }
     }

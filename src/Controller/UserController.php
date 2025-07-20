@@ -10,6 +10,7 @@ use App\Form\SecretSantaType;
 use App\Form\UserRequirementsType;
 use App\Repository\SecretSantaMemberRepository;
 use App\Repository\SecretSantaRepository;
+use App\Repository\UserRepository;
 use App\Services\Request\DTO\PaginationDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -72,9 +73,28 @@ class UserController extends AbstractController
     #[Route('/profile/complete', name: 'profile_incomplete')]
     #[IsGranted('ROLE_USER')]
     #[BypassUserRequirements]
-    public function incompletProfile(): Response
+    public function incompletProfile(Request $request, UserRepository $userRepository): Response
     {
         $form = $this->createForm(UserRequirementsType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            $data = $form->getData();
+
+            if (!$user instanceof User) {
+                throw new \LogicException('User must be authenticated.');
+            }
+
+            $user->setPseudo($data['pseudo'] ?? $user->getPseudo());
+            $user->setPassword($data['password'] ?? $user->getPassword());
+
+            $userRepository->updateAuthenticatedUser($user);
+
+            return $this->redirectToRoute('user_profile');
+        }
+
         return $this->render(
             'user/incomplet.html.twig',
             [

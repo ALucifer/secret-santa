@@ -11,7 +11,7 @@ class NewMemberRedirectStrategy implements UserRequirementsRedirectStrategyInter
 {
     public function supports(User $user): bool
     {
-        return $user->isInvited() && $user->isVerified();
+        return $user->isInvited() && $user->isVerified() && !$user->getPseudo();
     }
 
     public function getFlag(): array|UserRequirementsEnumFlag
