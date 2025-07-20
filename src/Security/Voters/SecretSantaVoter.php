@@ -3,7 +3,7 @@
 namespace App\Security\Voters;
 
 use App\Entity\SecretSanta;
-use App\Entity\SecretSantaMember;
+use App\Entity\Member;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -45,7 +45,7 @@ class SecretSantaVoter extends Voter
         $member = $subject
             ->getMembers()
             ->filter(
-                function (SecretSantaMember $member) use ($userAuthenticated) {
+                function (Member $member) use ($userAuthenticated) {
                     return $member->getUser()->getId() === $userAuthenticated->getId();
                 });
 

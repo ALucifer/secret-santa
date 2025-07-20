@@ -3,7 +3,7 @@ framework:
         secret_invitation:
             type: 'state_machine'
             supports:
-                - App\Entity\SecretSantaMember
+                - App\Entity\Member
             initial_marking: wait_approval
             marking_store:
                 type: 'method'

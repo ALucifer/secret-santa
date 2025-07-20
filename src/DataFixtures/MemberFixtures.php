@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\SecretSantaMember;
+use App\Entity\Member;
 use App\Repository\SecretSantaRepository;
 use App\Repository\UserRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -33,7 +33,7 @@ class MemberFixtures extends Fixture implements DependentFixtureInterface
             $keys = $random->pickArrayKeys($users, $random->getInt(1, count($users)));
 
             foreach ($keys as $key) {
-                $member = new SecretSantaMember();
+                $member = new Member();
                 $member->setUser($users[$key])->setSecretSanta($secret);
 
                 $manager->persist($member);

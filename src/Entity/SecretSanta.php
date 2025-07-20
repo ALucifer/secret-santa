@@ -31,10 +31,10 @@ class SecretSanta
     private User $owner;
 
     /**
-     * @var Collection<int, SecretSantaMember> $members
+     * @var Collection<int, Member> $members
      */
     #[ORM\OneToMany(
-        targetEntity: SecretSantaMember::class,
+        targetEntity: Member::class,
         mappedBy: 'secretSanta',
         cascade: ['persist', 'remove'],
     )]
@@ -76,7 +76,7 @@ class SecretSanta
     }
 
     /**
-     * @return Collection<int, SecretSantaMember>
+     * @return Collection<int, Member>
      */
     public function getMembers(): Collection
     {
@@ -84,7 +84,7 @@ class SecretSanta
     }
 
     /**
-     * @param Collection<int, SecretSantaMember> $members
+     * @param Collection<int, Member> $members
      * @return $this
      */
     public function setMembers(Collection $members): SecretSanta
@@ -93,7 +93,7 @@ class SecretSanta
         return $this;
     }
 
-    public function addMember(SecretSantaMember $member): SecretSanta
+    public function addMember(Member $member): SecretSanta
     {
         if (!$this->members->contains($member)) {
             $this->members->add($member);
@@ -115,7 +115,7 @@ class SecretSanta
     public function canBeStarted(): bool
     {
         return $this->members->filter(
-            function (SecretSantaMember $member) {
+            function (Member $member) {
                 return $member->getState() === 'approved';
             }
         )->count() >= 3;

@@ -34,10 +34,10 @@ class WishitemMember
     #[Groups(['default'])]
     private array $data;
 
-    #[ORM\ManyToOne(targetEntity: SecretSantaMember::class, inversedBy: 'wishItems')]
-    private SecretSantaMember $member;
+    #[ORM\ManyToOne(targetEntity: Member::class, inversedBy: 'wishItems')]
+    private Member $member;
 
-    public static function fromRequestDTOAndMember(NewWishItem $newWishItem, SecretSantaMember $member): self
+    public static function fromRequestDTOAndMember(NewWishItem $newWishItem, Member $member): self
     {
         $wishItem = new self();
 
@@ -97,12 +97,12 @@ class WishitemMember
         return $this;
     }
 
-    public function getMember(): SecretSantaMember
+    public function getMember(): Member
     {
         return $this->member;
     }
 
-    public function setMember(SecretSantaMember $member): self
+    public function setMember(Member $member): self
     {
         $this->member = $member;
 

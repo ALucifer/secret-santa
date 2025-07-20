@@ -2,11 +2,11 @@
 
 namespace App\Factory;
 
-use App\Entity\SecretSantaMember;
+use App\Entity\Member;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
- * @extends PersistentProxyObjectFactory<SecretSantaMember>
+ * @extends PersistentProxyObjectFactory<Member>
  */
 final class SecretSantaMemberFactory extends PersistentProxyObjectFactory
 {
@@ -21,7 +21,7 @@ final class SecretSantaMemberFactory extends PersistentProxyObjectFactory
 
     public static function class(): string
     {
-        return SecretSantaMember::class;
+        return Member::class;
     }
 
     /**
