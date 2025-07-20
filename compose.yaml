@@ -11,11 +11,18 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=frontend
-      - traefik.http.routers.secretsanta.rule=Host(`dev.secret-santa.com`)
-      - traefik.http.routers.secretsanta.entrypoints=web
+      - traefik.http.routers.secret-santa-front.rule=Host(`dev.secret-santa.com`)
+      - traefik.http.routers.secret-santa-front.entrypoints=web
+      - traefik.http.services.secret-santa-front.loadbalancer.server.port=80
     volumes:
       - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
       - ./:/var/www/html:ro,cached
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
   php:
     container_name: secretsanta_php
     build:
@@ -72,6 +79,7 @@ services:
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
     networks:
+      - frontend
       - secretSanta
     labels:
       - traefik.enable=true

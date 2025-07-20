@@ -31,6 +31,7 @@ class SecretSantaFixtures extends Fixture implements DependentFixtureInterface
                         : $this->getReference(UserFixtures::CURRENT_USER, User::class)
                 )
                 ->setLabel($faker->word())
+                ->setState($faker->randomElement(['standby', 'started']))
             ;
 
             $manager->persist($secretSanta);

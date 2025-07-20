@@ -22,7 +22,7 @@ use Symfony\Component\Workflow\WorkflowInterface;
 #[IsGranted('ROLE_USER')]
 class SecretSantaController extends AbstractController
 {
-    #[Route('/secret-santa/{id}', name: 'secret_santa_view')]
+    #[Route('/secret-santa/{id}', name: 'secret_santa_view', options: ['expose' => true])]
     #[IsGranted('SHOW', 'secretSanta')]
     public function view(
         SecretSanta $secretSanta,
@@ -37,7 +37,6 @@ class SecretSantaController extends AbstractController
 
                     return $member->getState() === 'approved';
                 });
-
 
         return $this->render(
             'secret-santa/view.html.twig',

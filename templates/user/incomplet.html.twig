@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('profile-incomplet') }}
+{% endblock %}
+
+{% block body %}
+    <div class="split-container">
+        <div>
+            <img src="{{ asset('build/images/home.762418e2.jpeg') }}" alt="" class="split-image">
+            <div class="incomplete_profile incomplete_profile__form">
+                {% set label = 'Information requis.' %}
+                {% if 2 < (form|length) %}
+                    {% set label ='Informations requissent.' %}
+                {% endif %}
+                <h2>{{ label }}</h2>
+                {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <input
+                        type="submit"
+                        class="inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs bg-teal-600 hover:bg-teal-500 cursor-pointer"
+                        value="Modifier"
+                    >
+                {{ form_end(form) }}
+            </div>
+        </div>
+        <div>
+            <div class="incomplete_profile incomplete_profile__informations">
+                <p class="text-xl leading-relaxed tracking-wide text-gray-800">
+                    Les informations suivantes sont à remplir pour pouvoir accéder à votre profile et aux différentes fonctionnalitées.
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

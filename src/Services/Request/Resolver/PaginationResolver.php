@@ -2,7 +2,7 @@
 
 namespace App\Services\Request\Resolver;
 
-use App\Services\Request\Attribute\PrefixPagination;
+use App\Attributes\PrefixPagination;
 use App\Services\Request\DTO\PaginationDTO;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;

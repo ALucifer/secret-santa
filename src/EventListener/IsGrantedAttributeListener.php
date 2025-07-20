@@ -2,38 +2,46 @@
 
 namespace App\EventListener;
 
-use App\Attributes\AnonymousUser;
+use App\Entity\User;
+use App\Services\UserRequirements\UserRequirementsHandler;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[AsEventListener(event: KernelEvents::CONTROLLER_ARGUMENTS, method: 'onKernelControllerArguments')]
-class NonAuthenticatedOnlyListener
+class IsGrantedAttributeListener
 {
     public function __construct(
         private Security $security,
+        private UserRequirementsHandler $userRequirementsHandler,
         private RouterInterface $router,
     ) {
     }
 
-    public function onKernelControllerArguments(ControllerArgumentsEvent $event)
+    public function onKernelControllerArguments(ControllerArgumentsEvent $event): void
     {
-        $attributes = $event->getAttributes(AnonymousUser::class);
+        $attributes = $event->getAttributes(IsGranted::class);
 
-        if ($attributes === []) {
+        if ([] === $attributes) {
             return;
         }
 
-        /** @var AnonymousUser $attribute */
-        $attribute = $attributes[0];
+        $user = $this->security->getUser();
 
-        if ($this->security->getUser()) {
+        if (!$user instanceof User) {
+            return;
+        }
+
+        $requirements = $this->userRequirementsHandler->handle();
+
+        if ($requirements->getRaw()) {
             $event->setController(
                 fn () => new RedirectResponse(
-                    $this->router->generate($attribute->redirectRouteName)
+                    $this->router->generate('profile_incomplete'),
                 )
             );
         }

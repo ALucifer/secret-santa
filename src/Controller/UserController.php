@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Attributes\BypassUserRequirements;
+use App\Attributes\PrefixPagination;
 use App\Entity\SecretSanta;
 use App\Entity\User;
 use App\Form\SecretSantaType;
+use App\Form\UserRequirementsType;
 use App\Repository\SecretSantaMemberRepository;
 use App\Repository\SecretSantaRepository;
-use App\Services\Request\Attribute\PrefixPagination;
+use App\Repository\UserRepository;
 use App\Services\Request\DTO\PaginationDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -30,7 +33,7 @@ class UserController extends AbstractController
     ): Response {
         $user = $security->getUser();
 
-        if (!$user || !$user instanceof User) {
+        if (!$user instanceof User) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -60,10 +63,43 @@ class UserController extends AbstractController
         return $this->render(
             'user/profile.html.twig',
             [
-                'invitedSecretSantas' => $secretSantaRepository->findInvitedUserInSecretSanta($user, $paginationInvitedDTO),
                 'userItems' => $secretSantaRepository->findPaginatedUserSecretsSanta($user, $paginationUserDTO),
+                'invitedSecretSantas' => $secretSantaRepository->findPaginatedUserInvitedInSecretSanta($user, $paginationInvitedDTO),
                 'form' => $form->createView(),
             ],
+        );
+    }
+
+    #[Route('/profile/complete', name: 'profile_incomplete')]
+    #[IsGranted('ROLE_USER')]
+    #[BypassUserRequirements]
+    public function incompletProfile(Request $request, UserRepository $userRepository): Response
+    {
+        $form = $this->createForm(UserRequirementsType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            $data = $form->getData();
+
+            if (!$user instanceof User) {
+                throw new \LogicException('User must be authenticated.');
+            }
+
+            $user->setPseudo($data['pseudo'] ?? $user->getPseudo());
+            $user->setPassword($data['password'] ?? $user->getPassword());
+
+            $userRepository->updateAuthenticatedUser($user);
+
+            return $this->redirectToRoute('user_profile');
+        }
+
+        return $this->render(
+            'user/incomplet.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
         );
     }
 }

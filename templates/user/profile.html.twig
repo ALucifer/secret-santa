@@ -28,7 +28,7 @@
                 <p>Vous n'avez actuellement pas de secret santa, créer le votre !</p>
             {% else %}
                 {% if userItems.items|length > 0 %}
-                    {% include('user/includes/secret-santa-list.html.twig') with { title: 'Vos secrets santa', items: userItems.items } %}
+                    <div {{ vue_component('SecretSantaList', { title: 'Vos secrets santa', items: userItems.items }) }}></div>
                     {% if userItems.pages > 1 %}
                         <div class="flex justify-center">
                             {% include 'include/pagination.html.twig' with {
@@ -36,12 +36,13 @@
                                 pages: userItems.pages,
                                 currentPage: userItems.currentPage,
                                 queryParam: userItems.queryParam,
+                                allowedParam: invitedSecretSantas.queryParam
                             } %}
                         </div>
                     {% endif %}
                 {% endif %}
                 {% if invitedSecretSantas %}
-                    {% include('user/includes/secret-santa-list.html.twig') with { title: 'Ils t\'ont invité', items: invitedSecretSantas.items } %}
+                    <div {{ vue_component('SecretSantaList', { title: 'Ils t\'ont invité', items: invitedSecretSantas.items }) }}></div>
                     {% if invitedSecretSantas.pages > 1 %}
                         <div class="flex justify-center">
                             {% include 'include/pagination.html.twig' with {
@@ -49,6 +50,7 @@
                                 pages: invitedSecretSantas.pages,
                                 currentPage: invitedSecretSantas.currentPage,
                                 queryParam: invitedSecretSantas.queryParam,
+                                allowedParam: userItems.queryParam
                             } %}
                         </div>
                     {% endif %}

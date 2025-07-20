@@ -1,0 +1,46 @@
+.split-container {
+  position: relative;
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  height: 100%;
+
+  .incomplete_profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    width: 500px;
+    height: 250px;
+
+    &__form {
+      background-color: white;
+      gap: 4px;
+
+      > form {
+        width: 90%;
+      }
+    }
+
+    &__informations {
+      background-color: #53ABAC;
+      text-align: center;
+    }
+  }
+}
+
+.split-image {
+  background-size: cover; /* Remplit le conteneur sans distorsion */
+  background-position: center; /* Centre l’image */
+  background-repeat: no-repeat; /* Empêche la répétition */
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  clip-path: polygon(0 0, 55% 0, 45% 100%, 0% 100%);
+}
