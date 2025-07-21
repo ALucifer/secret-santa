@@ -6,7 +6,7 @@
         {% set cssState = 'border-1 border-red-300 bg-red-50 text-red-900' %}
     {% endif %}
 
-    {%- set widget_class = widget_class|default(cssState) ~ ' text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' -%}
+    {%- set widget_class = widget_class|default(cssState) ~ ' text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5' -%}
     {{- parent() -}}
 {%- endblock widget_attributes -%}
 

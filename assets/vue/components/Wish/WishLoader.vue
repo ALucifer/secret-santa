@@ -6,26 +6,26 @@
     <template #content>
       <template v-if="type === 'GIFT'">
         <div class="flex items-center w-full">
-          <div class="h-2.5 bg-neutral-400 rounded-full dark:bg-neutral-600 w-32"></div>
-          <div class="h-2.5 ms-2 bg-neutral-500 rounded-full dark:bg-neutral-500 w-24"></div>
-          <div class="h-2.5 ms-2 bg-neutral-500 rounded-full dark:bg-neutral-500 w-full"></div>
+          <div class="h-2.5 bg-neutral-400 rounded-full w-32"></div>
+          <div class="h-2.5 ms-2 bg-neutral-500 rounded-full w-24"></div>
+          <div class="h-2.5 ms-2 bg-neutral-500 rounded-full w-full"></div>
         </div>
         <div class="flex justify-end">
-          <div class="h-2.5 bg-neutral-400 rounded-full dark:bg-neutral-600 w-8"></div>
+          <div class="h-2.5 bg-neutral-400 rounded-full w-8"></div>
         </div>
       </template>
       <template v-else-if="type === 'MONEY'">
         <p>De l'argent :</p>
         <div class="flex-1 flex items-center justify-center font-semibold font-stretch-expanded text-3xl">
-          <div class="h-2.5 bg-neutral-400 rounded-full dark:bg-neutral-600 w-8"></div>
+          <div class="h-2.5 bg-neutral-400 rounded-full w-8"></div>
         </div>
       </template>
       <template v-else-if="type ==='EVENT'">
         <div class="flex items-center w-full">
-          <div class="h-2.5 bg-neutral-400 rounded-full dark:bg-neutral-600 w-32"></div>
+          <div class="h-2.5 bg-neutral-400 rounded-full w-32"></div>
         </div>
         <p class="flex-1 flex">
-          le :<span class="flex-1 flex items-center justify-center"><p class="h-2.5 bg-neutral-400 rounded-full dark:bg-neutral-600 w-32"></p></span>
+          le :<span class="flex-1 flex items-center justify-center"><p class="h-2.5 bg-neutral-400 rounded-full w-32"></p></span>
         </p>
       </template>
     </template>
