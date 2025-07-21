@@ -37,9 +37,9 @@ function openModal() {
 }
 
 const vClickOutside = {
-  mounted: (el) => {
+  mounted: (el: HTMLElement) => {
     document.addEventListener('click', (element) => {
-      if (!el.contains(element.target) && showMenu.value) {
+      if (!el.contains(element.target as Node) && showMenu.value) {
         showMenu.value = false
       }
     })
