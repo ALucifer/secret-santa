@@ -2,7 +2,7 @@
 
 namespace App\Entity\DTO;
 
-use App\Entity\Member;
+use App\Entity\Member as EntityMember;
 
 class Members implements \JsonSerializable
 {
@@ -21,7 +21,7 @@ class Members implements \JsonSerializable
     {
         return new self(
             array_map(
-                fn (Member $member) => Member::fromMember($member),
+                fn (EntityMember $member) => Member::fromMember($member),
                 $members,
             ),
         );

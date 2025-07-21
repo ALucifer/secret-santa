@@ -110,11 +110,12 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
         }
     }
 
-    public function updateAuthenticatedUser(User $user): void
+    public function updateAuthenticatedUser(User $user, bool $updatePassword): void
     {
-        $password = $this->passwordHasher->hashPassword($user, $user->getPassword());
-
-        $user->setPassword($password);
+        if ($updatePassword) {
+            $password = $this->passwordHasher->hashPassword($user, $user->getPassword());
+            $user->setPassword($password);
+        }
 
         $this->update($user);
 

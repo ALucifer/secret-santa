@@ -90,7 +90,7 @@ class UserController extends AbstractController
             $user->setPseudo($data['pseudo'] ?? $user->getPseudo());
             $user->setPassword($data['password'] ?? $user->getPassword());
 
-            $userRepository->updateAuthenticatedUser($user);
+            $userRepository->updateAuthenticatedUser($user, isset($data['password']));
 
             return $this->redirectToRoute('user_profile');
         }
