@@ -2,21 +2,21 @@
 
 namespace App\Repository;
 
-use App\Entity\WishitemMember;
+use App\Entity\Wishitem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<WishitemMember>
+ * @extends ServiceEntityRepository<Wishitem>
  */
 class WishitemMemberRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, WishitemMember::class);
+        parent::__construct($registry, Wishitem::class);
     }
 
-    public function save(WishitemMember $wishitemMember): WishitemMember
+    public function save(Wishitem $wishitemMember): Wishitem
     {
         $this->getEntityManager()->persist($wishitemMember);
         $this->getEntityManager()->flush();
@@ -24,7 +24,7 @@ class WishitemMemberRepository extends ServiceEntityRepository
         return $wishitemMember;
     }
 
-    public function delete(WishitemMember $wishitemMember): void
+    public function delete(Wishitem $wishitemMember): void
     {
         $this->getEntityManager()->remove($wishitemMember);
         $this->getEntityManager()->flush();

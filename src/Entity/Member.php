@@ -26,9 +26,9 @@ class Member
     private string $state;
 
     /**
-     * @var Collection<int, WishitemMember> $wishItems
+     * @var Collection<int, Wishitem> $wishItems
      */
-    #[ORM\OneToMany(targetEntity: WishitemMember::class, mappedBy: 'member')]
+    #[ORM\OneToMany(targetEntity: Wishitem::class, mappedBy: 'member')]
     private Collection $wishItems;
 
     #[ORM\OneToOne(targetEntity: Member::class)]
@@ -81,14 +81,14 @@ class Member
     }
 
     /**
-     * @return Collection<int, WishitemMember>
+     * @return Collection<int, Wishitem>
      */
     public function getWishItems(): Collection
     {
         return $this->wishItems;
     }
 
-    public function addWishItem(WishitemMember $wishItem): Member
+    public function addWishItem(Wishitem $wishItem): Member
     {
         if (!$this->wishItems->contains($wishItem)) {
             $this->wishItems->add($wishItem);
@@ -98,7 +98,7 @@ class Member
         return $this;
     }
 
-    public function removeWishItem(WishitemMember $wishItem): Member
+    public function removeWishItem(Wishitem $wishItem): Member
     {
         if ($this->wishItems->contains($wishItem)) {
             $this->wishItems->removeElement($wishItem);
@@ -108,7 +108,7 @@ class Member
     }
 
     /**
-     * @param Collection<int, WishitemMember> $wishItems
+     * @param Collection<int, Wishitem> $wishItems
      * @return void
      */
     public function setWishItems(Collection $wishItems): void

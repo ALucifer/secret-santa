@@ -2,7 +2,7 @@
 namespace App\MessageHandler\NewWishItem;
 
 use App\Entity\State;
-use App\Entity\WishitemMember;
+use App\Entity\Wishitem;
 use App\Entity\WishitemType;
 use App\Repository\SecretSantaMemberRepository;
 use App\Repository\TaskRepository;
@@ -44,7 +44,7 @@ class NewWishItemHandler
             throw new NotFoundHttpException();
         }
 
-        $wishItemEntity = WishitemMember::fromRequestDTOAndMember($wishItem->wishItem(), $member);
+        $wishItemEntity = Wishitem::fromRequestDTOAndMember($wishItem->wishItem(), $member);
 
         if ($wishItem->wishItem()->type === WishitemType::GIFT) {
             $this->handleGift($wishItemEntity);
@@ -57,10 +57,10 @@ class NewWishItemHandler
 
     /**
      * @param int $taskId
-     * @param WishitemMember $wishItem
+     * @param Wishitem $wishItem
      * @return void
      */
-    private function updateTask(int $taskId, WishitemMember $wishItem): void
+    private function updateTask(int $taskId, Wishitem $wishItem): void
     {
         $task = $this->taskRepository->find($taskId);
 
@@ -75,10 +75,10 @@ class NewWishItemHandler
     }
 
     /**
-     * @param WishitemMember $wishItemMember
+     * @param Wishitem $wishItemMember
      * @return void
      */
-    private function handleGift(WishitemMember $wishItemMember): void
+    private function handleGift(Wishitem $wishItemMember): void
     {
         $client = HttpClient::create();
 
