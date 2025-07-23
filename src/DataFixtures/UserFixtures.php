@@ -29,7 +29,7 @@ class UserFixtures extends Fixture
 
         $random = new Randomizer();
 
-        for ($i = 0; $i < 15; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $user = new User();
             $user
                 ->setEmail("user{$i}@mail.com")

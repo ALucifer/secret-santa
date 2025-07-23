@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SecretSantaRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class SecretSanta
 {
     #[ORM\Id]
@@ -40,12 +41,20 @@ class SecretSanta
     )]
     private Collection $members;
 
-    #[ORM\Column(type: Types::STRING)]
-    private string $state;
+    #[ORM\Column(type: Types::STRING, enumType: SecretSantaState::class)]
+    private SecretSantaState $state;
 
     public function __construct()
     {
         $this->members = new ArrayCollection();
+    }
+
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        if (!$this->id) {
+            $this->state = SecretSantaState::STANDBY;
+        }
     }
 
     public function getId(): ?int

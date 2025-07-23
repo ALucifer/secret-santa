@@ -19,7 +19,7 @@ final class PaginateSecretSantaTransformer
                 return new SecretSantaWithTotalMembers(
                     id: $item['id'],
                     label: $item['label'],
-                    state: $item['state'],
+                    state: $item['state']->value,
                     totalMembers: $item['total'],
                 );
             },

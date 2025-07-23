@@ -21,7 +21,7 @@ class SecretSantaFixtures extends Fixture implements DependentFixtureInterface
         $faker = Factory::create('fr_FR');
         $random = new Randomizer();
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 15; $i++) {
 
             $secretSanta = new SecretSanta();
             $secretSanta

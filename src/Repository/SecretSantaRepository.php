@@ -4,11 +4,11 @@ namespace App\Repository;
 
 use App\Entity\DTO\Pagination;
 use App\Entity\SecretSanta;
-use App\Entity\SecretSantaMember;
 use App\Entity\User;
 use App\Services\Request\DTO\PaginationDTO;
 use App\Services\Transformer\PaginateSecretSantaTransformer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 
@@ -51,12 +51,9 @@ class SecretSantaRepository extends ServiceEntityRepository
                 'ss.id as id',
                 'ss.label as label',
                 'ss.state as state',
-                'count(DISTINCT ssm2.id) as total'
             ])
-            ->leftJoin('ss.members', 'ssm2', 'WITH', 'ss.state <> :ss_state or (ss.state = :ss_state and ssm2.state <> :ssm_state)')
-            ->innerJoin('ss.members', 'ssm', 'WITH', 'ss.state <> :ss_state or (ss.state = :ss_state and ssm.state <> :ssm_state)')
-            ->setParameter('ss_state', 'started')
-            ->setParameter('ssm_state', 'wait_approval')
+            ->addSelect("(select count(m.id) from App\Entity\Member m where m.secretSanta = ss and (ss.state <> 'started' or (ss.state = 'started' and m.state <> 'wait_approval'))) as total")
+            ->leftJoin('ss.members', 'ssm')
             ->groupBy('ss')
             ->where('ss.owner != :user')
             ->andWhere('ssm.user = :user')
@@ -66,7 +63,7 @@ class SecretSantaRepository extends ServiceEntityRepository
             ->setFirstResult(($paginationDTO->page - 1) * $paginationDTO->limit)
         ;
 
-        $paginator = new \Doctrine\ORM\Tools\Pagination\Paginator($query);
+        $paginator = new Paginator($query);
         $total = $paginator->count();
 
         return new Pagination(
@@ -86,11 +83,8 @@ class SecretSantaRepository extends ServiceEntityRepository
                 'ss.id as id',
                 'ss.label as label',
                 'ss.state as state',
-                'count(ssm.id) as total',
             ])
-            ->innerJoin('ss.members', 'ssm', 'WITH', 'ss.state <> :ss_state or (ss.state = :ss_state and ssm.state <> :ssm_state)')
-            ->setParameter('ss_state', 'started')
-            ->setParameter('ssm_state', 'wait_approval')
+            ->addSelect("(select count(m.id) from App\Entity\Member m where m.secretSanta = ss and (ss.state <> 'started' or (ss.state = 'started' and m.state <> 'wait_approval'))) as total")
             ->groupBy('ss')
             ->where('ss.owner = :user')
             ->setParameter('user', $user)
@@ -98,7 +92,7 @@ class SecretSantaRepository extends ServiceEntityRepository
             ->setFirstResult(($paginationDTO->page - 1) * $paginationDTO->limit)
         ;
 
-        $paginator = new \Doctrine\ORM\Tools\Pagination\Paginator($query);
+        $paginator = new Paginator($query);
         $total = $paginator->count();
 
         return new Pagination(
