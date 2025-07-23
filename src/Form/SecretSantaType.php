@@ -51,6 +51,9 @@ class SecretSantaType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => SecretSanta::class,
+            'attr' => [
+                'data-turbo-frame' => '_top'
+            ]
         ]);
     }
 }

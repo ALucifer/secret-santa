@@ -32,8 +32,14 @@ export enum State {
     ERROR = 'ERROR',
 }
 
+interface DataValue {
+    type: string,
+    id: number,
+    data: any,
+}
+
 export interface TaskResponse {
     id: number
     state: State,
-    data: Array<any>,
+    data: Array<DataValue>,
 }

@@ -61,5 +61,6 @@
 {% endblock %}
 
 {% block modal %}
-    {% include 'include/modal.html.twig' %}
+    <div {{ vue_component('ModalNewSecretSanta') }}></div>
+{#    {% include 'include/modal.html.twig' with { turbo_frame_id: 'new_secret' } %}#}
 {% endblock %}
