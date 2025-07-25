@@ -111,14 +111,14 @@ class SecretSanta
         return $this;
     }
 
-    public function getState(): string
+    public function getState(): SecretSantaState
     {
         return $this->state;
     }
 
     public function setState(string $state): void
     {
-        $this->state = $state;
+        $this->state = SecretSantaState::from($state);
     }
 
     public function canBeStarted(): bool
