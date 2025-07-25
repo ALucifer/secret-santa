@@ -37,16 +37,27 @@ export enum State {
     ERROR = 'ERROR',
 }
 
+interface Money {
+    price: number
+}
+interface Gift {
+    url: string
+}
+interface Event {
+    date: Date,
+    name: string
+}
+
 interface DataValue {
-    type: string,
+    type: 'MONEY' | 'GIFT' | 'EVENT',
     id: number,
-    data: any,
+    data: Money|Gift|Event,
 }
 
 export interface TaskResponse {
     id: number
     state: State,
-    data: Array<DataValue>,
+    data: DataValue,
 }
 
 export interface Item {
