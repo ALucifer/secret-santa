@@ -16,3 +16,5 @@
 - [ ] passer en composant global
   - [ ] input
   - [ ] button
+- [ ] Ne passer que par des DTO pour les objets exposé au front
+  - [ ] Chaque DTO devra avoir une factory qui prendra en parametre l'entité en question

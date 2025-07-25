@@ -1,7 +1,9 @@
+/************************   ENTITY  ************************************/
 export interface Member {
     id: number,
     email: string,
     invitationAccepted: boolean,
+    state: string,
 }
 
 export interface SecretSanta {
@@ -9,6 +11,15 @@ export interface SecretSanta {
     label: string,
 }
 
+export interface WishItem {
+    id: number,
+    type: keyof typeof WishItemType,
+    data: Money | Gift | Event,
+}
+
+/************************   ENTITY  ************************************/
+/************************   Wish item  ************************************/
+
 interface Money {
     price: number
 }
@@ -20,33 +31,19 @@ interface Event {
     name: string
 }
 
-export enum WishType {
+export enum WishItemType {
     GIFT = 'GIFT',
     MONEY= 'MONEY',
     EVENT = 'EVENT',
 }
 
 export interface WishItemForm {
-    type: WishType,
+    type: WishItemType,
     data: Money | Gift | Event
 }
 
-export enum State {
-    PENDING = 'PENDING',
-    SUCCESS = 'SUCCESS',
-    ERROR = 'ERROR',
-}
-
-interface Money {
-    price: number
-}
-interface Gift {
-    url: string
-}
-interface Event {
-    date: Date,
-    name: string
-}
+type TaskResponseState = 'PENDING' | 'SUCCESS' | 'ERROR'
+type ItemState = 'PENDING' | 'SUCCESS' | 'ERROR'
 
 interface DataValue {
     type: 'MONEY' | 'GIFT' | 'EVENT',
@@ -56,14 +53,14 @@ interface DataValue {
 
 export interface TaskResponse {
     id: number
-    state: State,
+    state: TaskResponseState,
     data: DataValue,
 }
 
 export interface Item {
     id: number,
-    state: 'PENDING' | 'SUCCESS' | 'ERROR',
+    state: ItemState,
     data: {
-        type: WishType
+        type: keyof typeof WishItemType,
     }
 }

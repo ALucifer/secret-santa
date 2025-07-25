@@ -5,13 +5,13 @@
       <template v-for="item in wishItems" :key="item.id">
         <component
           :is="WishEvent"
-          v-if="item.type === Type.EVENT"
+          v-if="item.type === WishItemType.EVENT"
           v-bind="item.data"
           @remove="handleRemove(item.id)"
         />
         <component
           :is="WishGift"
-          v-else-if="item.type === Type.GIFT"
+          v-else-if="item.type === WishItemType.GIFT"
           v-bind="item.data"
           @remove="handleRemove(item.id)"
         />
@@ -34,48 +34,24 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
+import Routing from "fos-router";
 import WishGift from "@app/components/Wish/WishGift.vue";
 import WishMoney from "@app/components/Wish/WishMoney.vue";
 import WishEvent from "@app/components/Wish/WishEvent.vue";
-import { useTaskStore } from "@app/stores/task"
 import WishLoader from "@app/components/Wish/WishLoader.vue";
-import { ref } from "vue";
-import { TaskResponse } from "@app/types";
+import { useTaskStore } from "@app/stores/task"
+import { useWishStore } from "@app/stores/wish";
+import { TaskResponse, Item, WishItem, WishItemType } from "@app/types";
 import { Options, useFetch } from "@app/composables/useFetch";
-import Routing from "fos-router";
-import {useWishStore} from "@app/stores/wish";
 
-enum Type {
-  MONEY = 'MONEY',
-  GIFT = 'GIFT',
-  EVENT = 'EVENT'
-}
+const props = defineProps<{ items: WishItem[] }>()
 
-interface Money {
-  price: number
-}
-interface Gift {
-  url: string
-}
-interface Event {
-  date: Date,
-  name: string
-}
-
-interface Item {
-  id: number,
-  type: 'MONEY' | 'GIFT' | 'EVENT',
-  data: Money | Gift | Event
-}
-
-const props = defineProps<{ items: Item[] }>()
-
-const wishItems = ref<Item[]>(props.items)
+const wishItems = ref<WishItem[]>(props.items)
 
 const taskStore = useTaskStore()
 
 function addNewItem(item: TaskResponse) {
-  console.log(item.data)
   wishItems.value.push({ type: item.data.type, id: item.data.id, data: item.data.data })
 }
 
@@ -84,12 +60,10 @@ const { decrease } = useWishStore()
 async function handleRemove(itemId: number) {
   try {
     await useFetch(
-        Routing.generate('delete_wish', { id: itemId }),
-        {
-          method: 'DELETE'
-        } as Options
+      Routing.generate('delete_wish', { id: itemId }),
+      { method: 'DELETE' } as Options
     )
-    wishItems.value = wishItems.value.filter((item: Item) => item.id !== itemId)
+    wishItems.value = wishItems.value.filter((item: WishItem) => item.id !== itemId)
     taskStore.remove(itemId)
     decrease()
   } catch {

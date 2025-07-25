@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import AppInput from "@app/components/AppInput.vue";
-import {WishItemForm, WishType} from "@app/types";
+import { WishItemForm, WishItemType } from "@app/types";
 import {ref} from "vue";
 
 const emits = defineEmits<{
@@ -18,9 +18,9 @@ const inputState = ref<boolean>(false)
 
 function handleSend(): void {
   try {
-    const url = new URL(urlValue.value)
+    const url = new URL(urlValue.value).toString()
 
-    emits('submit', { type: WishType.GIFT, data: { url }})
+    emits('submit', { type: WishItemType.GIFT, data: { url }})
     inputState.value = false
     urlValue.value = ''
   } catch {
