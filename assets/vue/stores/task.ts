@@ -1,21 +1,14 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
-import {WishType} from "@app/types";
+import { Item } from "@app/types";
 
-interface item {
-    id: number,
-    state: 'PENDING' | 'SUCCESS' | 'ERROR',
-    data: {
-        type: WishType
-    }
-}
 
 export const useTaskStore = defineStore(
     'task',
     () => {
-        const items = ref<item[]>([])
+        const items = ref<Item[]>([])
 
-        function add(item: item) {
+        function add(item: Item) {
             items.value.push(item)
         }
 

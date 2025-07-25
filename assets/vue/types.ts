@@ -48,3 +48,11 @@ export interface TaskResponse {
     state: State,
     data: Array<DataValue>,
 }
+
+export interface Item {
+    id: number,
+    state: 'PENDING' | 'SUCCESS' | 'ERROR',
+    data: {
+        type: WishType
+    }
+}
