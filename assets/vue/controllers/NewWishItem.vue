@@ -30,12 +30,13 @@ import EventForm from "@app/components/Form/EventForm.vue";
 import MoneyForm from "@app/components/Form/MoneyForm.vue";
 import GiftForm from "@app/components/Form/GiftForm.vue";
 import ArrayLeftIcon from "@app/icons/ArrayLeftIcon.vue";
-import {computed, onMounted, ref} from "vue";
-import { useFetch } from "@app/composables/useFetch";
+import { computed, onMounted, ref } from "vue";
+import { Options, useFetch } from "@app/composables/useFetch";
 import Routing from 'fos-router'
 import { useTaskStore } from "@app/stores/task";
 import { useWishStore } from "@app/stores/wish";
 import {storeToRefs} from "pinia";
+import { Item } from "@app/types";
 
 const props = defineProps<{ memberId: number, wishCount: number }>()
 
@@ -69,21 +70,21 @@ onMounted(() => {
 })
 
 async function handleSubmit(event: Event) {
-  const { data, error } = await useFetch(
-      Routing.generate('newWish', { id: props.memberId }),
+  const {data, hasError} = await useFetch<Item>(
+      Routing.generate('newWish', {id: props.memberId}),
       {
         method: 'POST',
         body: JSON.stringify(event)
-      }
-  )
+      } as Options
+  );
   currentAction.value = null
 
-  if (error.value) {
+  if (hasError.value) {
     formError.value = true
     return
   }
 
-  add(data.value)
+  add(data.value!)
   increment()
 }
 </script>

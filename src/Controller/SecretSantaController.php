@@ -51,12 +51,11 @@ class SecretSantaController extends AbstractController
         path: '/secret-santa/{secretSanta}/members/{secretSantaMember}/wishlist',
         name: 'secret_santa_member_wishlist',
         options: ['expose' => true],
-        host: '%app.host%'
     )]
     #[IsGranted('SHOW', 'secretSantaMember')]
     public function memberList(
-        SecretSanta         $secretSanta,
-        Member              $secretSantaMember,
+        SecretSanta $secretSanta,
+        Member $secretSantaMember,
         NormalizerInterface $normalizer
     ): Response {
         return $this->render(

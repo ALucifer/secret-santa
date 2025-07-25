@@ -32,6 +32,7 @@
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
 import WishGift from "@app/components/Wish/WishGift.vue";
 import WishMoney from "@app/components/Wish/WishMoney.vue";
@@ -40,7 +41,7 @@ import { useTaskStore } from "@app/stores/task"
 import WishLoader from "@app/components/Wish/WishLoader.vue";
 import { ref } from "vue";
 import { TaskResponse } from "@app/types";
-import {useFetch} from "@app/composables/useFetch";
+import { Options, useFetch } from "@app/composables/useFetch";
 import Routing from "fos-router";
 import {useWishStore} from "@app/stores/wish";
 
@@ -74,6 +75,7 @@ const wishItems = ref<Item[]>(props.items)
 const taskStore = useTaskStore()
 
 function addNewItem(item: TaskResponse) {
+  console.log(item.data)
   wishItems.value.push({ type: item.data.type, id: item.data.id, data: item.data.data })
 }
 
@@ -85,7 +87,7 @@ async function handleRemove(itemId: number) {
         Routing.generate('delete_wish', { id: itemId }),
         {
           method: 'DELETE'
-        }
+        } as Options
     )
     wishItems.value = wishItems.value.filter((item: Item) => item.id !== itemId)
     taskStore.remove(itemId)
