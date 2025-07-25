@@ -4,6 +4,11 @@ export interface Member {
     invitationAccepted: boolean,
 }
 
+export interface SecretSanta {
+    id: number,
+    label: string,
+}
+
 interface Money {
     price: number
 }

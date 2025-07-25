@@ -6,15 +6,22 @@ use App\Entity\DTO\Member;
 use App\Entity\DTO\Members;
 use App\Entity\SecretSanta;
 use App\Entity\Member as EntityMember;
+use App\Entity\User;
+use App\Form\SecretSantaType;
 use App\Repository\SecretSantaMemberRepository;
+use App\Repository\SecretSantaRepository;
 use App\Repository\UserRepository;
 use App\Services\Request\DTO\NewMemberDTO;
+use App\Services\Request\DTO\NewSecretSantaDTO;
 use Assert\Assertion;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Throwable;
@@ -74,5 +81,34 @@ class SecretSantaController extends AbstractController
         Assertion::allIsInstanceOf($members, Member::class);
 
         return $this->json(Members::fromEntity($members)); // @phpmd ignore StaticAccess
+    }
+
+    #[Route('/secret-santa', name: 'newSecret', options: ['expose' => true], methods: ['POST'])]
+    public function newSecret(
+        #[MapRequestPayload] NewSecretSantaDTO $secretSantaDTO,
+        SecretSantaRepository $secretSantaRepository,
+        SecretSantaMemberRepository $secretSantaMemberRepository,
+        Security $security
+    ): JsonResponse
+    {
+        $user = $security->getUser();
+
+        if (!$user instanceof User) {
+            throw new UnauthorizedHttpException('Vous ne pouvez pas avoir accès.');
+        }
+
+        $secretSanta = new SecretSanta();
+
+        $secretSanta
+            ->setOwner($user)
+            ->setLabel($secretSantaDTO->label);
+
+        $secretSanta = $secretSantaRepository->create($secretSanta);
+
+        if ($secretSantaDTO->registerMe) {
+            $secretSantaMemberRepository->addMember($secretSanta, $user);
+        }
+
+        return $this->json($secretSanta);
     }
 }
