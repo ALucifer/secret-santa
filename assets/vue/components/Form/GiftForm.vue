@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import AppInput from "@app/components/AppInput.vue";
+import AppInput from "@app/components/global/form/AppInput.vue";
 import {WishItemForm, WishType} from "@app/types";
 import {ref} from "vue";
 
