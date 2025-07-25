@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import {reactive, ref} from "vue";
-import AppInput from "@app/components/AppInput.vue";
+import AppInput from "@app/components/global/form/AppInput.vue";
 import { WishItemForm, WishItemType } from "@app/types";
 
 const stateForm = ref({

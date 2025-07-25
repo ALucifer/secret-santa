@@ -1,11 +1,11 @@
 <template>
   <div
     :class="cssClasses"
-    class="flex items-center border-2 rounded-[5px] overflow-hidden max-h-[40px]">
+    class="flex items-center rounded-[5px] overflow-hidden max-h-[40px]">
     <input
-      :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
+      v-model="modelValue"
       :type="type"
+      :id
       v-bind="$attrs"
       class="text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
     >
@@ -16,15 +16,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, defineModel } from "vue";
 
-const { type = 'text', invalid, modelValue, showActions = true } = defineProps<{
+const { type = 'text', invalid, showActions = true } = defineProps<{
   type?: string,
+  id?: string,
   invalid: boolean,
-  modelValue: any,
   showActions?: boolean,
 }>()
-defineEmits(['send', 'update:modelValue'])
+defineEmits(['send'])
+
+const modelValue = defineModel()
 
 const cssClasses = computed(() => invalid ? 'border-1 border-red-300 bg-red-50 text-red-900': 'border border-gray-300 bg-gray-50 text-gray-900')
 </script>
