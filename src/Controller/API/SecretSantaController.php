@@ -53,7 +53,7 @@ class SecretSantaController extends AbstractController
         return $this->json(Member::fromMember($member));
     }
 
-    #[Route('/secret-santa/{secretId}/delete/member/{secretSantaMember}', name: 'deleteMember', methods: ['DELETE', 'GET'])]
+    #[Route('/secret-santa/{secretId}/delete/member/{secretSantaMember}', name: 'deleteMember', methods: ['DELETE'])]
     public function deleteMember(
         SecretSanta $secretId,
         EntityMember $secretSantaMember,
