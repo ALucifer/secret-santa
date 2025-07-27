@@ -35,20 +35,20 @@
 <script setup lang="ts">
 import WishContainer from "@app/components/Wish/WishContainer.vue";
 import Spinner from "@app/icons/Spinner.vue";
-import {TaskResponse, WishType} from "@app/types";
+import { TaskResponse, WishItemType } from "@app/types";
 import { onMounted, ref, watch } from "vue";
 import { useFetch } from "@app/composables/useFetch";
 import Routing from "fos-router";
 import {useTaskStore} from "@app/stores/task";
 
-const props = defineProps<{ type: WishType, taskId: number }>()
+const props = defineProps<{ type: WishItemType, taskId: number }>()
 
 const emits = defineEmits<{
   (e: 'loaded', data: TaskResponse),
 }>()
 
 const containerClass = ref(
-    props.type == WishType.GIFT
+    props.type == WishItemType.GIFT
         ? 'flex-1 flex flex-col justify-between overflow-hidden animate-pulse'
         : 'flex-1 flex flex-col justify-between max-w-sm animate-pulse'
 )

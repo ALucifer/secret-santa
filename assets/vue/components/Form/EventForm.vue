@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import {reactive, ref} from "vue";
 import AppInput from "@app/components/AppInput.vue";
-import {WishItemForm, WishType} from "@app/types";
+import { WishItemForm, WishItemType } from "@app/types";
 
 const stateForm = ref({
   name: false,
@@ -49,7 +49,7 @@ function handleSubmit(): void {
   }
 
   emits('submit', {
-    type: WishType.EVENT,
+    type: WishItemType.EVENT,
     data: { ...form }
   })
 }
