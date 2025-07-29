@@ -3,7 +3,7 @@
 namespace App\Tests\Controller;
 
 use App\Factory\SecretSantaFactory;
-use App\Factory\SecretSantaMemberFactory;
+use App\Factory\MemberFactory;
 use App\Factory\UserFactory;
 use App\Repository\UserRepository;
 use App\Security\Role;
@@ -26,7 +26,7 @@ class SecretSantaControllerTest extends WebTestCase
     public function testShouldIndicateUserMustBelogged()
     {
         $secretSanta = SecretSantaFactory::createOne();
-        SecretSantaMemberFactory::createOne([
+        MemberFactory::createOne([
             'secretSanta' => $secretSanta,
         ]);
 
@@ -45,7 +45,7 @@ class SecretSantaControllerTest extends WebTestCase
             'isVerified' => true,
         ]);
 
-        SecretSantaMemberFactory::createOne([
+        MemberFactory::createOne([
             'secretSanta' => $secretSanta,
         ]);
 
@@ -68,7 +68,7 @@ class SecretSantaControllerTest extends WebTestCase
             'isVerified' => true,
         ]);
 
-        SecretSantaMemberFactory::createOne([
+        MemberFactory::createOne([
             'secretSanta' => $secretSanta,
             'user' => $userFromFactory,
             'state' => 'approved'
@@ -86,10 +86,10 @@ class SecretSantaControllerTest extends WebTestCase
     {
         $secretSanta = SecretSantaFactory::createOne();
 
-        SecretSantaMemberFactory::createOne([
+        MemberFactory::createOne([
             'secretSanta' => $secretSanta,
             'state' => 'approved',
-            'santa' => SecretSantaMemberFactory::createOne(),
+            'santa' => MemberFactory::createOne(),
         ]);
 
         $userFromFactory = UserFactory::createOne([
@@ -99,7 +99,7 @@ class SecretSantaControllerTest extends WebTestCase
             'isVerified' => true,
         ]);
 
-        SecretSantaMemberFactory::createOne([
+        MemberFactory::createOne([
             'secretSanta' => $secretSanta,
             'user' => $userFromFactory,
             'state' => 'approved'
@@ -118,7 +118,7 @@ class SecretSantaControllerTest extends WebTestCase
     {
         $secretSanta = SecretSantaFactory::createOne();
 
-        $firstMember = SecretSantaMemberFactory::createOne([
+        $firstMember = MemberFactory::createOne([
             'secretSanta' => $secretSanta,
             'state' => 'approved',
         ]);
@@ -130,7 +130,7 @@ class SecretSantaControllerTest extends WebTestCase
             'isVerified' => true,
         ]);
 
-        $secondMember = SecretSantaMemberFactory::createOne([
+        $secondMember = MemberFactory::createOne([
             'secretSanta' => $secretSanta,
             'user' => $userFromFactory,
             'state' => 'approved',
