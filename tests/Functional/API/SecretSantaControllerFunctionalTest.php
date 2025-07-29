@@ -2,29 +2,76 @@
 
 namespace App\Tests\Functional\API;
 
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Entity\Member;
+use App\Entity\SecretSanta;
+use App\Factory\MemberFactory;
+use App\Factory\SecretSantaFactory;
+use App\Tests\Controller\AuthenticateUserTrait;
+use App\Tests\Helper\AbstractWebTestCase;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Zenstruck\Foundry\Test\Factories;
+use Zenstruck\Foundry\Test\ResetDatabase;
 
-class SecretSantaControllerFunctionalTest extends KernelTestCase
+class SecretSantaControllerFunctionalTest extends AbstractWebTestCase
 {
+    use ResetDatabase, Factories, AuthenticateUserTrait;
+
+    private KernelBrowser $client;
+
+    private SecretSanta $secretSanta;
+    private Member $member;
+
+    protected function setUp(): void
+    {
+        $this->client = static::createClient();
+        $this->secretSanta = SecretSantaFactory::createOne();
+        $this->member = MemberFactory::createOne([
+            'secretSanta' => $this->secretSanta
+        ]);
+    }
+
     /**
-     * @group test
+     * @group done
      * @dataProvider urls
      */
     public function testShouldUnauthorizeUser(string $url, string $method): void
     {
-        $this->markTestIncomplete(
-            \sprintf('Authorization test for "%s": "%s" not implemented', $method, $url)
+        $url = str_replace(
+            [ '{id}', '{secretSantaMember}' ],
+            [ $this->secretSanta->getId(), $this->member->getId() ],
+            $url
         );
+
+        $this->client->request($method, $url);
+
+        $this->assertResponseStatusCodeSame(401);
     }
 
-    public function testShouldReturnJsonInsteadOfHTML(string $url, string $method): void
-    {
-        $this->markTestIncomplete(
-            \sprintf('JSON response for "%s": "%s" not implemented', $method, $url)
-        );
-    }
-
+    /**
+     * @group done
+     */
     public function testShouldCreateNewMemberWithExistingUser(): void
+    {
+        $client = $this->getAuthenticatedJsonClient();
+
+        $secretSanta = SecretSantaFactory::createOne([
+            'owner' => $this->authenticatedUser
+        ]);
+
+        $payload = [
+            'email' => 'user@mail.com'
+        ];
+
+        $client->jsonRequest(
+            'POST',
+            '/api/secret-santa/' . $secretSanta->getId() . '/register/member',
+            $payload,
+        );
+
+        $this->assertResponseIsSuccessful();
+    }
+
+    public function testShouldNotCreateNewMemberIfItsNotOwner(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
@@ -72,10 +119,10 @@ class SecretSantaControllerFunctionalTest extends KernelTestCase
     public function urls(): array
     {
         return [
-            ['/secret-santa/{id}/register/member', 'POST'],
-            ['/secret-santa/{secretId}/delete/member/{secretSantaMember}', 'DELETE'],
-            ['/secret-santa/{id}/members', 'GET'],
-            ['/secret-santa', 'POST'],
+            ['/api/secret-santa/{id}/register/member', 'POST'],
+            ['/api/secret-santa/{id}/delete/member/{secretSantaMember}', 'DELETE'],
+            ['/api/secret-santa/1/members', 'GET'],
+            ['/api/secret-santa', 'POST'],
         ];
     }
 }

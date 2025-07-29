@@ -12,9 +12,6 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
 
-/**
- * @group test
- */
 class UserRequirementsHandlerTest extends WebTestCase
 {
     use ResetDatabase, Factories;
