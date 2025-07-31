@@ -12,14 +12,14 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */
 class MemberVoter extends Voter
 {
-
+    private const ATTRIBUTE_ALLOWED = ['SHOW'];
     protected function supports(string $attribute, mixed $subject): bool
     {
         if (!$subject instanceof Member) {
             return false;
         }
 
-        if ($attribute != 'SHOW') {
+        if (!in_array($attribute, self::ATTRIBUTE_ALLOWED, true)) {
             return false;
         }
 

@@ -92,7 +92,13 @@ phpcs:
 	$(CCODE) phpcs src
 
 phpunit:
-	$(CCODE) phpunit-9 --verbose
+	$(CCODE) phpunit
+
+test-done:
+	$(CCODE) phpunit --group=done
+
+test-check:
+	$(CCODE) phpunit --group=check
 
 phpmetrics:
 	$(CCODE) phpmetrics --report-html="./report" ./src
