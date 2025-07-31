@@ -6,6 +6,10 @@ use App\Entity\Member;
 use App\Entity\SecretSanta;
 use App\Factory\MemberFactory;
 use App\Factory\SecretSantaFactory;
+use App\Factory\UserFactory;
+use App\Repository\MemberRepository;
+use App\Repository\SecretSantaRepository;
+use App\Repository\UserRepository;
 use App\Tests\Controller\AuthenticateUserTrait;
 use App\Tests\Helper\AbstractWebTestCase;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -52,6 +56,12 @@ class SecretSantaControllerFunctionalTest extends AbstractWebTestCase
      */
     public function testShouldCreateNewMemberWithExistingUser(): void
     {
+        $user = UserFactory::createOne([
+            'email' => 'user@mail.com'
+        ]);
+
+        $this->assertCount(0, $user->getParticipationSecretSantaHasMember());
+
         $client = $this->getAuthenticatedJsonClient();
 
         $secretSanta = SecretSantaFactory::createOne([
@@ -59,7 +69,7 @@ class SecretSantaControllerFunctionalTest extends AbstractWebTestCase
         ]);
 
         $payload = [
-            'email' => 'user@mail.com'
+            'email' => $user->getEmail()
         ];
 
         $client->jsonRequest(
@@ -69,51 +79,240 @@ class SecretSantaControllerFunctionalTest extends AbstractWebTestCase
         );
 
         $this->assertResponseIsSuccessful();
+
+        $user = $this->getContainer()->get(UserRepository::class)->findOneBy(['email' => 'user@mail.com']);
+
+        $this->assertCount(1, $user->getParticipationSecretSantaHasMember());
     }
 
+    /**
+     * @group done
+     */
     public function testShouldNotCreateNewMemberIfItsNotOwner(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $client = $this->getAuthenticatedJsonClient();
+
+        $secretSanta = SecretSantaFactory::createOne();
+
+        $client->jsonRequest(
+            'POST',
+            '/api/secret-santa/' . $secretSanta->getId() . '/register/member',
+            [
+                'email' => 'user@mail.com'
+            ]
+        );
+
+        $this->assertResponseStatusCodeSame(403);
     }
 
+    /**
+     * @group done
+     */
     public function testShouldCreateUserAndMemberWhenHeIsNotExisting(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $email = 'user@mail.com';
+        $user = $this->getContainer()->get(UserRepository::class)->findOneBy(['email' => $email]);
+        $this->assertNull($user);
+
+        $client = $this->getAuthenticatedJsonClient();
+
+        $secretSanta = SecretSantaFactory::createOne([
+            'owner' => $this->authenticatedUser
+        ]);
+
+        $client->jsonRequest(
+            'POST',
+            '/api/secret-santa/' . $secretSanta->getId() . '/register/member',
+            [
+                'email' => $email,
+            ],
+        );
+
+        $this->assertResponseIsSuccessful();
+
+        $user = $this->getContainer()->get(UserRepository::class)->findOneBy(['email' => $email]);
+
+        $this->assertEquals($email, $user->getEmail());
+        $this->assertCount(1, $user->getParticipationSecretSantaHasMember());
     }
 
+    /**
+     * @group done
+     */
     public function testShouldIndicateErrorBody(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $client = $this->getAuthenticatedJsonClient();
+
+        $secretSanta = SecretSantaFactory::createOne([
+            'owner' => $this->authenticatedUser
+        ]);
+
+        $client->jsonRequest(
+            'POST',
+            '/api/secret-santa/' . $secretSanta->getId() . '/register/member',
+            [
+                'email' => 'error'
+            ],
+        );
+
+        $this->assertResponseStatusCodeSame(422);
+        $this->assertjson('{"violations":[{"property":"email","message":"This value is not a valid email address."}]}');
     }
 
-    public function testShouldIndicateNotFoundWhenSecretSantaMemberIsNotInSecretSanta(): void
+    /**
+     * @group done
+     */
+    public function testShouldIndicateNotFoundWhenMemberIsNotInSecretSanta(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $client = $this->getAuthenticatedJsonClient();
+
+        $secretSanta = SecretSantaFactory::createOne([
+            'owner' => $this->authenticatedUser
+        ]);
+
+        $client->jsonRequest(
+            'DELETE',
+            '/api/secret-santa/' . $secretSanta->getId() . '/delete/member/1',
+        );
+
+        $this->assertResponseStatusCodeSame(404);
     }
 
+    /**
+     * @group done
+     */
     public function testShouldDeleteMember(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $client = $this->getAuthenticatedJsonClient();
+
+        $secretSanta = SecretSantaFactory::createOne([
+            'owner' => $this->authenticatedUser
+        ]);
+
+        $member = MemberFactory::createOne([
+            'secretSanta' => $secretSanta
+        ]);
+
+        $client->jsonRequest(
+            'DELETE',
+            '/api/secret-santa/' . $secretSanta->getId() . '/delete/member/' . $member->getId(),
+        );
+
+        $this->assertResponseIsSuccessful();
+
+        $member = $this->getContainer()->get(MemberRepository::class)->findOneBy(['id' => $member->getId()]);
+
+        $this->assertNull($member);
     }
 
+    /**
+     * @group done
+     */
     public function testShouldReturnMembersDtoInsteadOfEntity(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $client = $this->getAuthenticatedJsonClient();
+
+        $secretSanta = SecretSantaFactory::createOne([
+            'owner' => $this->authenticatedUser
+        ]);
+
+        MemberFactory::createMany(10, [ 'secretSanta' => $secretSanta ]);
+
+        $client->jsonRequest(
+            'GET',
+            '/api/secret-santa/' . $secretSanta->getId() . '/members',
+        );
+
+        $content = json_decode($client->getResponse()->getContent(), true);
+
+        $this->assertIsArray($content);
+        $this->assertCount(10, $content);
+
+        $this->assertArrayHasKey('id', $content[0]);
+        $this->assertArrayHasKey('email', $content[0]);
+        $this->assertArrayHasKey('invitationAccepted', $content[0]);
+        $this->assertArrayHasKey('secretSantaId', $content[0]);
+        $this->assertArrayHasKey('userId', $content[0]);
     }
 
+    /**
+     * @group done
+     */
     public function testShouldIndicateErrorsInRequestForNewSecret(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $client = $this->getAuthenticatedJsonClient();
+
+        $client->jsonRequest(
+            'POST',
+            '/api/secret-santa',
+            [
+
+            ]
+        );
+
+        $this->assertResponseStatusCodeSame(422);
+        $this->assertjson('{"violations":[{"property":"label","message":"This value should not be of type string."}]}');
     }
 
+    /**
+     * @group test
+     */
     public function testShouldOnlyCreateSecretSanta(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $secretSanta = $this->getContainer()->get(SecretSantaRepository::class)->findAll();
+
+        $this->assertCount(1, $secretSanta);
+
+        $client = $this->getAuthenticatedJsonClient();
+
+        $client->jsonRequest(
+            'POST',
+            '/api/secret-santa',
+            [
+                'label' => 'Mon super secret santa !',
+            ],
+        );
+
+        $this->assertResponseIsSuccessful();
+        $content = json_decode($client->getResponse()->getContent(), true);
+
+        $expectedSecretSanta = $this->getContainer()->get(SecretSantaRepository::class)->findAll();
+
+        $members = $this->getContainer()->get(MemberRepository::class)->findBy(['secretSanta' => $content['id']]);
+
+        $this->assertCount(0, $members);
+        $this->assertCount(2, $expectedSecretSanta);
     }
 
+    /**
+     * @group done
+     */
     public function testShouldCreateSecretSantaAndOwnerAsMember(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $secretSanta = $this->getContainer()->get(SecretSantaRepository::class)->findAll();
+
+        $this->assertCount(1, $secretSanta);
+
+        $client = $this->getAuthenticatedJsonClient();
+
+        $client->jsonRequest(
+            'POST',
+            '/api/secret-santa',
+            [
+                'label' => 'Mon super secret santa !',
+                'registerMe' => true,
+            ],
+        );
+
+        $this->assertResponseIsSuccessful();
+        $content = json_decode($client->getResponse()->getContent(), true);
+
+        $expectedSecretSanta = $this->getContainer()->get(SecretSantaRepository::class)->findAll();
+
+        $members = $this->getContainer()->get(MemberRepository::class)->findBy(['secretSanta' => $content['id']]);
+
+        $this->assertCount(1, $members);
+        $this->assertCount(2, $expectedSecretSanta);
     }
 
     public function urls(): array

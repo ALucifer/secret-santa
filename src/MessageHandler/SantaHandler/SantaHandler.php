@@ -2,7 +2,7 @@
 
 namespace App\MessageHandler\SantaHandler;
 
-use App\Repository\SecretSantaMemberRepository;
+use App\Repository\MemberRepository;
 use App\Repository\SecretSantaRepository;
 use App\Services\Mailer\SantaMailer;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -12,7 +12,7 @@ class SantaHandler
 {
     public function __construct(
         private SecretSantaRepository $secretSantaRepository,
-        private SecretSantaMemberRepository $secretSantaMemberRepository,
+        private MemberRepository $secretSantaMemberRepository,
         private SantaMailer $mailer,
     )
     {

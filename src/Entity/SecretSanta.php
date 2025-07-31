@@ -8,6 +8,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SecretSantaRepository::class)]
@@ -17,6 +18,7 @@ class SecretSanta
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read'])]
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
     #[
@@ -25,6 +27,7 @@ class SecretSanta
         Assert\NotBlank(message: 'Le titre ne dois pas être vide.'),
     ]
     #[ORM\Column(type: Types::STRING, length: 60)]
+    #[Groups(['read'])]
     private string $label;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'secretSantas')]

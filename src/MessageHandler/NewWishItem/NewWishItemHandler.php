@@ -4,7 +4,7 @@ namespace App\MessageHandler\NewWishItem;
 use App\Entity\State;
 use App\Entity\Wishitem;
 use App\Entity\WishitemType;
-use App\Repository\SecretSantaMemberRepository;
+use App\Repository\MemberRepository;
 use App\Repository\TaskRepository;
 use App\Repository\WishitemMemberRepository;
 use Psr\Log\LoggerInterface;
@@ -19,13 +19,13 @@ class NewWishItemHandler
 {
     /**
      * @param WishitemMemberRepository $repository
-     * @param SecretSantaMemberRepository $memberRepository
+     * @param MemberRepository $memberRepository
      * @param TaskRepository $taskRepository
      * @param LoggerInterface $logger
      */
     public function __construct(
         private WishitemMemberRepository $repository,
-        private SecretSantaMemberRepository $memberRepository,
+        private MemberRepository $memberRepository,
         private TaskRepository $taskRepository,
         private LoggerInterface $logger,
     ) {
