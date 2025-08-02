@@ -8,7 +8,7 @@ use Doctrine\DBAL\Types\Type;
 
 class StateType extends Type
 {
-    public function getSQLDeclaration(array $column, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return 'state_enum';
     }
@@ -18,7 +18,7 @@ class StateType extends Type
      * @param AbstractPlatform $platform
      * @return State
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): State
     {
         return State::from($value);
     }
@@ -33,7 +33,7 @@ class StateType extends Type
         return $value->value;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'state';
     }
