@@ -14,7 +14,7 @@ class TaskController extends AbstractController
 {
 
     #[Route(
-        '/task/{id}',
+        '/tasks/{id}',
         name: 'task',
         options: ['expose' => true],
         methods: ['GET']),

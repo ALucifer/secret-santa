@@ -6,7 +6,7 @@ use App\Entity\DTO\Members;
 use App\Entity\SecretSanta;
 use App\Entity\Member;
 use App\MessageHandler\SantaHandler\Santa;
-use App\Repository\SecretSantaMemberRepository;
+use App\Repository\MemberRepository;
 use App\Repository\SecretSantaRepository;
 use App\Services\RandomizeCollection;
 use Random\Randomizer;
@@ -75,12 +75,12 @@ class SecretSantaController extends AbstractController
     )]
     #[IsGranted('START', 'secretSanta')]
     public function start(
-        SecretSanta $secretSanta,
-        WorkflowInterface $secret_workflow,
+        SecretSanta           $secretSanta,
+        WorkflowInterface     $secret_workflow,
         SecretSantaRepository $secretSantaRepository,
-        SecretSantaMemberRepository $secretSantaMemberRepository,
-        RandomizeCollection $randomizeCollection,
-        MessageBusInterface $messageBus
+        MemberRepository      $secretSantaMemberRepository,
+        RandomizeCollection   $randomizeCollection,
+        MessageBusInterface   $messageBus
     ): Response {
         try {
             $secret_workflow->apply($secretSanta, 'to_started');

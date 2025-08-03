@@ -8,7 +8,7 @@ use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 /**
  * @extends PersistentProxyObjectFactory<Member>
  */
-final class SecretSantaMemberFactory extends PersistentProxyObjectFactory
+final class MemberFactory extends PersistentProxyObjectFactory
 {
     public static function class(): string
     {
