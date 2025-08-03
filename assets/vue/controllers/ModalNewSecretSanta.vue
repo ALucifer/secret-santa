@@ -1,19 +1,18 @@
 <template>
-  <Modal>
+  <AppModal>
     <form>
       <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
         <div>
           <div class="mb-6">
-            <input type="text" v-model="form.label" required placeholder="Titre de votre secret santa." class="border border-gray-300 bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+            <AppInput :invalid="false" :showActions="false" v-model="form.label" required placeholder="Titre de votre secret santa." />
           </div>
           <div class="flex flex-row-reverse">
             <div class="inline-flex items-center">
-              <input type="checkbox" id="secret_santa_registerMe" v-model="form.registerMe" class="mr-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-              <label class="block text-gray-800" for="secret_santa_registerMe">S'inscrire</label>
+              <AppInput :invalid="false" :showActions="false" v-model="form.registerMe" id="secret_santa_registerMe" type="checkbox" />
+              <label class="px-2.5 block text-gray-800" for="secret_santa_registerMe">S'inscrire</label>
             </div>
           </div>
         </div>
-        {{ form }}
       </div>
       <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
         <button type="submit" @click="handleSubmit" class="inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs bg-teal-600 hover:bg-teal-500 sm:ml-3 sm:w-auto cursor-pointer">
@@ -24,18 +23,19 @@
         </button>
       </div>
     </form>
-  </Modal>
+  </AppModal>
 </template>
 
 <script setup lang="ts">
 import { reactive } from "vue"
-import Modal from "@app/components/global/Modal.vue";
+import AppModal from "@app/components/global/AppModal.vue";
 import Routing from "fos-router";
 import { Options, useFetch } from "@app/composables/useFetch";
 import { SecretSanta } from "@app/types";
+import AppInput from "@app/components/global/form/AppInput.vue";
 
 const form = reactive({
-  label: 'test',
+  label: '',
   registerMe: false,
 })
 

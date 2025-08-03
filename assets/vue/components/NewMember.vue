@@ -6,8 +6,7 @@
       <AppInput
         v-if="showForm"
         :invalid="isInvalid"
-        :modelValue="emailModel"
-        @update:modelValue="$event => (emailModel = $event)"
+        v-model="emailModel"
         @send="submit"
         @keyup.enter="submit"
         class="w-[250px]"
@@ -25,7 +24,7 @@
 import { ref } from 'vue'
 import CardItem from "@app/components/CardItem.vue";
 import PlusIcon from "@app/icons/PlusIcon.vue";
-import AppInput from "@app/components/AppInput.vue";
+import AppInput from "@app/components/global/form/AppInput.vue";
 
 const emits = defineEmits<{
   (e: 'member:new', { member: string }): void
