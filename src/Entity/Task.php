@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\TaskRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task
@@ -15,6 +16,7 @@ class Task
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
     #[Orm\Column(type: 'state_enum', nullable: false)]
+    #[Groups('read')]
     private State $state;
 
     /** @var array<mixed>  */

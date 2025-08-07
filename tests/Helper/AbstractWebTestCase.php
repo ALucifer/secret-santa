@@ -14,31 +14,28 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class AbstractWebTestCase extends WebTestCase
 {
-    private User $authenticatedUser;
+    protected User $authenticatedUser;
+    protected KernelBrowser $client;
+
+    protected function setUp(): void
+    {
+        $this->client = static::createClient();
+
+        $userFactory = UserFactory::createOne(['isVerified' => true, 'roles' => [Role::USER], 'pseudo' => 'user']);
+        $this->authenticatedUser = static::getContainer()->get(UserRepository::class)->find($userFactory->getId());
+    }
 
     protected function getAuthenticatedClient(): KernelBrowser
     {
-        $userFactory = UserFactory::createOne(['isVerified' => true, 'roles' => [Role::USER], 'pseudo' => 'user']);
-
-        $this->authenticatedUser = static::getContainer()->get(UserRepository::class)->find($userFactory->getId());
-
-        return static::createClient()->loginUser($this->authenticatedUser);
+        return $this->client->loginUser($this->authenticatedUser);
     }
 
     protected function getAuthenticatedJsonClient(): KernelBrowser
     {
-        $userFactory = UserFactory::createOne(['isVerified' => true, 'roles' => [Role::USER], 'pseudo' => 'user']);
+        $jwtManager = static::getContainer()->get(JWTTokenManagerInterface::class);
 
-        $container = static::getContainer();
+        $this->client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer ' . $jwtManager->create($this->authenticatedUser));;
 
-        $this->authenticatedUser = $container->get(UserRepository::class)->find($userFactory->getId());
-        $jwtManager = $container->get(JWTTokenManagerInterface::class);
-
-        return static::createClient(
-            [],
-            [
-                'AUTHORIZATION' => 'Bearer ' . $jwtManager->create($this->authenticatedUser),
-            ],
-        );
+        return $this->client;
     }
 }

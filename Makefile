@@ -100,5 +100,8 @@ test-done:
 test-check:
 	$(CCODE) phpunit --group=check
 
+test-todo:
+	$(CCODE) phpunit --group=todo
+
 phpmetrics:
 	$(CCODE) phpmetrics --report-html="./report" ./src

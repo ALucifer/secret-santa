@@ -10,26 +10,23 @@ use App\Factory\UserFactory;
 use App\Repository\MemberRepository;
 use App\Repository\SecretSantaRepository;
 use App\Repository\UserRepository;
-use App\Tests\Controller\AuthenticateUserTrait;
 use App\Tests\Helper\AbstractWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
 
 class SecretSantaControllerFunctionalTest extends AbstractWebTestCase
 {
-    use ResetDatabase, Factories, AuthenticateUserTrait;
-
-    private KernelBrowser $client;
+    use ResetDatabase, Factories;
 
     private SecretSanta $secretSanta;
     private Member $member;
 
     protected function setUp(): void
     {
-        $this->client = static::createClient();
+        parent::setUp();
+
         $this->secretSanta = SecretSantaFactory::createOne();
         $this->member = MemberFactory::createOne([
             'secretSanta' => $this->secretSanta

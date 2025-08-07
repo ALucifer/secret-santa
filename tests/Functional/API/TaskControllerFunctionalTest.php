@@ -12,14 +12,7 @@ use Zenstruck\Foundry\Test\ResetDatabase;
 
 class TaskControllerFunctionalTest extends AbstractWebTestCase
 {
-    use ResetDatabase, Factories, AuthenticateUserTrait;
-
-    private KernelBrowser $client;
-
-    protected function setUp(): void
-    {
-        $this->client = static::createClient();
-    }
+    use ResetDatabase, Factories;
 
     #[Group('done')]
     public function testShouldForbiddenUser(): void
@@ -30,7 +23,23 @@ class TaskControllerFunctionalTest extends AbstractWebTestCase
         $this->assertEquals(401, $this->client->getResponse()->getStatusCode());
     }
 
+    #[Group('done')]
     public function testShouldReturnGoodTask(): void
+    {
+        $client = $this->getAuthenticatedJsonClient();
+        $task = TaskFactory::createOne();
+
+        $client->request('GET', '/api/tasks/' . $task->getId());
+
+        $this->assertResponseIsSuccessful();
+
+        $expected = json_encode(['state' => $task->getState()]);
+
+        $this->assertJsonStringEqualsJsonString($expected, $client->getResponse()->getContent());
+    }
+
+    #[Group('todo')]
+    public function testShouldShouldAuthorizeOnlyCreator(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

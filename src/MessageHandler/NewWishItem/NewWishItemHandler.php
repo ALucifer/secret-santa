@@ -6,7 +6,7 @@ use App\Entity\Wishitem;
 use App\Entity\WishitemType;
 use App\Repository\MemberRepository;
 use App\Repository\TaskRepository;
-use App\Repository\WishitemMemberRepository;
+use App\Repository\WishItemRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpClient\HttpClient;
@@ -18,16 +18,16 @@ use Throwable;
 class NewWishItemHandler
 {
     /**
-     * @param WishitemMemberRepository $repository
+     * @param WishItemRepository $repository
      * @param MemberRepository $memberRepository
      * @param TaskRepository $taskRepository
      * @param LoggerInterface $logger
      */
     public function __construct(
-        private WishitemMemberRepository $repository,
-        private MemberRepository $memberRepository,
-        private TaskRepository $taskRepository,
-        private LoggerInterface $logger,
+        private WishItemRepository $repository,
+        private MemberRepository   $memberRepository,
+        private TaskRepository     $taskRepository,
+        private LoggerInterface    $logger,
     ) {
     }
 

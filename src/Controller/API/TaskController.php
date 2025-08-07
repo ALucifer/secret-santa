@@ -22,6 +22,6 @@ class TaskController extends AbstractController
     public function task(
         Task $task,
     ): JsonResponse {
-        return $this->json($task);
+        return $this->json($task, context: [ 'groups' => 'read' ]);
     }
 }

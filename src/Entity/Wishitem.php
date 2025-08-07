@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\WishitemMemberRepository;
+use App\Repository\WishItemRepository;
 use App\Services\Request\DTO\Wish\Event;
 use App\Services\Request\DTO\Wish\Gift;
 use App\Services\Request\DTO\Wish\Money;
@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Services\Request\DTO\NewWishItem;
 use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ORM\Entity(repositoryClass: WishitemMemberRepository::class)]
+#[ORM\Entity(repositoryClass: WishItemRepository::class)]
 class Wishitem
 {
     #[
