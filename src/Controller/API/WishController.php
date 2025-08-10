@@ -25,7 +25,12 @@ use Throwable;
 class WishController extends AbstractMessengerController
 {
     #[IsGranted("DELETE", "wishItem")]
-    #[Route(path: '/wish/{id}', name: 'delete_wish', options: ['expose' => true], methods: ['DELETE'])]
+    #[Route(
+        path: '/wish/{id}',
+        name: 'delete_wish',
+        options: ['expose' => true],
+        methods: ['DELETE'],
+    )]
     public function delete(
         Wishitem $wishItem,
         WishItemRepository $wishitemMemberRepository,
@@ -41,7 +46,7 @@ class WishController extends AbstractMessengerController
     }
 
     #[Route(
-        '/secret-santa/members/{id}/wish',
+        path: '/secret-santa/members/{id}/wish',
         name: 'newWish',
         options: ['expose' => true],
         methods: ['POST']
