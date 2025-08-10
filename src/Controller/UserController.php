@@ -8,7 +8,7 @@ use App\Entity\SecretSanta;
 use App\Entity\User;
 use App\Form\SecretSantaType;
 use App\Form\UserRequirementsType;
-use App\Repository\SecretSantaMemberRepository;
+use App\Repository\MemberRepository;
 use App\Repository\SecretSantaRepository;
 use App\Repository\UserRepository;
 use App\Services\Request\DTO\PaginationDTO;
@@ -24,12 +24,12 @@ class UserController extends AbstractController
     #[Route('/profile', name: 'user_profile')]
     #[IsGranted('ROLE_USER')]
     public function profile(
-        Request $request,
+        Request                                            $request,
         #[PrefixPagination(prefix: 'user_')] PaginationDTO $paginationUserDTO,
-        #[PrefixPagination(prefix: 'inv_')] PaginationDTO $paginationInvitedDTO,
-        SecretSantaRepository $secretSantaRepository,
-        SecretSantaMemberRepository $secretSantaMemberRepository,
-        Security $security
+        #[PrefixPagination(prefix: 'inv_')] PaginationDTO  $paginationInvitedDTO,
+        SecretSantaRepository                              $secretSantaRepository,
+        MemberRepository                                   $secretSantaMemberRepository,
+        Security                                           $security
     ): Response {
         $user = $security->getUser();
 
@@ -40,6 +40,7 @@ class UserController extends AbstractController
         $form = $this->createForm(SecretSantaType::class);
         $form->handleRequest($request);
 
+        // @todo: a supprimer, plus utilisé
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var SecretSanta $secretSanta */
             $secretSanta = $form->getData();

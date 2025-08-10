@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\SecretSantaMemberRepository;
+use App\Repository\MemberRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: SecretSantaMemberRepository::class)]
+#[ORM\Entity(repositoryClass: MemberRepository::class)]
 class Member
 {
     #[ORM\Id]
@@ -54,6 +54,9 @@ class Member
     public function setSecretSanta(SecretSanta $secretSanta): Member
     {
         $this->secretSanta = $secretSanta;
+
+        $secretSanta->addMember($this);
+
         return $this;
     }
 
@@ -65,6 +68,9 @@ class Member
     public function setUser(User $user): Member
     {
         $this->user = $user;
+
+        $user->addParticipationSecretSantaHasMember($this);
+
         return $this;
     }
 

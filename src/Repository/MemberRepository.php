@@ -13,7 +13,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 /**
  * @extends ServiceEntityRepository<Member>
  */
-class SecretSantaMemberRepository extends ServiceEntityRepository
+class MemberRepository extends ServiceEntityRepository
 {
     public function __construct(
         ManagerRegistry $registry,

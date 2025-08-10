@@ -4,6 +4,7 @@ namespace App\Security\Voters;
 
 use App\Entity\SecretSanta;
 use App\Entity\Member;
+use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -12,7 +13,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */
 class SecretSantaVoter extends Voter
 {
-    private const ATTRIBUTE_ALLOWED = ['SHOW', 'START'];
+    private const ATTRIBUTE_ALLOWED = ['SHOW', 'START', 'ADD_MEMBER'];
 
     protected function supports(string $attribute, mixed $subject): bool
     {
@@ -32,6 +33,7 @@ class SecretSantaVoter extends Voter
         return match ($attribute) {
             'SHOW' => $this->handleShow($subject, $token),
             'START' => $this->handleStart($subject, $token),
+            'ADD_MEMBER' => $this->handleNewMember($subject, $token),
             default => false,
         };
     }
@@ -61,8 +63,17 @@ class SecretSantaVoter extends Voter
      */
     private function handleStart(mixed $subject, TokenInterface $token): bool
     {
+        /** @var User $userAuthenticated */
         $userAuthenticated = $token->getUser();
 
         return $userAuthenticated->getId() === $subject->getOwner()->getId();
+    }
+
+    private function handleNewMember(mixed $subject, TokenInterface $token): bool
+    {
+        /** @var User $authenticatedUser */
+        $authenticatedUser = $token->getUser();
+
+        return $authenticatedUser->getId() === $subject->getOwner()->getId();
     }
 }

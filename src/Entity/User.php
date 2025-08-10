@@ -76,10 +76,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::STRING, length: 50, nullable: true)]
     private ?string $pseudo;
 
+    #[ORM\OneToMany(targetEntity: Member::class, mappedBy: 'user')]
+    private Collection $participationSecretSantaHasMember;
+
     public function __construct()
     {
         $this->secretSantas = new ArrayCollection();
         $this->tokens = new ArrayCollection();
+        $this->participationSecretSantaHasMember = new ArrayCollection();
         $this->roles = [Role::USER->value];
     }
 
@@ -229,5 +233,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPseudo(?string $pseudo): void
     {
         $this->pseudo = $pseudo;
+    }
+
+    public function getParticipationSecretSantaHasMember(): Collection
+    {
+        return $this->participationSecretSantaHasMember;
+    }
+
+    public function setParticipationSecretSantaHasMember(Collection $participationSecretSantaHasMember): void
+    {
+        $this->participationSecretSantaHasMember = $participationSecretSantaHasMember;
+    }
+
+    public function addParticipationSecretSantaHasMember(Member $member): User
+    {
+        if (!$this->participationSecretSantaHasMember->contains($member)) {
+            $this->participationSecretSantaHasMember->add($member);
+        }
+
+        return $this;
     }
 }

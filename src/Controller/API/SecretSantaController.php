@@ -7,8 +7,7 @@ use App\Entity\DTO\Members;
 use App\Entity\SecretSanta;
 use App\Entity\Member as EntityMember;
 use App\Entity\User;
-use App\Form\SecretSantaType;
-use App\Repository\SecretSantaMemberRepository;
+use App\Repository\MemberRepository;
 use App\Repository\SecretSantaRepository;
 use App\Repository\UserRepository;
 use App\Services\Request\DTO\NewMemberDTO;
@@ -18,7 +17,6 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -31,15 +29,16 @@ use Throwable;
 class SecretSantaController extends AbstractController
 {
     #[Route('/secret-santa/{id}/register/member', name: 'registerMember', methods: ['POST'])]
+    #[IsGranted('ADD_MEMBER', 'secretSanta')]
     public function registerFromSecret(
         SecretSanta $secretSanta,
-        #[MapRequestPayload(validationFailedStatusCode: Response::HTTP_NOT_FOUND)] NewMemberDTO $newMemberDTO,
+        #[MapRequestPayload(validationFailedStatusCode: Response::HTTP_UNPROCESSABLE_ENTITY)] NewMemberDTO $newMemberDTO,
         UserRepository $userRepository,
-        SecretSantaMemberRepository $secretSantaMemberRepository,
+        MemberRepository $secretSantaMemberRepository,
+        SecretSantaRepository $secretSantaRepository,
     ): JsonResponse
     {
         $user = $userRepository->findOneBy(['email' => $newMemberDTO->email]);
-
         if(!$user){
             try {
                 $user = $userRepository->createUserFromInvitation($newMemberDTO);
@@ -53,12 +52,12 @@ class SecretSantaController extends AbstractController
         return $this->json(Member::fromMember($member));
     }
 
-    #[Route('/secret-santa/{secretId}/delete/member/{secretSantaMember}', name: 'deleteMember', methods: ['DELETE', 'GET'])]
+    #[Route('/secret-santa/{secretId}/delete/member/{secretSantaMember}', name: 'deleteMember', methods: ['DELETE'])]
     public function deleteMember(
-        SecretSanta $secretId,
-        EntityMember $secretSantaMember,
-        SecretSantaMemberRepository $secretSantaMemberRepository,
-        LoggerInterface $logger,
+        SecretSanta      $secretId,
+        EntityMember     $secretSantaMember,
+        MemberRepository $secretSantaMemberRepository,
+        LoggerInterface  $logger,
     ): JsonResponse {
         if ($secretId->getId() !== $secretSantaMember->getSecretSanta()->getId()) {
             return new JsonResponse(['error' => 'Member not found in this secret santa'], Response::HTTP_NOT_FOUND);
@@ -78,7 +77,7 @@ class SecretSantaController extends AbstractController
     public function members(SecretSanta $secretSanta): JsonResponse
     {
         $members = $secretSanta->getMembers()->toArray();
-        Assertion::allIsInstanceOf($members, Member::class);
+        Assertion::allIsInstanceOf($members, EntityMember::class);
 
         return $this->json(Members::fromEntity($members)); // @phpmd ignore StaticAccess
     }
@@ -87,7 +86,7 @@ class SecretSantaController extends AbstractController
     public function newSecret(
         #[MapRequestPayload] NewSecretSantaDTO $secretSantaDTO,
         SecretSantaRepository $secretSantaRepository,
-        SecretSantaMemberRepository $secretSantaMemberRepository,
+        MemberRepository $secretSantaMemberRepository,
         Security $security
     ): JsonResponse
     {
@@ -103,12 +102,21 @@ class SecretSantaController extends AbstractController
             ->setOwner($user)
             ->setLabel($secretSantaDTO->label);
 
-        $secretSanta = $secretSantaRepository->create($secretSanta);
 
         if ($secretSantaDTO->registerMe) {
-            $secretSantaMemberRepository->addMember($secretSanta, $user);
+            $member = new EntityMember();
+            $member
+                ->setSecretSanta($secretSanta)
+                ->setUser($user);
+
+            $secretSanta->addMember($member);
         }
 
-        return $this->json($secretSanta);
+        $secretSanta = $secretSantaRepository->create($secretSanta);
+
+        return $this->json(
+            data: $secretSanta,
+            context: ['groups' => 'read'],
+        );
     }
 }

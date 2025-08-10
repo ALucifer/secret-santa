@@ -12,6 +12,7 @@ use App\Validator\Constraints\WishEvent;
 use App\Validator\Constraints\WishGift;
 use App\Validator\Constraints\WishMoney;
 use LogicException;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
@@ -20,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-// TODO: retravailler cette partie, faire en sorte qu'une classe se charge de transformer on bon objet suite à une validation
+#[AsTaggedItem(index: 'wish_value', priority: 150)]
 class WishValueResolver implements ValueResolverInterface
 {
     public function __construct(

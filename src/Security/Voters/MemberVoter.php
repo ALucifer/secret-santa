@@ -12,14 +12,14 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */
 class MemberVoter extends Voter
 {
-
+    private const ATTRIBUTE_ALLOWED = ['SHOW', 'NEW_WISH'];
     protected function supports(string $attribute, mixed $subject): bool
     {
         if (!$subject instanceof Member) {
             return false;
         }
 
-        if ($attribute != 'SHOW') {
+        if (!in_array($attribute, self::ATTRIBUTE_ALLOWED, true)) {
             return false;
         }
 
@@ -40,19 +40,33 @@ class MemberVoter extends Voter
             return false;
         }
 
-        $isSanta = $subject
+        return match ($attribute) {
+            'SHOW' => $this->handleShow($user, $subject),
+            'NEW_WISH' => $this->handleNewWish($subject),
+            default => false,
+        };
+    }
+
+    public function handleShow(User $user, Member $member): bool
+    {
+        $isSanta = $member
             ->getSecretSanta()
             ->getMembers()
             ->filter(
-                function (Member $member) use ($user, $subject) {
-                    if (!$member->getSanta()) {
+                function (Member $itemMember) use ($user, $member) {
+                    if (!$itemMember->getSanta()) {
                         return false;
                     }
 
-                    return $user->getId() === $member->getUser()->getId() && $member->getSanta()->getId() === $subject->getId();
+                    return $user->getId() === $itemMember->getUser()->getId() && $itemMember->getSanta()->getId() === $member->getId();
                 })
-        ->first();
+            ->first();
 
-        return $user->getId() === $subject->getUser()->getId() || $isSanta;
+        return $user->getId() === $member->getUser()->getId() || $isSanta;
+    }
+
+    public function handleNewWish(Member $member): bool
+    {
+        return $member->getWishItems()->count() < 10;
     }
 }

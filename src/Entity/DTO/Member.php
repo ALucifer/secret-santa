@@ -13,9 +13,11 @@ readonly class Member
      * @param bool $invitationAccepted
      */
     private function __construct(
-        public int    $id,
+        public int $id,
         public string $email,
-        public bool   $invitationAccepted,
+        public bool $invitationAccepted,
+        public ?int $secretSantaId,
+        public ?int $userId,
     ) {
     }
 
@@ -28,7 +30,9 @@ readonly class Member
         return new self(
             $member->getId() ?? throw new LogicException('Member cannot be created without a member ID.'),
             $member->getUser()->getEmail(),
-            $member->getState() === 'approved'
+            $member->getState() === 'approved',
+            $member->getSecretSanta()->getId(),
+            $member->getUser()->getId()
         );
     }
 }
