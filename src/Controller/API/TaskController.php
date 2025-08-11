@@ -12,7 +12,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/api')]
 class TaskController extends AbstractController
 {
-
     #[Route(
         '/tasks/{id}',
         name: 'task',

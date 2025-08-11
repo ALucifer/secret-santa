@@ -28,7 +28,12 @@ use Throwable;
 #[Route(path: '/api')]
 class SecretSantaController extends AbstractController
 {
-    #[Route('/secret-santa/{id}/register/member', name: 'registerMember', methods: ['POST'])]
+    #[Route(
+        path: '/secret-santa/{id}/register/member',
+        name: 'registerMember',
+        options: ['expose' => true],
+        methods: ['POST'],
+    )]
     #[IsGranted('ADD_MEMBER', 'secretSanta')]
     public function registerFromSecret(
         SecretSanta $secretSanta,
@@ -52,19 +57,24 @@ class SecretSantaController extends AbstractController
         return $this->json(Member::fromMember($member));
     }
 
-    #[Route('/secret-santa/{secretId}/delete/member/{secretSantaMember}', name: 'deleteMember', methods: ['DELETE'])]
+    #[Route(
+        path: '/secret-santa/{secretSanta}/delete/member/{member}',
+        name: 'deleteMember',
+        options: ['expose' => true],
+        methods: ['DELETE'],
+    )]
     public function deleteMember(
-        SecretSanta      $secretId,
-        EntityMember     $secretSantaMember,
+        SecretSanta      $secretSanta,
+        EntityMember     $member,
         MemberRepository $secretSantaMemberRepository,
         LoggerInterface  $logger,
     ): JsonResponse {
-        if ($secretId->getId() !== $secretSantaMember->getSecretSanta()->getId()) {
+        if ($secretSanta->getId() !== $member->getSecretSanta()->getId()) {
             return new JsonResponse(['error' => 'Member not found in this secret santa'], Response::HTTP_NOT_FOUND);
         }
 
         try {
-            $secretSantaMemberRepository->delete($secretSantaMember);
+            $secretSantaMemberRepository->delete($member);
 
             return new JsonResponse(null, Response::HTTP_OK);
         } catch (Throwable $e) {
@@ -73,16 +83,27 @@ class SecretSantaController extends AbstractController
         }
     }
 
-    #[Route('/secret-santa/{id}/members', name: 'members', methods: ['GET'])]
+    #[Route(
+        path: '/secret-santa/{id}/members',
+        name: 'members',
+        options: ['expose' => true],
+        methods: ['GET'],
+    )]
     public function members(SecretSanta $secretSanta): JsonResponse
     {
+        dd('voir si c\'est utilisé');
         $members = $secretSanta->getMembers()->toArray();
         Assertion::allIsInstanceOf($members, EntityMember::class);
 
         return $this->json(Members::fromEntity($members)); // @phpmd ignore StaticAccess
     }
 
-    #[Route('/secret-santa', name: 'newSecret', options: ['expose' => true], methods: ['POST'])]
+    #[Route(
+        path: '/secret-santa',
+        name: 'newSecret',
+        options: ['expose' => true],
+        methods: ['POST'],
+    )]
     public function newSecret(
         #[MapRequestPayload] NewSecretSantaDTO $secretSantaDTO,
         SecretSantaRepository $secretSantaRepository,
