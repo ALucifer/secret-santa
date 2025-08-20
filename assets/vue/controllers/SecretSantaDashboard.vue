@@ -5,7 +5,7 @@
         Une erreur est survenu
       </div>
     </transition>
-    <div class="flex flex-wrap gap-2">
+    <div class="md:flex flex-wrap gap-2 grid grid-cols-2">
       <MemberItem
         v-for="member in members"
         :key="member.id"

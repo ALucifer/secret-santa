@@ -8,7 +8,7 @@
 {% block body %}
     <div class="middle gap-2">
         {% block flash_messages %}{% endblock %}
-        <div class="container{% if block('information') is not defined %} container--small{% endif %}">
+        <div class="container gap-4{% if block('information') is not defined %} container--small{% endif %}">
             <div class="container__content{% if block('information') is not defined %} container__content--small{% endif %}">
                 {% block content %}{% endblock %}
             </div>

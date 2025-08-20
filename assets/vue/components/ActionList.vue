@@ -10,7 +10,7 @@
         <MoneyIcon />
       </template>
     </ActionItem>
-    <ActionItem label="Evenement / Sortie" @click="currentAction = 'event'">
+    <ActionItem label="Evenement" @click="currentAction = 'event'">
       <template #icon>
         <CalendarIcon />
       </template>
