@@ -4,11 +4,15 @@
 - [ ] check les templates de mail
   - [x] Nouveau membre
 - [ ] template mobile
-  - [ ] home
-  - [ ] login
-  - [ ] register
-  - [ ] mot de passe oublié
-  - [ ] profile a completer
+  - [x] home
+  - [x] login
+  - [x] register
+  - [x] mot de passe oublié
+  - [x] profile a completer
+  - [x] secret santa
+  - [x] profile
+  - [ ] ma liste de cadeau
+  - [ ] mon santa
 - [x] voir pourquoi la création d'un secret santa ne fonctionne plus
 - [x] Corriger les erreurs JS/TS
 - [x] Voir si à la connexion d'un nouveau member il propose le pseudo et le mot de passe à changer

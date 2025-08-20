@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineModel } from "vue";
+import { computed } from "vue";
 
 const { type = 'text', invalid, showActions = true } = defineProps<{
   type?: string,

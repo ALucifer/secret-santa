@@ -6,6 +6,14 @@
   width: 100%;
   height: 100%;
 
+  @media (width < 55rem) {
+    flex-direction: column-reverse;
+    justify-content: center;
+    gap: 16px;
+    padding: 16px;
+    height: inherit;
+  }
+
   .incomplete_profile {
     display: flex;
     flex-direction: column;
@@ -14,6 +22,21 @@
     border-radius: 5px;
     width: 500px;
     height: 250px;
+
+    @media only screen
+    and (min-width: 64rem)
+    and (max-width: 85.375rem)
+    and (orientation: landscape) {
+      height: auto;
+      width: 400px;
+      padding: 16px;
+    }
+
+    @media (width < 55rem) {
+      height: auto;
+      width: 350px;
+      padding: 16px;
+    }
 
     &__form {
       background-color: white;
@@ -43,4 +66,23 @@
   width: 100%;
   z-index: -1;
   clip-path: polygon(0 0, 55% 0, 45% 100%, 0% 100%);
+
+  @media (width < 55rem) {
+    clip-path: none;
+    transform: none;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+}
+
+.middle:has(.split-container) {
+  @media (width < 64rem) {
+    height: 100vh;
+  }
+  
+  @media (width < 48rem) {
+    height: calc(100vh - 50px);
+  }
 }

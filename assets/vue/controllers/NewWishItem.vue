@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col bg-stone-200 w-[600px] min-h-[150px] relative" v-if="total < 10">
+  <div class="flex flex-col bg-stone-200 w-[350px] sm:w-[600px] min-h-[150px] relative" v-if="total < 10">
     <ArrayLeftIcon
       v-if="currentAction"
       @click="currentAction = null"
@@ -71,7 +71,7 @@ onMounted(() => {
 
 async function handleSubmit(event: Event) {
   const {data, hasError} = await useFetch<Item>(
-      Routing.generate('newWish', {id: props.memberId}),
+      Routing.generate('newWish', { id: props.memberId }),
       {
         method: 'POST',
         body: JSON.stringify(event)

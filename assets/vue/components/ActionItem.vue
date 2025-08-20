@@ -6,7 +6,13 @@
 </template>
 
 <script setup lang="ts">
-const { reverse = false } = defineProps<{
+defineProps<{
   label: String,
 }>()
 </script>
+
+<style scoped>
+div {
+  font-size: 12px;
+}
+</style>
