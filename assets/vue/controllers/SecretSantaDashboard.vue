@@ -31,6 +31,7 @@ import DocumentTextIcon from "@app/icons/DocumentTextIcon.vue";
 import AppLink from "@app/components/global/AppLink.vue";
 import Tooltip from "@app/components/Tooltip.vue";
 import { computed, provide, ref } from "vue";
+import Routing from "fos-router";
 
 const props = defineProps<{
   santaId: number,
@@ -51,7 +52,7 @@ const { readCookie } = useCookie()
 async function deleteMember(id: number) {
   try {
     await fetch(
-      `/api/secret-santa/${props.santaId}/delete/member/${id}`,
+      Routing.generate('deleteMember', { secretSanta: props.santaId, member: id }),
       {
         method: 'DELETE',
         headers: {
@@ -72,15 +73,15 @@ async function deleteMember(id: number) {
 async function submit(event: { member: string }) {
   try {
     const response = await fetch(
-      `/api/secret-santa/${props.santaId}/register/member`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + readCookie('AUTH_TOKEN')
-          },
-          body: JSON.stringify({ email: event.member }),
-        }
+      Routing.generate('registerMember', { id: props.santaId }),
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + readCookie('AUTH_TOKEN')
+        },
+        body: JSON.stringify({ email: event.member }),
+      }
     )
 
     const newMember = await response.json()
