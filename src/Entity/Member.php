@@ -28,7 +28,7 @@ class Member
     /**
      * @var Collection<int, Wishitem> $wishItems
      */
-    #[ORM\OneToMany(targetEntity: Wishitem::class, mappedBy: 'member')]
+    #[ORM\OneToMany(targetEntity: Wishitem::class, mappedBy: 'member', cascade: ['remove'])]
     private Collection $wishItems;
 
     #[ORM\OneToOne(targetEntity: Member::class)]

@@ -4,7 +4,7 @@
         <h3>vous participez actuellement à l’édition du Secret Santa organisé par {{ planner.email }}</h3>
         <p class="introduction">L’idée est simple : faire plaisir de manière anonyme à un·e collègue ou camarade en lui offrant un petit cadeau.</p>
         <p>Vous avez été désigné·e pour gâter : {{ userEmail }} 🎉</p>
-        <p>Afin de vous guider dans votre choix, user1@test.com a préparé une liste de souhaits regroupant ses envies, idées de cadeaux. Cela vous permettra de trouver plus facilement quelque chose qui lui fera plaisir !</p>
+        <p>Afin de vous guider dans votre choix, {{ userEmail }} a préparé une liste de souhaits regroupant ses envies, idées de cadeaux. Cela vous permettra de trouver plus facilement quelque chose qui lui fera plaisir !</p>
         <p>👉 Voici le lien vers sa liste de souhaits : <a href="{{ santa_url(path('secret_santa_view', { id: secretSantaId }))}}">lien</a></p>
         <p>Bon shopping et amusez-vous bien dans ce jeu d’échange et de générosité !</p>
     </div>
