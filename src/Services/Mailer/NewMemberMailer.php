@@ -37,7 +37,7 @@ class NewMemberMailer
                 'user' => $user,
                 'authLink' => $this->loginLinkHandler->createLoginLink($user),
                 'secretSantaTitle' => $secretSanta->getLabel(),
-                'creator' => $secretSanta->getOwner()->getEmail()
+                'creator' => $secretSanta->getOwner()->getPseudo() ?? $secretSanta->getOwner()->getEmail()
             ]);
 
         try {
