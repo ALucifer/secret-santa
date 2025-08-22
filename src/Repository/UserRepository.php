@@ -8,6 +8,7 @@ use App\Security\Role;
 use App\Services\Request\DTO\NewMemberDTO;
 use Doctrine\Persistence\ManagerRegistry;
 use LogicException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -30,6 +31,7 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
         private MessageBusInterface $messageBus,
         private RequestStack $requestStack,
         private TokenStorageInterface $tokenStorage,
+        private LoggerInterface $logger,
     ) {
         parent::__construct($registry, User::class);
     }
@@ -106,8 +108,14 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
             $this->getEntityManager()->persist($user);
             $this->getEntityManager()->flush();
         } catch (Throwable $e) {
-            dd($e->getMessage());
+            $this->logger->error($e->getMessage());
         }
+    }
+
+    public function delete(User $user): void
+    {
+        $this->getEntityManager()->remove($user);
+        $this->getEntityManager()->flush();
     }
 
     public function updateAuthenticatedUser(User $user, bool $updatePassword): void

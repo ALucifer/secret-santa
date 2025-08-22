@@ -28,7 +28,6 @@ class SantaMailer
             ->context([
                 'userEmail' => $userEmail,
                 'planner' => $secretSanta->getOwner(),
-                'santaEmail' => $santaEmail,
                 'secretSantaId' => $secretSanta->getId(),
             ]);
 

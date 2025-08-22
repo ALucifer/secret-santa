@@ -67,16 +67,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Token> $tokens
      */
-    #[ORM\OneToMany(targetEntity: Token::class, mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: Token::class, mappedBy: 'user', cascade: ['remove'])]
     private Collection $tokens;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $lastActivity;
 
     #[ORM\Column(type: Types::STRING, length: 50, nullable: true)]
-    private ?string $pseudo;
+    private ?string $pseudo = null;
 
-    #[ORM\OneToMany(targetEntity: Member::class, mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: Member::class, mappedBy: 'user', cascade: ['remove'])]
     private Collection $participationSecretSantaHasMember;
 
     public function __construct()
