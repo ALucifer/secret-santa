@@ -6,7 +6,6 @@ use App\Factory\MemberFactory;
 use App\Factory\WishitemFactory;
 use App\Repository\WishItemRepository;
 use App\Tests\Helper\AbstractWebTestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
@@ -14,6 +13,7 @@ use Zenstruck\Foundry\Test\ResetDatabase;
 class WishControllerFunctionalTest extends AbstractWebTestCase
 {
     use ResetDatabase, Factories;
+
     protected function setUp(): void
     {
         parent::setUp();

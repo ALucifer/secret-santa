@@ -6,6 +6,7 @@ use App\Factory\SecretSantaFactory;
 use App\Factory\UserFactory;
 use App\Repository\UserRepository;
 use App\Security\Role;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
@@ -28,7 +29,7 @@ class UserControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $userTest = UserFactory::createOne([ 'isVerified' => true, 'roles' => [ Role::USER ] ]);
+        $userTest = UserFactory::createOne([ 'isVerified' => true, 'roles' => [ Role::USER ], 'pseudo' => 'pseudo' ]);
 
         $user = static::getContainer()->get(UserRepository::class)->find($userTest->getId());
 
@@ -39,11 +40,13 @@ class UserControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful();
     }
 
+    #[Group('panther')]
     public function testShouldAuthorizeButFailToCreateSecretSanta(): void
     {
+        $this->markTestSkipped('Need panther');
         $client = static::createClient();
 
-        $userTest = UserFactory::createOne([ 'isVerified' => true, 'roles' => [ Role::USER ] ]);
+        $userTest = UserFactory::createOne([ 'isVerified' => true, 'roles' => [ Role::USER ], 'pseudo' => 'pseudo' ]);
 
         $user = static::getContainer()->get(UserRepository::class)->find($userTest->getId());
 
@@ -70,8 +73,10 @@ class UserControllerTest extends WebTestCase
         }
     }
 
+    #[Group('panther')]
     public function testShouldCreateSecretSanta(): void
     {
+        $this->markTestSkipped('Need panther');
         $client = static::createClient();
 
         $userTest = UserFactory::createOne([ 'isVerified' => true, 'roles' => [ Role::USER ] ]);

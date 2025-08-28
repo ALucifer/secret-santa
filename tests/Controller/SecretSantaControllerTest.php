@@ -66,6 +66,7 @@ class SecretSantaControllerTest extends WebTestCase
             'password' => 'password',
             'roles' => [ Role::USER ],
             'isVerified' => true,
+            'pseudo' => 'pseudo'
         ]);
 
         MemberFactory::createOne([
@@ -128,6 +129,7 @@ class SecretSantaControllerTest extends WebTestCase
             'password' => 'password',
             'roles' => [ Role::USER ],
             'isVerified' => true,
+            'pseudo' => 'pseudo',
         ]);
 
         $secondMember = MemberFactory::createOne([
