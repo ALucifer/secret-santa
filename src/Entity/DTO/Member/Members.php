@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\DTO;
+namespace App\Entity\DTO\Member;
 
 use App\Entity\Member as EntityMember;
 

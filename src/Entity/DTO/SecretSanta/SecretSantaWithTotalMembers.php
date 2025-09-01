@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Entity\DTO;
+namespace App\Entity\DTO\SecretSanta;
 
 final class SecretSantaWithTotalMembers
 {

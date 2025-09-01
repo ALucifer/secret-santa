@@ -17,7 +17,7 @@
         />
         <component
           :is="WishMoney"
-          v-else
+          v-else-if="item.type === WishItemType.MONEY"
           v-bind="item.data"
           @remove="handleRemove(item.id)"
         />

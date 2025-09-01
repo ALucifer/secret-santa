@@ -2,14 +2,16 @@
 
 namespace App\Controller\API;
 
-use App\Entity\DTO\Member;
-use App\Entity\DTO\Members;
-use App\Entity\SecretSanta;
+use App\Entity\DTO\Member\Member;
+use App\Entity\DTO\Member\Members;
 use App\Entity\Member as EntityMember;
+use App\Entity\SecretSanta;
 use App\Entity\User;
 use App\Repository\MemberRepository;
 use App\Repository\SecretSantaRepository;
 use App\Repository\UserRepository;
+use App\Services\Factory\EntityDto\MemberFactoryInterface;
+use App\Services\Factory\EntityDto\SecretSantaFactoryInterface;
 use App\Services\Request\DTO\NewMemberDTO;
 use App\Services\Request\DTO\NewSecretSantaDTO;
 use Assert\Assertion;
@@ -40,10 +42,11 @@ class SecretSantaController extends AbstractController
         #[MapRequestPayload(validationFailedStatusCode: Response::HTTP_UNPROCESSABLE_ENTITY)] NewMemberDTO $newMemberDTO,
         UserRepository $userRepository,
         MemberRepository $secretSantaMemberRepository,
-        SecretSantaRepository $secretSantaRepository,
+        MemberFactoryInterface $memberFactory,
     ): JsonResponse
     {
         $user = $userRepository->findOneBy(['email' => $newMemberDTO->email]);
+
         if(!$user){
             try {
                 $user = $userRepository->createUserFromInvitation($newMemberDTO);
@@ -54,7 +57,7 @@ class SecretSantaController extends AbstractController
 
         $member = $secretSantaMemberRepository->create($secretSanta, $user);
 
-        return $this->json(Member::fromMember($member));
+        return $this->json($memberFactory->build($member));
     }
 
     #[Route(
@@ -89,13 +92,12 @@ class SecretSantaController extends AbstractController
         options: ['expose' => true],
         methods: ['GET'],
     )]
-    public function members(SecretSanta $secretSanta): JsonResponse
+    public function members(SecretSanta $secretSanta, MemberFactoryInterface $memberFactory): JsonResponse
     {
-        dd('voir si c\'est utilisé');
         $members = $secretSanta->getMembers()->toArray();
         Assertion::allIsInstanceOf($members, EntityMember::class);
 
-        return $this->json(Members::fromEntity($members)); // @phpmd ignore StaticAccess
+        return $this->json($memberFactory->buildCollection($members));
     }
 
     #[Route(
@@ -107,7 +109,7 @@ class SecretSantaController extends AbstractController
     public function newSecret(
         #[MapRequestPayload] NewSecretSantaDTO $secretSantaDTO,
         SecretSantaRepository $secretSantaRepository,
-        MemberRepository $secretSantaMemberRepository,
+        SecretSantaFactoryInterface $secretSantaFactory,
         Security $security
     ): JsonResponse
     {
@@ -136,8 +138,7 @@ class SecretSantaController extends AbstractController
         $secretSanta = $secretSantaRepository->create($secretSanta);
 
         return $this->json(
-            data: $secretSanta,
-            context: ['groups' => 'read'],
+            data: $secretSantaFactory->build($secretSanta),
         );
     }
 }
