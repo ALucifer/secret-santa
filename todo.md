@@ -27,8 +27,8 @@
 - [ ] Ne passer que par des DTO pour les objets exposé au front
   - [ ] Chaque DTO devra avoir une factory qui prendra en parametre l'entité en question
 - [ ] tests
-    - [ ] Création d'un nouveau membre + user lors de l'ajout sur un secret santa
-    - [ ] Création d'un nouveau membre quand le user existe deja
+    - [x] Création d'un nouveau membre + user lors de l'ajout sur un secret santa
+    - [x] Création d'un nouveau membre quand le user existe deja
     - [ ] Affichage et mise à jour d'un user qui se connecte pour la premiere fois
 - [ ] toutes les urls en /api doivent renvoyer du json
 - [ ] probleme lors de la soumission du formulaire d'un nouveau souhait
@@ -41,3 +41,6 @@
   - [ ] mettre un user par defaut pour les secret santa qu'il a créé
   - [x] supprimer les wishitem de ces membres
   - [x] supprimer les tokens
+- [ ] Passer les tests avec le group panther sous panther
+- [ ] Une task doit être liée à un membre
+- [ ] tache cron de suppression des task fini

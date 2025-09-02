@@ -7,6 +7,8 @@ use App\Factory\UserFactory;
 use App\Security\Role;
 use DateInterval;
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -33,9 +35,7 @@ class SecurityControllerTest extends WebTestCase
 
     }
 
-    /**
-     * @dataProvider formRegisterErrors
-     */
+    #[DataProvider('formRegisterErrors')]
     public function testShouldIndicateErrorOnRegisterForm(array $formValues, array $errorsMessage): void
     {
         $crawler = $this->client->request('GET', '/register');
@@ -71,9 +71,7 @@ class SecurityControllerTest extends WebTestCase
         $this->assertResponseRedirects('/login');
     }
 
-    /**
-     * @dataProvider urlsRedirectedToProfile
-     */
+    #[DataProvider('urlsRedirectedToProfile')]
     public function testShouldRedirectToProfile(string $url)
     {
         $this->getAuthenticatedClient();
@@ -239,10 +237,8 @@ class SecurityControllerTest extends WebTestCase
         );
     }
 
-    /**
-     * @dataProvider formForgotPasswordErrors
-     */
-    public function testShouldHandlerErrorsInForgotpassword(array $formValues, array $errorsExpected)
+    #[DataProvider('formForgotPasswordErrors')]
+    public function testShouldHandlerErrorsInForgotPassword(array $formValues, array $errorsExpected)
     {
         $crawler = $this->client->request('GET', '/forgot-password');
 
@@ -289,7 +285,7 @@ class SecurityControllerTest extends WebTestCase
         $this->stringContains('Mot de passe perdu ?', $email->toString());
     }
 
-    public function urlsRedirectedToProfile(): array
+    public static function urlsRedirectedToProfile(): array
     {
         return [
             ['/login'],
@@ -297,7 +293,7 @@ class SecurityControllerTest extends WebTestCase
         ];
     }
 
-    public function formRegisterErrors(): array
+    public static function formRegisterErrors(): array
     {
         return [
             [
@@ -340,7 +336,7 @@ class SecurityControllerTest extends WebTestCase
         ];
     }
 
-    public function formForgotPasswordErrors(): array
+    public static function formForgotPasswordErrors(): array
     {
         return [
             [

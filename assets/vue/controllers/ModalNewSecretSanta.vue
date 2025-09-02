@@ -1,6 +1,6 @@
 <template>
   <AppModal>
-    <form>
+    <form name="secret_santa">
       <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
         <div>
           <div class="mb-6">

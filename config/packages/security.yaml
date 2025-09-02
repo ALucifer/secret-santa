@@ -27,6 +27,7 @@ security:
             form_login:
                 login_path: app_login
                 check_path: app_login
+                default_target_path: user_profile
             login_link:
                 check_route: login_check
                 signature_properties: ['id', 'email']
