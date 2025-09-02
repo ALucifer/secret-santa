@@ -4,6 +4,7 @@
         <p>Afin de valider votre compte et d'ainsi avoir accès à notre site, merci de bien vouloir valider votre compte</p>
         <p>Le lien suivant vous permettra de valider votre compte et de vous connecter par la suite.</p>
         <a href="{{ santa_url(path('app_security_verifyemail', { 'token': token.token })) }}" class="button-validation">Valider mon compte</a>
+        <i>* Le lien n'est valable que pendant 30 minutes.</i>
     </div>
 </div>
 
@@ -37,6 +38,7 @@
         }
 
         i {
+            margin-top: 16px;
             font-size: 12px;
         }
 

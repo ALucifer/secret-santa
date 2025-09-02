@@ -1,8 +1,11 @@
 # TODO
 
-
 - [ ] check les templates de mail
-  - [x] Nouveau membre
+  - [x] Nouveau membre / invitation à un santa
+  - [x] Mot de passe oublié
+  - [x] Account validation
+  - [x] Découverte du santa
+  - [ ] Les factory doivent être reset à la fin de chaque commande
 - [ ] template mobile
   - [x] home
   - [x] login
@@ -17,7 +20,7 @@
 - [x] Corriger les erreurs JS/TS
 - [x] Voir si à la connexion d'un nouveau member il propose le pseudo et le mot de passe à changer
   - [x] voir pourquoi on ne peut plus ajouter de membre
-- [ ] Exposer toutes les routes d'api pour passer par le router "maison"
+- [x] Exposer toutes les routes d'api pour passer par le router "maison"
 - [ ] passer en composant global
   - [ ] input
   - [ ] button
@@ -28,3 +31,13 @@
     - [ ] Création d'un nouveau membre quand le user existe deja
     - [ ] Affichage et mise à jour d'un user qui se connecte pour la premiere fois
 - [ ] toutes les urls en /api doivent renvoyer du json
+- [ ] probleme lors de la soumission du formulaire d'un nouveau souhait
+  -  le probleme est que quand on récupére l'etat de la task, on a pas le contenu de la task
+- [ ] changement de mot de passe
+  -  [ ] verifier que le token ne soit bien valide que 30 minutes, si invalide alos lors de l'arriver sur la page on renvoit vers mot de passe oublié
+- [ ] Que se passe-t-il si la personne ne valide pas son email à temps ?
+- [ ] Quand on supprime un user il faut
+  - [x] supprimer où il est membre
+  - [ ] mettre un user par defaut pour les secret santa qu'il a créé
+  - [x] supprimer les wishitem de ces membres
+  - [x] supprimer les tokens
