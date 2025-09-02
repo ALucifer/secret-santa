@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\DTO\Pagination;
 use App\Entity\SecretSanta;
 use App\Entity\User;
+use App\Services\Factory\EntityDto\SecretSantaFactoryInterface;
 use App\Services\Request\DTO\PaginationDTO;
 use App\Services\Transformer\PaginateSecretSantaTransformer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -20,7 +21,7 @@ class SecretSantaRepository extends ServiceEntityRepository
     public function __construct(
         ManagerRegistry $registry,
         private LoggerInterface $logger,
-        private readonly PaginateSecretSantaTransformer $paginateSecretSantaTransformer,
+        private readonly SecretSantaFactoryInterface $secretSantaFactory,
     ) {
         parent::__construct($registry, SecretSanta::class);
     }
@@ -68,7 +69,7 @@ class SecretSantaRepository extends ServiceEntityRepository
 
         return new Pagination(
             total: $total,
-            items: $this->paginateSecretSantaTransformer->transformAll($query->getQuery()->getArrayResult()),
+            items: $this->secretSantaFactory->buildWithTotalMembers($query->getQuery()->getArrayResult()),
             pages: (int) ceil($total / $paginationDTO->limit),
             currentPage: $paginationDTO->page ,queryParam:
             $paginationDTO->queryParam,
@@ -97,7 +98,7 @@ class SecretSantaRepository extends ServiceEntityRepository
 
         return new Pagination(
             total: $total,
-            items: $this->paginateSecretSantaTransformer->transformAll($query->getQuery()->getArrayResult()),
+            items: $this->secretSantaFactory->buildWithTotalMembers($query->getQuery()->getArrayResult()),
             pages: (int) ceil($total / $paginationDTO->limit),
             currentPage: $paginationDTO->page ,queryParam:
             $paginationDTO->queryParam,

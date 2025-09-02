@@ -2,14 +2,15 @@
 
 namespace App\Controller;
 
-use App\Entity\DTO\Members;
-use App\Entity\SecretSanta;
 use App\Entity\Member;
+use App\Entity\SecretSanta;
 use App\MessageHandler\SantaHandler\Santa;
 use App\Repository\MemberRepository;
 use App\Repository\SecretSantaRepository;
+use App\Services\Factory\EntityDto\MemberFactoryInterface;
+use App\Services\Factory\EntityDto\SecretSantaFactoryInterface;
+use App\Services\Factory\EntityDto\WishItemFactoryInterface;
 use App\Services\RandomizeCollection;
-use Random\Randomizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -22,6 +23,12 @@ use Symfony\Component\Workflow\WorkflowInterface;
 #[IsGranted('ROLE_USER')]
 class SecretSantaController extends AbstractController
 {
+    public function __construct(
+        private readonly SecretSantaFactoryInterface $secretSantaFactory,
+        private readonly MemberFactoryInterface $memberFactory,
+    ) {
+    }
+
     #[Route('/secret-santa/{id}', name: 'secret_santa_view', options: ['expose' => true])]
     #[IsGranted('SHOW', 'secretSanta')]
     public function view(
@@ -41,8 +48,8 @@ class SecretSantaController extends AbstractController
         return $this->render(
             'secret-santa/view.html.twig',
             [
-                'secretSanta' => $secretSanta,
-                'members' => Members::fromEntity($members->getValues()),
+                'secretSanta' => $this->secretSantaFactory->build($secretSanta),
+                'members' => $this->memberFactory->buildCollection($members->getValues()),
             ],
         );
     }
@@ -56,14 +63,14 @@ class SecretSantaController extends AbstractController
     public function memberList(
         SecretSanta $secretSanta,
         Member $secretSantaMember,
-        NormalizerInterface $normalizer
+        WishItemFactoryInterface $wishItemFactory,
     ): Response {
         return $this->render(
             'secret-santa/member-wishlist.html.twig',
             [
-                'member' => $secretSantaMember,
-                'secretSanta' => $secretSanta,
-                'whishItems' => $normalizer->normalize($secretSantaMember->getWishItems()->toArray(), 'json', ['groups' => 'default'])
+                'member' => $this->memberFactory->buildWithUserInformations($secretSantaMember),
+                'secretSanta' => $this->secretSantaFactory->build($secretSanta),
+                'wishItems' => $wishItemFactory->buildCollection($secretSantaMember->getWishItems()->toArray()),
             ]
         );
     }

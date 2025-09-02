@@ -30,7 +30,7 @@
                 </svg>
             </a>
             <h3 class="mx-auto">{{ secretSanta.label }}</h3>
-            {% if secretSanta.canBeStarted and workflow_can(secretSanta, 'to_started') %}
+            {% if secretSanta.workflow.canBeStarted %}
                 <div {{ vue_component('OpenModal', { modalId: 'modalConfirmation'}) }}></div>
             {% endif %}
         </div>
@@ -40,7 +40,7 @@
                 'SecretSantaDashboard',
                 {
                     santaId: secretSanta.id,
-                    isOwner: secretSanta.owner.id == app.user.id,
+                    isOwner: secretSanta.ownerId == app.user.id,
                     authenticatedUserEmail: app.user.email,
                     data: members
                 }

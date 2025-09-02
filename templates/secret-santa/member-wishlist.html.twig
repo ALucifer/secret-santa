@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Liste de souhaite de {{ member.user.email }} pour le secret santa {{ secretSanta.label }}
+    Liste de souhaite de {{ member.email }} pour le secret santa {{ secretSanta.label }}
 {% endblock %}
 
 {% block javascripts %}
@@ -22,7 +22,7 @@
 
 
 {% block body %}
-    <div {{ vue_component('WishList', { items: whishItems }) }}></div>
-    <div {{ vue_component('NewWishItem', { memberId: member.id, wishCount: whishItems|length }) }}></div>
+    <div {{ vue_component('WishList', { items: wishItems }) }}></div>
+    <div {{ vue_component('NewWishItem', { memberId: member.id, wishCount: wishItems|length }) }}></div>
 {% endblock %}
 

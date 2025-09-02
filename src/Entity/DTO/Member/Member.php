@@ -1,23 +1,18 @@
 <?php
 
-namespace App\Entity\DTO;
+namespace App\Entity\DTO\Member;
 
 use App\Entity\Member as EntityMember;
 use LogicException;
 
-readonly class Member
+final readonly class Member
 {
-    /**
-     * @param int $id
-     * @param string $email
-     * @param bool $invitationAccepted
-     */
-    private function __construct(
+    public function __construct(
         public int $id,
         public string $email,
         public bool $invitationAccepted,
-        public ?int $secretSantaId,
-        public ?int $userId,
+        public int $secretSantaId,
+        public int $userId,
     ) {
     }
 
