@@ -19,6 +19,9 @@ class Task
     #[Groups('read')]
     private State $state;
 
+    #[Orm\Column(type: 'datetime_immutable', nullable: false)]
+    private \DateTimeImmutable $createdAt;
+
     /** @var array<mixed>  */
     #[ORM\Column(type: Types::JSON)]
     private array $data;
@@ -60,6 +63,18 @@ class Task
     public function setData(array $data): self
     {
         $this->data = $data;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }
