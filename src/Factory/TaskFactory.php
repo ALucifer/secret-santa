@@ -11,10 +11,6 @@ use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
  */
 final class TaskFactory extends PersistentProxyObjectFactory
 {
-    public function __construct()
-    {
-    }
-
     public static function class(): string
     {
         return Task::class;
@@ -25,6 +21,7 @@ final class TaskFactory extends PersistentProxyObjectFactory
         return [
             'data' => [],
             'state' => State::PENDING,
+            'created_at' => new \DateTimeImmutable(),
         ];
     }
 
