@@ -10,7 +10,7 @@
       class="text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
     >
     <slot v-if="showActions" name="action">
-      <button @click="$emit('send')">Ok</button>
+      <AppButton @click="$emit('send')">Ok</AppButton>
     </slot>
   </div>
 </template>

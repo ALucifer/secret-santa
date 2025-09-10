@@ -9,12 +9,12 @@
       class="profile__menu">
       <ul>
         <li>
-          <button
+          <AppButton
             @click="openModal"
             class="cursor-pointer hover:text-white"
           >
             Nouveau secret santa
-          </button>
+          </AppButton>
         </li>
       </ul>
     </div>
