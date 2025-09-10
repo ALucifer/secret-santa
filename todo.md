@@ -24,6 +24,12 @@
 - [ ] Passer les tests avec le group panther sous panther
 - [ ] Une task doit être liée à un membre
 - [ ] tache cron de suppression des task fini
+- [ ] CI/CD sur github. A voir si phpstan et phpmd ne se font pas opposition
+  - [ ] phpstan
+  - [ ] phpcs
+  - [ ] phpunit
+  - [ ] panther
+  - [ ] phpmd
 
 # Done
 
