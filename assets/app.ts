@@ -19,6 +19,16 @@ document.addEventListener('vue:before-mount', (e) => {
         app, // The Vue application instance
     } = event.detail;
 
-    app.use(pinia)
+    const modules = import.meta.glob('./vue/components/global/**/*.vue', { eager: true })
+
+    for (const path in modules) {
+        const component = (modules[path] as any).default
+        const baseName = path.split('/').pop()?.replace(/\.\w+$/, '')
+
+        if (baseName && component) {
+            app.component(baseName, component)
+        }
     }
-)
+
+    app.use(pinia)
+})
