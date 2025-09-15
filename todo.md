@@ -1,3 +1,5 @@
+# WIP
+
 # TODO
 
 - [ ] template mobile
@@ -6,8 +8,6 @@
 - [ ] passer en composant global
   - [ ] input
   - [ ] button
-- [ ] Ne passer que par des DTO pour les objets exposé au front
-  - [ ] Chaque DTO devra avoir une factory qui prendra en parametre l'entité en question
 - [ ] tests
     - [ ] Affichage et mise à jour d'un user qui se connecte pour la premiere fois
 - [ ] toutes les urls en /api doivent renvoyer du json
@@ -15,7 +15,8 @@
   -  le probleme est que quand on récupére l'etat de la task, on a pas le contenu de la task
 - [ ] changement de mot de passe
   -  [ ] verifier que le token ne soit bien valide que 30 minutes, si invalide alos lors de l'arriver sur la page on renvoit vers mot de passe oublié
-- [ ] Que se passe-t-il si la personne ne valide pas son email à temps ?
+- [ ] Voir si à la connexion on indique bien que le user est vérifié
+
 - [ ] Quand on supprime un user il faut
   - [x] supprimer où il est membre
   - [ ] mettre un user par defaut pour les secret santa qu'il a créé
@@ -23,7 +24,6 @@
   - [x] supprimer les tokens
 - [ ] Passer les tests avec le group panther sous panther
 - [ ] Une task doit être liée à un membre
-- [ ] tache cron de suppression des task fini
 - [ ] CI/CD sur github. A voir si phpstan et phpmd ne se font pas opposition
   - [ ] phpstan
   - [ ] phpcs
@@ -59,3 +59,7 @@
     - [x] supprimer où il est membre
     - [x] supprimer les wishitem de ces membres
     - [x] supprimer les tokens
+- [x] Ne passer que par des DTO pour les objets exposé au front
+    - [x] Chaque DTO devra avoir une factory qui prendra en parametre l'entité en question
+- [x] tache cron de suppression des task fini
+- [x] Que se passe-t-il si la personne ne valide de nouvelle invitation pas son email à temps ?

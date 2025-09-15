@@ -32,6 +32,7 @@ security:
                 check_route: login_check
                 signature_properties: ['id', 'email']
                 lifetime: 3600
+                failure_handler: App\Security\Authentication\LoginLinkFailureHandler
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 

@@ -46,7 +46,6 @@ class SecretSantaController extends AbstractController
     ): JsonResponse
     {
         $user = $userRepository->findOneBy(['email' => $newMemberDTO->email]);
-
         if(!$user){
             try {
                 $user = $userRepository->createUserFromInvitation($newMemberDTO);

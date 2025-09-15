@@ -39,6 +39,7 @@ class MailerNewMemberCommand extends Command
             $owner->_delete();
 
             $io->success('Your email has been sent.');
+            $io->warning('Connexion link cannot work, user has been delete.');
 
             return Command::SUCCESS;
         } catch (\Throwable $e) {
