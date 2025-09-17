@@ -30,6 +30,8 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
         opcache \
         zip \
         pdo_pgsql \
+        pdo_mysql \
+        mysqli \
         pgsql \
     && docker-php-ext-enable amqp \
     && rm -rf /tmp/* /var/list/apt/* /var/lib/apt/lists/* \

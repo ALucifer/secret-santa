@@ -53,23 +53,45 @@ services:
       - ./:/var/www/html
 
   database:
-    image: postgres:${POSTGRES_VERSION:-16}-alpine
+    image: mysql:8.0
     container_name: secretesanta_db
     environment:
-      POSTGRES_DB: app
-      POSTGRES_PASSWORD: "password"
-      POSTGRES_USER: user
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: app
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "pg_isready", "-d", "app", "-U", "app"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-ppassword"]
+      interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 60s
+      start_period: 30s
     networks:
       - secretSanta
     ports:
-      - "5432:5432"
+      - "3306:3306"
+  database_test:
+    image: mysql:8.0
+    container_name: secretesanta_db_test
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: app
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
     volumes:
-      - db_data:/var/lib/postgresql/data:rw
+      - db_data_test:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-ppassword" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - secretSanta
+    ports:
+      - "3307:3306"
   ###> symfony/mailer ###
   mailer:
     image: axllent/mailpit
@@ -110,3 +132,4 @@ networks:
 
 volumes:
   db_data:
+  db_data_test:
