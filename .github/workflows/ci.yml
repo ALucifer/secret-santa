@@ -1,0 +1,67 @@
+name: ci.yml
+on:
+  push:
+    branches: ["*"]
+
+jobs:
+  phpunit:
+    name: phpunit
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: app
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+        # Le port n'est pas nécessaire pour la communication inter-conteneurs, mais utile pour le debug local
+        ports: [ "3306:3306" ]
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    env:
+      APP_ENV: test
+      DATABASE_URL: mysql://user:password@127.0.0.1:3306/app?serverVersion=8.0
+      JWT_SECRET_KEY: '%kernel.project_dir%/config/jwt/private.pem'
+      JWT_PUBLIC_KEY: '%kernel.project_dir%/config/jwt/public.pem'
+      JWT_PASSPHRASE: ''
+      HOST: 'localhost'
+      MESSENGER_TRANSPORT_DSN: doctrine://default?auto_setup=0
+    steps:
+      - uses: actions/checkout@master
+      - name: PHP setup
+        uses: ./.github/actions/php
+      - name: Generate JWT keys
+        run: |
+          php bin/console lexik:jwt:generate-keypair --overwrite
+      - name: Run migrations
+        run: bin/console doctrine:migrations:migrate --no-interaction
+      - name: Run PHPUnit (host PHP)
+        run: vendor/bin/phpunit --colors=always
+  phpcs:
+    name: phpcs
+    runs-on: ubuntu-latest
+    needs: phpunit
+    steps:
+      - uses: actions/checkout@master
+      - name: PHP setup
+        uses: ./.github/actions/php
+      - name: phpcs
+        uses: docker://jakzal/phpqa:php8.3-alpine
+        with:
+          args: phpcs src
+  phpmd:
+    name: phpmd
+    runs-on: ubuntu-latest
+    needs: phpunit
+    steps:
+      - uses: actions/checkout@master
+      - name: PHP setup
+        uses: ./.github/actions/php
+      - name: phpcs
+        uses: docker://jakzal/phpqa:php8.3-alpine
+        with:
+          args: phpmd src/ text phpmd.xml

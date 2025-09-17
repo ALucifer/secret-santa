@@ -1,0 +1,15 @@
+name: "PHP"
+description: "Installe PHP, dépendances"
+runs:
+  using: "composite"
+  steps:
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 8.3
+        extensions: mbstring, xml, ctype, iconv, intl, pdo, pdo_mysql, dom, filter, gd, json
+    - name: Install dependencies
+      uses: php-actions/composer@v6
+      with:
+        php_version: 8.3
+        php_extensions: pdo_mysql
