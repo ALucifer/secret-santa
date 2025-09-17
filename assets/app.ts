@@ -1,10 +1,7 @@
-import { registerVueControllerComponents } from '@symfony/ux-vue';
 import './bootstrap.js';
 import './styles/app.css';
 import './styles/application.scss'
 import { createPinia } from "pinia";
-
-registerVueControllerComponents(require.context('./vue/controllers', true, /\.vue$/));
 
 const pinia = createPinia()
 

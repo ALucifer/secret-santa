@@ -8,12 +8,18 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&display=swap" rel="stylesheet">
         {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-            {{ encore_entry_link_tags('menu') }}
+            {{ vite_entry_link_tags('app') }}
+            {{ vite_entry_link_tags('menu') }}
         {% endblock %}
 
+        <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+        {# Injecte les routes (serveur) directement, pas besoin d'importer un JSON #}
+        <script src="{{ path('fos_js_routing_js', { callback: 'Routing.setRoutingData' }) }}"></script>
         {% block javascripts %}
+            {{ vite_entry_script_tags('app') }}
+            {{ vite_entry_script_tags('menu') }}
         {% endblock %}
+
     </head>
     <body>
         {{ render_esi(url('esi_menu')) }}

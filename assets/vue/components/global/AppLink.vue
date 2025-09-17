@@ -5,10 +5,6 @@
 </template>
 
 <script setup lang="ts">
-import Routing from 'fos-router'
-
 const props = defineProps<{ routeName: string, parameters?: any }>()
-
-const link = Routing.generate(props.routeName, props.parameters, true)
-console.log(link)
+const link = (window as any).Routing.generate(props.routeName, props.parameters ?? {}, true)
 </script>
