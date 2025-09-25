@@ -32,6 +32,7 @@ import AppModal from "@app/components/global/AppModal.vue";
 import { Options, useFetch } from "@app/composables/useFetch";
 import { SecretSanta } from "@app/types";
 import AppInput from "@app/components/global/form/AppInput.vue";
+import Routing from "@js/routing";
 
 const form = reactive({
   label: '',
@@ -45,7 +46,7 @@ async function handleSubmit()
   }
 
   const { hasError, data } = await useFetch<SecretSanta>(
-    (window as any).Routing.generate('newSecret'),
+    Routing.generate('newSecret'),
     {
       method: 'POST',
       body: JSON.stringify(form),
@@ -54,7 +55,7 @@ async function handleSubmit()
 
 
   if (!hasError.value) {
-    window.location.href = (window as any).Routing.generate('secret_santa_view', { id: data.value?.id })
+    window.location.href = Routing.generate('secret_santa_view', { id: data.value?.id })
   }
 }
 </script>

@@ -38,7 +38,7 @@ import Spinner from "@app/icons/Spinner.vue";
 import { TaskResponse, WishItemType } from "@app/types";
 import { onMounted, ref, watch } from "vue";
 import { useFetch } from "@app/composables/useFetch";
-import Routing from "fos-router";
+import Routing from "@js/routing";
 import {useTaskStore} from "@app/stores/task";
 
 const props = defineProps<{ type: WishItemType, taskId: number }>()

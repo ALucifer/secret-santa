@@ -27,7 +27,7 @@ export default defineConfig({
     },
     build: {
         manifest: true,
-        emptyOutDir: true,
+        emptyOutDir: false,
         rollupOptions: {
             input: {
                 app: "./assets/app.ts",

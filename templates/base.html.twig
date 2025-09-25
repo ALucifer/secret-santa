@@ -12,14 +12,13 @@
             {{ vite_entry_link_tags('menu') }}
         {% endblock %}
 
-        <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
-        {# Injecte les routes (serveur) directement, pas besoin d'importer un JSON #}
-        <script src="{{ path('fos_js_routing_js', { callback: 'Routing.setRoutingData' }) }}"></script>
         {% block javascripts %}
             {{ vite_entry_script_tags('app') }}
             {{ vite_entry_script_tags('menu') }}
         {% endblock %}
 
+        <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.min.js', 'static') }}"></script>
+        <script type="text/javascript" src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     </head>
     <body>
         {{ render_esi(url('esi_menu')) }}

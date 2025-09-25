@@ -31,7 +31,7 @@ import DocumentTextIcon from "@app/icons/DocumentTextIcon.vue";
 import AppLink from "@app/components/global/AppLink.vue";
 import Tooltip from "@app/components/Tooltip.vue";
 import { computed, provide, ref } from "vue";
-import Routing from "fos-router";
+import Routing from "@js/routing"
 
 const props = defineProps<{
   santaId: number,

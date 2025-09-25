@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "ES2020",
     "module": "ESNext",
     "strict": true,                     // ✅ recommandé pour profiter de l'inférence de types
     "jsx": "preserve",
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "esModuleInterop": true,
     "allowJs": true,
     "baseUrl": "./assets",
@@ -12,7 +12,7 @@
       "@app/*": ["./vue/*"],
       "@js/*": ["./js/*"],
     },
-    "types": ["vue"],
+    "types": ["vue", "vite/client"],
     "skipLibCheck": true,              // ✅ évite les erreurs dans node_modules
     "allowSyntheticDefaultImports": true, // ✅ pour import Vue proprement
     "useDefineForClassFields": true,    // ✅ nécessaire pour certaines features Vue 3

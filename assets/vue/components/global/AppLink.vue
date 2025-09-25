@@ -5,6 +5,8 @@
 </template>
 
 <script setup lang="ts">
+import Routing from "@js/routing";
+
 const props = defineProps<{ routeName: string, parameters?: any }>()
-const link = (window as any).Routing.generate(props.routeName, props.parameters ?? {}, true)
+const link = Routing.generate(props.routeName, props.parameters ?? {}, true)
 </script>

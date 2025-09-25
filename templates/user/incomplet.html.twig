@@ -5,10 +5,14 @@
     {{ vite_entry_link_tags('profile-incomplet') }}
 {% endblock %}
 
+{% block javascripts %}
+    {{ vite_entry_script_tags('profile-incomplet') }}
+{% endblock %}
+
 {% block body %}
     <div class="split-container">
         <div>
-            <img src="{{ asset('build/images/home.762418e2.jpeg') }}" alt="" class="split-image">
+            <img src="{{ asset('assets/images/home.jpeg', 'vite') }}" alt="" class="split-image">
             <div class="incomplete_profile incomplete_profile__form">
                 {% set label = 'Information requis.' %}
                 {% if 2 < (form|length) %}
