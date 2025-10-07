@@ -3,9 +3,6 @@
 - [ ] template mobile
   - [ ] ma liste de cadeau
   - [ ] mon santa
-- [ ] passer en composant global
-  - [ ] input
-  - [ ] button
 - [ ] Ne passer que par des DTO pour les objets exposé au front
   - [ ] Chaque DTO devra avoir une factory qui prendra en parametre l'entité en question
 - [ ] tests
@@ -23,7 +20,7 @@
   - [x] supprimer les tokens
 - [ ] Passer les tests avec le group panther sous panther
 - [ ] Une task doit être liée à un membre
-- [ ] tache cron de suppression des task fini
+- [x] tache cron de suppression des task fini
 - [ ] CI/CD sur github. A voir si phpstan et phpmd ne se font pas opposition
   - [ ] phpstan
   - [ ] phpcs
@@ -59,3 +56,6 @@
     - [x] supprimer où il est membre
     - [x] supprimer les wishitem de ces membres
     - [x] supprimer les tokens
+- [x] passer en composant global
+    - [x] input
+    - [x] button

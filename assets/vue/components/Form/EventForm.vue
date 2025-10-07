@@ -15,16 +15,15 @@
         v-model="form.date"
       />
     </div>
-    <button
+    <AppButton
       @click="handleSubmit"
       class="size-[100px] text-center vertical-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs bg-teal-600 hover:bg-teal-500 sm:ml-3 cursor-pointer"
-    >Ajouter</button>
+    >Ajouter</AppButton>
   </div>
 </template>
 
 <script setup lang="ts">
-import {reactive, ref} from "vue";
-import AppInput from "@app/components/global/form/AppInput.vue";
+import { reactive, ref } from "vue";
 import { WishItemForm, WishItemType } from "@app/types";
 
 const stateForm = ref({
