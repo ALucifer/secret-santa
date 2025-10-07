@@ -32,7 +32,7 @@ import GiftForm from "@app/components/Form/GiftForm.vue";
 import ArrayLeftIcon from "@app/icons/ArrayLeftIcon.vue";
 import { computed, onMounted, ref } from "vue";
 import { Options, useFetch } from "@app/composables/useFetch";
-import Routing from 'fos-router'
+import Routing from '@js/routing'
 import { useTaskStore } from "@app/stores/task";
 import { useWishStore } from "@app/stores/wish";
 import {storeToRefs} from "pinia";

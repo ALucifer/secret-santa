@@ -2,7 +2,12 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {{ encore_entry_link_tags('security') }}
+    {{ vite_entry_link_tags('security') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ vite_entry_script_tags('security') }}
 {% endblock %}
 
 {% block body %}

@@ -6,7 +6,11 @@ framework:
     session: true
     router:
         default_uri: '%env(HOST)%'
-
+    assets:
+      packages:
+        vite:
+          version_strategy: 'Pentatrion\ViteBundle\Asset\ViteAssetVersionStrategy'
+        static: ~   # aucun versioning, servi tel quel par Symfony
     #esi: true
     #fragments: true
 

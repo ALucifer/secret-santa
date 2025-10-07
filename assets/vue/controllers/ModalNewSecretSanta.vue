@@ -29,10 +29,10 @@
 <script setup lang="ts">
 import { reactive } from "vue"
 import AppModal from "@app/components/global/AppModal.vue";
-import Routing from "fos-router";
 import { Options, useFetch } from "@app/composables/useFetch";
 import { SecretSanta } from "@app/types";
 import AppInput from "@app/components/global/form/AppInput.vue";
+import Routing from "@js/routing";
 
 const form = reactive({
   label: '',

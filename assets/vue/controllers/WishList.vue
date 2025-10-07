@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import Routing from "fos-router";
+import Routing from "@js/routing";
 import WishGift from "@app/components/Wish/WishGift.vue";
 import WishMoney from "@app/components/Wish/WishMoney.vue";
 import WishEvent from "@app/components/Wish/WishEvent.vue";

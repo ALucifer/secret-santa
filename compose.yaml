@@ -48,7 +48,10 @@ services:
   node:
     container_name: secretesanta_node
     image: node:20
+    ports:
+      - 5173:5173
     working_dir: /var/www/html
+    command: sh -lc "npm install && npm run dev"
     volumes:
       - ./:/var/www/html
 
