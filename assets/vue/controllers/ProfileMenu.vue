@@ -10,7 +10,7 @@
       <ul>
         <li>
           <AppButton
-            @click="openModal"
+            @press="open('new-secret-santa')"
             class="cursor-pointer hover:text-white"
           >
             Nouveau secret santa
@@ -19,22 +19,14 @@
       </ul>
     </div>
   </div>
-
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useModalStore } from "@app/stores/modal";
 
 const showMenu = ref(false)
-
-function openModal() {
-  const modal = document.querySelector('[role="dialog"]')
-
-  if (modal) {
-    showMenu.value = false
-    modal.classList.remove('hidden')
-  }
-}
+const { open } = useModalStore()
 
 const vClickOutside = {
   mounted: (el: HTMLElement) => {
