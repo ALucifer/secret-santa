@@ -39,15 +39,16 @@ class SecretSantaController extends AbstractController
     #[IsGranted('ADD_MEMBER', 'secretSanta')]
     public function registerFromSecret(
         SecretSanta $secretSanta,
-        #[MapRequestPayload(validationFailedStatusCode: Response::HTTP_UNPROCESSABLE_ENTITY)] NewMemberDTO $newMemberDTO,
+        #[MapRequestPayload(
+            validationFailedStatusCode: Response::HTTP_UNPROCESSABLE_ENTITY,
+        )] NewMemberDTO $newMemberDTO,
         UserRepository $userRepository,
         MemberRepository $secretSantaMemberRepository,
         MemberFactoryInterface $memberFactory,
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $user = $userRepository->findOneBy(['email' => $newMemberDTO->email]);
 
-        if(!$user){
+        if (!$user) {
             try {
                 $user = $userRepository->createUserFromInvitation($newMemberDTO);
             } catch (\Throwable $e) {
@@ -67,10 +68,10 @@ class SecretSantaController extends AbstractController
         methods: ['DELETE'],
     )]
     public function deleteMember(
-        SecretSanta      $secretSanta,
-        EntityMember     $member,
+        SecretSanta $secretSanta,
+        EntityMember $member,
         MemberRepository $secretSantaMemberRepository,
-        LoggerInterface  $logger,
+        LoggerInterface $logger,
     ): JsonResponse {
         if ($secretSanta->getId() !== $member->getSecretSanta()->getId()) {
             return new JsonResponse(['error' => 'Member not found in this secret santa'], Response::HTTP_NOT_FOUND);
@@ -111,8 +112,7 @@ class SecretSantaController extends AbstractController
         SecretSantaRepository $secretSantaRepository,
         SecretSantaFactoryInterface $secretSantaFactory,
         Security $security
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $user = $security->getUser();
 
         if (!$user instanceof User) {

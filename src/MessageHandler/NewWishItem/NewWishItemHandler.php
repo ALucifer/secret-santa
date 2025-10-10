@@ -1,4 +1,5 @@
 <?php
+
 namespace App\MessageHandler\NewWishItem;
 
 use App\Entity\State;
@@ -25,9 +26,9 @@ class NewWishItemHandler
      */
     public function __construct(
         private WishItemRepository $repository,
-        private MemberRepository   $memberRepository,
-        private TaskRepository     $taskRepository,
-        private LoggerInterface    $logger,
+        private MemberRepository $memberRepository,
+        private TaskRepository $taskRepository,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -91,10 +92,12 @@ class NewWishItemHandler
                 $data['url'],
                 [
                     'headers' => [
+                        // phpcs:disable
                         'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
                         'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
                         'Accept-Language' => 'fr-FR,fr;q=0.9',
                         'Referer' => 'https://www.google.com',
+                        // phpcs:enable
                     ],
                 ]
             );
@@ -110,23 +113,34 @@ class NewWishItemHandler
             $wishItemMember->setData([ ...$wishItemMember->getData()]);
 
             if ($ogNameTitle->count() > 0) {
-                $wishItemMember->setData([ ...$wishItemMember->getData(), 'title' => $ogNameTitle->first()->attr('content')]);
+                $wishItemMember->setData([
+                    ...$wishItemMember->getData(),
+                    'title' => $ogNameTitle->first()->attr('content'),
+                ]);
             }
 
             if ($ogPropertyTitle->count() > 0) {
-                $wishItemMember->setData([ ...$wishItemMember->getData(), 'title' => $ogPropertyTitle->first()->attr('content')]);
+                $wishItemMember->setData([
+                    ...$wishItemMember->getData(),
+                    'title' => $ogPropertyTitle->first()->attr('content'),
+                ]);
             }
 
             if ($ogNameImage->count() > 0) {
-                $wishItemMember->setData([ ...$wishItemMember->getData(), 'image' => $ogNameImage->first()->attr('content')]);
+                $wishItemMember->setData([
+                    ...$wishItemMember->getData(),
+                    'image' => $ogNameImage->first()->attr('content'),
+                ]);
             }
 
             if ($ogPropertyImage->count() > 0) {
-                $wishItemMember->setData([ ...$wishItemMember->getData(), 'image' => $ogPropertyImage->first()->attr('content')]);
+                $wishItemMember->setData([
+                    ...$wishItemMember->getData(),
+                    'image' => $ogPropertyImage->first()->attr('content'),
+                ]);
             }
         } catch (Throwable $e) {
             $this->logger->error($e->getMessage());
         }
-
     }
 }

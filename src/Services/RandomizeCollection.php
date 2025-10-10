@@ -6,7 +6,7 @@ use Random\Randomizer;
 
 class RandomizeCollection
 {
-    public function randomizeCollection(array $collection)
+    public function randomizeCollection(array $collection): array
     {
         $randomizer = new Randomizer();
 
@@ -19,7 +19,6 @@ class RandomizeCollection
                     break;
                 }
             }
-
         } while (!$valid);
 
         return $shuffled;

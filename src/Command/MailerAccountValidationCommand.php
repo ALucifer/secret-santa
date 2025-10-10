@@ -19,7 +19,7 @@ class MailerAccountValidationCommand extends Command
 {
     public function __construct(
         private readonly AccountValidationMailer $mailer,
-        private readonly TokenRepository         $tokenRepository,
+        private readonly TokenRepository $tokenRepository,
     ) {
         parent::__construct();
     }
@@ -44,6 +44,5 @@ class MailerAccountValidationCommand extends Command
             $io->error($e->getMessage());
             return Command::FAILURE;
         }
-
     }
 }

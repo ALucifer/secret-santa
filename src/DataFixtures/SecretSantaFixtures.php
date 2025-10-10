@@ -22,11 +22,10 @@ class SecretSantaFixtures extends Fixture implements DependentFixtureInterface
         $random = new Randomizer();
 
         for ($i = 0; $i < 15; $i++) {
-
             $secretSanta = new SecretSanta();
             $secretSanta
                 ->setOwner(
-                    $random->getInt(0,1) === 1
+                    $random->getInt(0, 1) === 1
                         ? $this->getReference(UserFixtures::DEFAULT_USER, User::class)
                         : $this->getReference(UserFixtures::CURRENT_USER, User::class)
                 )

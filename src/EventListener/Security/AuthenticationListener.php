@@ -5,15 +5,9 @@ namespace App\EventListener\Security;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Security\Role;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\ResponseEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
 
@@ -65,9 +59,10 @@ class AuthenticationListener
     {
         $response = $event->getResponse();
 
-        if (!$response) return;
+        if (!$response) {
+            return;
+        }
 
         $response->headers->clearCookie(self::AUTH_COOKIE);
     }
-
 }

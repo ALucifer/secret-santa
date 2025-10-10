@@ -20,7 +20,7 @@ class MailerForgotPasswordCommand extends Command
 {
     public function __construct(
         private readonly ForgotPasswordMailer $mailer,
-        private readonly TokenRepository      $tokenRepository,
+        private readonly TokenRepository $tokenRepository,
     ) {
         parent::__construct();
     }

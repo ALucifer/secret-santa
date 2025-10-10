@@ -55,7 +55,7 @@ class WishController extends AbstractMessengerController
     public function newWish(
         Member $member,
         #[ValueResolver('wish_value')] NewWishItem $newWishItem,
-        TaskRepository                             $taskRepository,
+        TaskRepository $taskRepository,
     ): JsonResponse {
 
         $task = new Task();

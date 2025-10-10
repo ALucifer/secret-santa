@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class WishEventValidator extends ConstraintValidator
 {
-
     /**
      * @param array{ date: string, name: string } $value
      * @param Constraint $constraint

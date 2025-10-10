@@ -43,7 +43,8 @@ class SecretSantaController extends AbstractController
                     }
 
                     return $member->getState() === 'approved';
-                });
+                }
+            );
 
         return $this->render(
             'secret-santa/view.html.twig',
@@ -82,17 +83,24 @@ class SecretSantaController extends AbstractController
     )]
     #[IsGranted('START', 'secretSanta')]
     public function start(
-        SecretSanta           $secretSanta,
-        WorkflowInterface     $secret_workflow,
+        SecretSanta $secretSanta,
+        WorkflowInterface $secret_workflow,
         SecretSantaRepository $secretSantaRepository,
-        MemberRepository      $secretSantaMemberRepository,
-        RandomizeCollection   $randomizeCollection,
-        MessageBusInterface   $messageBus
+        MemberRepository $secretSantaMemberRepository,
+        RandomizeCollection $randomizeCollection,
+        MessageBusInterface $messageBus
     ): Response {
         try {
             $secret_workflow->apply($secretSanta, 'to_started');
 
-            $members = $secretSanta->getMembers()->filter(function (Member $member) { return $member->getState() === 'approved'; })->getValues();
+            $members = $secretSanta
+                ->getMembers()
+                ->filter(
+                    function (Member $member) {
+                        return $member->getState() === 'approved';
+                    }
+                )
+                ->getValues();
             $shuffled = $randomizeCollection->randomizeCollection($members);
 
             foreach ($members as $key => $member) {

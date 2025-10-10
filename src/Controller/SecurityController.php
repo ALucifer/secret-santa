@@ -110,8 +110,7 @@ class SecurityController extends AbstractController
         UserRepository $userRepository,
     ): ?Response {
 
-        if (!$tokenExtractor->isValid())
-        {
+        if (!$tokenExtractor->isValid()) {
             $this->addFlash('error', 'LIEN INVALIDE.');
             return $this->redirectToRoute('app_login');
         }

@@ -2,7 +2,6 @@
 
 namespace App\MessageHandler\RegisterNotification;
 
-
 use App\Repository\TokenRepository;
 use App\Repository\UserRepository;
 use App\Services\Mailer\AccountValidationMailer;
