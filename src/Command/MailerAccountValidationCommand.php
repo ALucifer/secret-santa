@@ -19,14 +19,14 @@ class MailerAccountValidationCommand extends Command
 {
     public function __construct(
         private readonly AccountValidationMailer $mailer,
-        private readonly TokenRepository         $tokenRepository,
+        private readonly TokenRepository $tokenRepository,
     ) {
         parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
+        $outputStyle = new SymfonyStyle($input, $output);
 
         try {
             $user = UserFactory::createOne();
@@ -35,15 +35,14 @@ class MailerAccountValidationCommand extends Command
             $token = $this->tokenRepository->createRegisterToken($realUser);
 
             $this->mailer->sendAccountValidationMail($realUser, $token);
-            $io->success('Your email has been sent.');
+            $outputStyle->success('Your email has been sent.');
 
             $user->_delete();
 
             return Command::SUCCESS;
         } catch (\Throwable $e) {
-            $io->error($e->getMessage());
+            $outputStyle->error($e->getMessage());
             return Command::FAILURE;
         }
-
     }
 }

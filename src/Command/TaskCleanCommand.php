@@ -4,7 +4,6 @@ namespace App\Command;
 
 use App\Entity\State;
 use App\Repository\TaskRepository;
-use DateInterval;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -27,16 +26,16 @@ class TaskCleanCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
+        $outputStyle = new SymfonyStyle($input, $output);
 
-        $dateLimit = (new \DateTimeImmutable('NOW'))->sub(DateInterval::createFromDateString('7 days'));
+        $dateLimit = (new \DateTimeImmutable('NOW'))->sub(\DateInterval::createFromDateString('7 days'));
 
-        $tasks = $this->taskRepository->findByStatesAndDate(states: [State::SUCCESS->value, State::FAILURE->value], date: $dateLimit);
-
+        $tasks = $this->taskRepository
+            ->findByStatesAndDate(states: [State::SUCCESS->value, State::FAILURE->value], date: $dateLimit);
 
         try {
             foreach ($tasks as $task) {
-                $io->info(
+                $outputStyle->info(
                     sprintf('Cleaning task "%s"', $task->getId()),
                 );
                 $this->taskRepository->delete($task, true);
@@ -44,14 +43,14 @@ class TaskCleanCommand extends Command
 
             $this->entityManager->flush();
 
-            $io->success(
+            $outputStyle->success(
                 sprintf('Cleaned %s tasks successfully.', count($tasks)),
             );
 
             return Command::SUCCESS;
         } catch (\Throwable $e) {
             $this->entityManager->clear();
-            $io->error($e->getMessage());
+            $outputStyle->error($e->getMessage());
 
             return Command::FAILURE;
         }

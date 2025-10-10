@@ -16,21 +16,24 @@ final class MemberFactory implements MemberFactoryInterface
             id: $member->getId() ?? throw new \LogicException('Member cannot be created without a member ID.'),
             email: $member->getUser()->getEmail(),
             invitationAccepted: $member->getState() === 'approved',
-            secretSantaId: $member->getSecretSanta()->getId() ?? throw new \LogicException('Member cannot be created without a secret santa ID.'),
-            userId: $member->getUser()->getId() ?? throw new \LogicException('Member cannot be created without a user ID.'),
+            secretSantaId: $member->getSecretSanta()->getId()
+                ?? throw new \LogicException('Member cannot be created without a secret santa ID.'),
+            userId: $member->getUser()->getId()
+                ?? throw new \LogicException('Member cannot be created without a user ID.'),
         );
     }
 
     public function buildWithUserInformations(Member $member): MemberWishUserInformationsDto
     {
         return new MemberWishUserInformationsDto(
-            id: $member->getId() ?? throw new \LogicException('Member with user informations cannot be created without a member ID.'),
+            id: $member->getId()
+                ?? throw new \LogicException('Member with user informations cannot be created without a member ID.'),
             email: $member->getUser()->getEmail(),
         );
     }
 
     public function buildCollection(array $members): array
     {
-        return array_map(fn(Member $member) => $this->build($member), $members);
+        return array_map(fn (Member $member) => $this->build($member), $members);
     }
 }

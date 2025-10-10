@@ -31,9 +31,9 @@ class PaginationResolver implements ValueResolverInterface
         $page = sprintf('%spage', $prefixPagination->prefix);
 
         yield new PaginationDTO(
-                $request->query->getInt($page, 1),
-                $prefixPagination->limit,
-                $page
-            );
+            $request->query->getInt($page, 1),
+            $prefixPagination->limit,
+            $page
+        );
     }
 }

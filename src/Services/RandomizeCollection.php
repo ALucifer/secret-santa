@@ -6,20 +6,19 @@ use Random\Randomizer;
 
 class RandomizeCollection
 {
-    public function randomizeCollection(array $collection)
+    public function randomizeCollection(array $collection): array
     {
         $randomizer = new Randomizer();
 
         do {
             $shuffled = $randomizer->shuffleArray($collection);
             $valid = true;
-            for ($i = 0; $i < count($shuffled); $i++) {
+            for ($i = 0; $i < \count($shuffled); $i++) {
                 if ($shuffled[$i] === $collection[$i]) {
                     $valid = false;
                     break;
                 }
             }
-
         } while (!$valid);
 
         return $shuffled;

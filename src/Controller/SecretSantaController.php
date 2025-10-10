@@ -9,14 +9,12 @@ use App\Repository\MemberRepository;
 use App\Repository\SecretSantaRepository;
 use App\Services\Factory\EntityDto\MemberFactoryInterface;
 use App\Services\Factory\EntityDto\SecretSantaFactoryInterface;
-use App\Services\Factory\EntityDto\WishItemFactoryInterface;
 use App\Services\RandomizeCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Workflow\Exception\LogicException;
 use Symfony\Component\Workflow\WorkflowInterface;
 
@@ -43,7 +41,8 @@ class SecretSantaController extends AbstractController
                     }
 
                     return $member->getState() === 'approved';
-                });
+                }
+            );
 
         return $this->render(
             'secret-santa/view.html.twig',
@@ -55,44 +54,30 @@ class SecretSantaController extends AbstractController
     }
 
     #[Route(
-        path: '/secret-santa/{secretSanta}/members/{secretSantaMember}/wishlist',
-        name: 'secret_santa_member_wishlist',
-        options: ['expose' => true],
-    )]
-    #[IsGranted('SHOW', 'secretSantaMember')]
-    public function memberList(
-        SecretSanta $secretSanta,
-        Member $secretSantaMember,
-        WishItemFactoryInterface $wishItemFactory,
-    ): Response {
-        return $this->render(
-            'secret-santa/member-wishlist.html.twig',
-            [
-                'member' => $this->memberFactory->buildWithUserInformations($secretSantaMember),
-                'secretSanta' => $this->secretSantaFactory->build($secretSanta),
-                'wishItems' => $wishItemFactory->buildCollection($secretSantaMember->getWishItems()->toArray()),
-            ]
-        );
-    }
-
-    #[Route(
         path: '/secret-santa/{id}/start',
         name: 'secret_santa_start',
         methods: ['POST', 'GET'],
     )]
     #[IsGranted('START', 'secretSanta')]
     public function start(
-        SecretSanta           $secretSanta,
-        WorkflowInterface     $secret_workflow,
+        SecretSanta $secretSanta,
+        WorkflowInterface $secretWorkflow,
         SecretSantaRepository $secretSantaRepository,
-        MemberRepository      $secretSantaMemberRepository,
-        RandomizeCollection   $randomizeCollection,
-        MessageBusInterface   $messageBus
+        MemberRepository $secretSantaMemberRepository,
+        RandomizeCollection $randomizeCollection,
+        MessageBusInterface $messageBus
     ): Response {
         try {
-            $secret_workflow->apply($secretSanta, 'to_started');
+            $secretWorkflow->apply($secretSanta, 'to_started');
 
-            $members = $secretSanta->getMembers()->filter(function (Member $member) { return $member->getState() === 'approved'; })->getValues();
+            $members = $secretSanta
+                ->getMembers()
+                ->filter(
+                    function (Member $member) {
+                        return $member->getState() === 'approved';
+                    }
+                )
+                ->getValues();
             $shuffled = $randomizeCollection->randomizeCollection($members);
 
             foreach ($members as $key => $member) {

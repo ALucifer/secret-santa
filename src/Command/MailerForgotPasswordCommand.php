@@ -20,14 +20,14 @@ class MailerForgotPasswordCommand extends Command
 {
     public function __construct(
         private readonly ForgotPasswordMailer $mailer,
-        private readonly TokenRepository      $tokenRepository,
+        private readonly TokenRepository $tokenRepository,
     ) {
         parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
+        $outputStyle = new SymfonyStyle($input, $output);
 
         $user = UserFactory::createOne();
         $realUser = $user->_real();
@@ -38,11 +38,11 @@ class MailerForgotPasswordCommand extends Command
             $this->mailer->send($realUser, $token);
             $user->_delete();
 
-            $io->success('Your email has been sent.');
+            $outputStyle->success('Your email has been sent.');
 
             return Command::SUCCESS;
         } catch (\Throwable $e) {
-            $io->error($e->getMessage());
+            $outputStyle->error($e->getMessage());
 
             return Command::FAILURE;
         }

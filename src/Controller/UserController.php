@@ -27,7 +27,7 @@ class UserController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function profile(
         #[PrefixPagination(prefix: 'user_')] PaginationDTO $paginationUserDTO,
-        #[PrefixPagination(prefix: 'inv_')] PaginationDTO  $paginationInvitedDTO,
+        #[PrefixPagination(prefix: 'inv_')] PaginationDTO $paginationInvitedDTO,
     ): Response {
         $user = $this->getUser();
 
@@ -38,8 +38,10 @@ class UserController extends AbstractController
         return $this->render(
             'user/profile.html.twig',
             [
-                'userItems' => $this->secretSantaRepository->findPaginatedUserSecretsSanta($user, $paginationUserDTO),
-                'invitedSecretSantas' => $this->secretSantaRepository->findPaginatedUserInvitedInSecretSanta($user, $paginationInvitedDTO),
+                'userItems' =>
+                    $this->secretSantaRepository->findPaginatedUserSecretsSanta($user, $paginationUserDTO),
+                'invitedSecretSantas' =>
+                    $this->secretSantaRepository->findPaginatedUserInvitedInSecretSanta($user, $paginationInvitedDTO),
             ],
         );
     }

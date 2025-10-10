@@ -33,11 +33,7 @@ class UserRequirementsHandler
             if ($item->supports($user)) {
                 $flag = $item->getFlag();
 
-                if (is_array($flag)) {
-                    $requirements->addMany($flag);
-                } else {
-                    $requirements->add($flag);
-                }
+                is_array($flag) ? $requirements->addMany($flag) : $requirements->add($flag);
             }
         }
 

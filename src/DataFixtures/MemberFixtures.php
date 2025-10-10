@@ -13,8 +13,8 @@ use Random\Randomizer;
 class MemberFixtures extends Fixture implements DependentFixtureInterface
 {
     public function __construct(
-      private SecretSantaRepository $secretSantaRepository,
-      private UserRepository $userRepository
+        private SecretSantaRepository $secretSantaRepository,
+        private UserRepository $userRepository
     ) {
     }
 

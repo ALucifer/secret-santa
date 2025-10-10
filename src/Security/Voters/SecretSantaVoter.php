@@ -49,7 +49,8 @@ class SecretSantaVoter extends Voter
             ->filter(
                 function (Member $member) use ($userAuthenticated) {
                     return $member->getUser()->getId() === $userAuthenticated->getId();
-                });
+                }
+            );
 
 
 

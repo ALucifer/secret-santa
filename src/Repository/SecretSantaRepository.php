@@ -53,7 +53,13 @@ class SecretSantaRepository extends ServiceEntityRepository
                 'ss.label as label',
                 'ss.state as state',
             ])
-            ->addSelect("(select count(m.id) from App\Entity\Member m where m.secretSanta = ss and (ss.state <> 'started' or (ss.state = 'started' and m.state <> 'wait_approval'))) as total")
+            ->addSelect("
+                (
+                    select count(m.id) 
+                    from App\Entity\Member m 
+                    where m.secretSanta = ss 
+                    and (ss.state <> 'started' or (ss.state = 'started' and m.state <> 'wait_approval'))
+                ) as total")
             ->leftJoin('ss.members', 'ssm')
             ->groupBy('ss')
             ->where('ss.owner != :user')
@@ -71,7 +77,8 @@ class SecretSantaRepository extends ServiceEntityRepository
             total: $total,
             items: $this->secretSantaFactory->buildWithTotalMembers($query->getQuery()->getArrayResult()),
             pages: (int) ceil($total / $paginationDTO->limit),
-            currentPage: $paginationDTO->page ,queryParam:
+            currentPage: $paginationDTO->page,
+            queryParam:
             $paginationDTO->queryParam,
         );
     }
@@ -85,7 +92,12 @@ class SecretSantaRepository extends ServiceEntityRepository
                 'ss.label as label',
                 'ss.state as state',
             ])
-            ->addSelect("(select count(m.id) from App\Entity\Member m where m.secretSanta = ss and (ss.state <> 'started' or (ss.state = 'started' and m.state <> 'wait_approval'))) as total")
+            ->addSelect("(
+                select count(m.id) 
+                from App\Entity\Member m 
+                where m.secretSanta = ss 
+                and (ss.state <> 'started' or (ss.state = 'started' and m.state <> 'wait_approval'))
+            ) as total")
             ->groupBy('ss')
             ->where('ss.owner = :user')
             ->setParameter('user', $user)
@@ -100,7 +112,8 @@ class SecretSantaRepository extends ServiceEntityRepository
             total: $total,
             items: $this->secretSantaFactory->buildWithTotalMembers($query->getQuery()->getArrayResult()),
             pages: (int) ceil($total / $paginationDTO->limit),
-            currentPage: $paginationDTO->page ,queryParam:
+            currentPage: $paginationDTO->page,
+            queryParam:
             $paginationDTO->queryParam,
         );
     }

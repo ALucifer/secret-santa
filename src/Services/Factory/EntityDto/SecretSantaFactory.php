@@ -17,7 +17,8 @@ final class SecretSantaFactory implements SecretSantaFactoryInterface
             id: $secretSanta->getId() ?? throw new \LogicException('Secret santa cannot be created without an ID.'),
             label: $secretSanta->getLabel(),
             state: $secretSanta->getState()->value,
-            ownerId: $secretSanta->getOwner()->getId() ?? throw new \LogicException('Secret santa cannot be created without an owner ID.'),
+            ownerId: $secretSanta->getOwner()->getId()
+                ?? throw new \LogicException('Secret santa cannot be created without an owner ID.'),
             workflow: new SecretSantaWorkflow(
                 canBeStarted: $secretSanta->canBeStarted(),
             )

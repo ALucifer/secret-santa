@@ -24,7 +24,7 @@ class MailerShowSantaCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
+        $outputStyle = new SymfonyStyle($input, $output);
 
         try {
             $secretSanta = SecretSantaFactory::createOne();
@@ -37,11 +37,11 @@ class MailerShowSantaCommand extends Command
 
             $secretSanta->_delete();
 
-            $io->success('Your email has been sent.');
+            $outputStyle->success('Your email has been sent.');
 
             return Command::SUCCESS;
         } catch (\Throwable $e) {
-            $io->error($e->getMessage());
+            $outputStyle->error($e->getMessage());
 
             return Command::FAILURE;
         }

@@ -9,7 +9,6 @@ use App\Entity\Wishitem;
 
 final class WishItemFactory implements WishItemFactoryInterface
 {
-
     public function build(Wishitem $wishItem): WishItemDto
     {
         return new WishItemDto(
@@ -21,6 +20,6 @@ final class WishItemFactory implements WishItemFactoryInterface
 
     public function buildCollection(array $wishItems): array
     {
-        return array_map(fn(Wishitem $wishItem) => $this->build($wishItem), $wishItems);
+        return array_map(fn (Wishitem $wishItem) => $this->build($wishItem), $wishItems);
     }
 }

@@ -10,9 +10,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class WishEventValidator extends ConstraintValidator
 {
-
     /**
      * @param array{ date: string, name: string } $value
      * @param Constraint $constraint

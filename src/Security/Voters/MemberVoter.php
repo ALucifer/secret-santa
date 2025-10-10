@@ -58,8 +58,10 @@ class MemberVoter extends Voter
                         return false;
                     }
 
-                    return $user->getId() === $itemMember->getUser()->getId() && $itemMember->getSanta()->getId() === $member->getId();
-                })
+                    return $user->getId() === $itemMember->getUser()->getId()
+                        && $itemMember->getSanta()->getId() === $member->getId();
+                }
+            )
             ->first();
 
         return $user->getId() === $member->getUser()->getId() || $isSanta;

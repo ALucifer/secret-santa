@@ -21,6 +21,9 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 #[AsTaggedItem(index: 'wish_value', priority: 150)]
 class WishValueResolver implements ValueResolverInterface
 {
