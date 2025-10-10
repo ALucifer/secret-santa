@@ -14,8 +14,7 @@ class SantaHandler
         private SecretSantaRepository $secretSantaRepository,
         private MemberRepository $secretSantaMemberRepository,
         private SantaMailer $mailer,
-    )
-    {
+    ) {
     }
 
     public function __invoke(

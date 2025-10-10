@@ -9,7 +9,6 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-
 class WishMoneyValidator extends ConstraintValidator
 {
     /**

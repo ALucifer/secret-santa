@@ -18,7 +18,6 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\PasswordStrength;
 
-
 #[
     ORM\Entity(repositoryClass: UserRepository::class),
     ORM\Table(name: '`user`'),

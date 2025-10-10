@@ -14,8 +14,7 @@ class TokenExtractor
     public function __construct(
         private RequestStack $requestStack,
         private TokenRepository $tokenRepository,
-    )
-    {
+    ) {
         $request = $this->requestStack->getCurrentRequest();
 
         $tokenFromQuery = $request->query->getString('token');

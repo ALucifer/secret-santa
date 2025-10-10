@@ -31,8 +31,8 @@ class TaskCleanCommand extends Command
 
         $dateLimit = (new \DateTimeImmutable('NOW'))->sub(DateInterval::createFromDateString('7 days'));
 
-        $tasks = $this->taskRepository->findByStatesAndDate(states: [State::SUCCESS->value, State::FAILURE->value], date: $dateLimit);
-
+        $tasks = $this->taskRepository
+            ->findByStatesAndDate(states: [State::SUCCESS->value, State::FAILURE->value], date: $dateLimit);
 
         try {
             foreach ($tasks as $task) {

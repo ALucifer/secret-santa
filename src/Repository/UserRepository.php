@@ -58,7 +58,12 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
             $this->getEntityManager()->persist($user);
             $this->getEntityManager()->flush();
 
-            $this->messageBus->dispatch(new RegisterNotification($user->getId() ?? throw new LogicException('User id must be defined')));
+            $this->messageBus
+                ->dispatch(
+                    new RegisterNotification(
+                        $user->getId() ?? throw new LogicException('User id must be defined')
+                    )
+                );
         } catch (\Throwable $e) {
             /** @var Session $session */
             $session = $this->requestStack->getSession();

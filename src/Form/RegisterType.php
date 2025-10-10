@@ -29,7 +29,8 @@ class RegisterType extends AbstractType
                     ]
                 ]
             )
-            ->add('password',
+            ->add(
+                'password',
                 RepeatedType::class,
                 [
                     'label' => false,
