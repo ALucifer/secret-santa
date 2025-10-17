@@ -28,6 +28,6 @@ class AppExtension extends AbstractExtension
      */
     public function getSantaUrl(string $path): string
     {
-      return $this->host . $path;
+        return $this->host . $path;
     }
 }

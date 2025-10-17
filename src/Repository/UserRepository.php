@@ -4,10 +4,8 @@ namespace App\Repository;
 
 use App\Entity\User;
 use App\MessageHandler\RegisterNotification\RegisterNotification;
-use App\Security\Role;
 use App\Services\Request\DTO\NewMemberDTO;
 use Doctrine\Persistence\ManagerRegistry;
-use LogicException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -18,20 +16,21 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
-use Throwable;
 
 /**
  * @extends AbstractRepository<User>
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class UserRepository extends AbstractRepository implements PasswordUpgraderInterface
 {
     public function __construct(
         ManagerRegistry $registry,
-        private UserPasswordHasherInterface $passwordHasher,
-        private MessageBusInterface $messageBus,
-        private RequestStack $requestStack,
-        private TokenStorageInterface $tokenStorage,
-        private LoggerInterface $logger,
+        private readonly UserPasswordHasherInterface $passwordHasher,
+        private readonly MessageBusInterface $messageBus,
+        private readonly RequestStack $requestStack,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly LoggerInterface $logger,
     ) {
         parent::__construct($registry, User::class);
     }
@@ -58,7 +57,12 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
             $this->getEntityManager()->persist($user);
             $this->getEntityManager()->flush();
 
-            $this->messageBus->dispatch(new RegisterNotification($user->getId() ?? throw new LogicException('User id must be defined')));
+            $this->messageBus
+                ->dispatch(
+                    new RegisterNotification(
+                        $user->getId() ?? throw new \LogicException('User id must be defined')
+                    )
+                );
         } catch (\Throwable $e) {
             /** @var Session $session */
             $session = $this->requestStack->getSession();
@@ -81,33 +85,12 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
         return $user;
     }
 
-    /**
-     * @param User $user
-     * @param array{password: string} $data
-     * @return User
-     * @todo: remove this
-     */
-    public function verifyMember(User $user, array $data): User
-    {
-        $hashPassword = $this->passwordHasher->hashPassword($user, $data['password']);
-
-        $user
-            ->setPassword($hashPassword)
-            ->setIsVerified(true)
-            ->setRoles([Role::USER]);
-
-        $this->getEntityManager()->persist($user);
-        $this->getEntityManager()->flush();
-
-        return $user;
-    }
-
     public function update(User $user): void
     {
         try {
             $this->getEntityManager()->persist($user);
             $this->getEntityManager()->flush();
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             $this->logger->error($e->getMessage());
         }
     }

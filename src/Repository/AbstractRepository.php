@@ -18,6 +18,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
     */
     public function findOneByOrFail(array $criteria, ?array $orderBy = null): object
     {
-        return $this->findOneBy($criteria, $orderBy) ?? throw new NotFoundHttpException(sprintf('%s not found.', $this->getEntityName()));
+        return $this->findOneBy($criteria, $orderBy)
+            ?? throw new NotFoundHttpException(sprintf('%s not found.', $this->getEntityName()));
     }
 }

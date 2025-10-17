@@ -16,7 +16,8 @@ class TaskController extends AbstractController
         '/tasks/{id}',
         name: 'task',
         options: ['expose' => true],
-        methods: ['GET']),
+        methods: ['GET']
+    ),
     ]
     public function task(
         Task $task,

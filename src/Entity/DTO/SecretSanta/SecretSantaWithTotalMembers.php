@@ -7,10 +7,10 @@ namespace App\Entity\DTO\SecretSanta;
 final class SecretSantaWithTotalMembers
 {
     public function __construct(
-      public int $id,
-      public string $label,
-      public string $state,
-      public int $totalMembers,
+        public int $id,
+        public string $label,
+        public string $state,
+        public int $totalMembers,
     ) {
     }
 }

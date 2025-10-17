@@ -18,8 +18,6 @@ class BypassUserRequirementsListener
             return;
         }
 
-        $attribute = $attributes[0];
-
         $event->stopPropagation();
     }
 }

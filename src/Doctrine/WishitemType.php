@@ -8,7 +8,6 @@ use Doctrine\DBAL\Types\Type;
 
 class WishitemType extends Type
 {
-
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return "wishitem_enum";

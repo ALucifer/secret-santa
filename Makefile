@@ -91,6 +91,9 @@ phpmd:
 phpcs:
 	$(CCODE) phpcs src
 
+phpcs-fixer:
+	$(CCODE) php-cs-fixer fix --verbose --allow-risky=yes src
+
 phpunit:
 	$(CCODE) phpunit
 
