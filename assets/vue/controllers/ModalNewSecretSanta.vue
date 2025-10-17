@@ -1,5 +1,5 @@
 <template>
-  <AppModal>
+  <AppModal name="new-secret-santa">
     <form name="secret_santa">
       <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
         <div>
@@ -18,7 +18,7 @@
         <AppButton type="submit" @click="handleSubmit" class="inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs bg-teal-600 hover:bg-teal-500 sm:ml-3 sm:w-auto cursor-pointer">
           Ajouter
         </AppButton>
-        <AppButton type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-200 sm:mt-0 sm:w-auto cursor-pointer" data-modal-cancel>
+        <AppButton type="button" @press="close('new-secret-santa')" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-200 sm:mt-0 sm:w-auto cursor-pointer">
           Cancel
         </AppButton>
       </div>
@@ -33,6 +33,9 @@ import { Options, useFetch } from "@app/composables/useFetch";
 import { SecretSanta } from "@app/types";
 import AppInput from "@app/components/global/form/AppInput.vue";
 import Routing from "@js/routing";
+import { useModalStore } from "@app/stores/modal";
+
+const { close } = useModalStore()
 
 const form = reactive({
   label: '',
