@@ -1,0 +1,44 @@
+{
+  "base": "/__cypress/src/",
+  "entryPoints": {
+    "app": {
+      "js": [
+        "http://localhost:5173/__cypress/src/assets/app.ts"
+      ]
+    },
+    "menu": {
+      "js": [
+        "http://localhost:5173/__cypress/src/assets/menu.js"
+      ]
+    },
+    "security": {
+      "js": [
+        "http://localhost:5173/__cypress/src/assets/security.js"
+      ]
+    },
+    "profile": {
+      "js": [
+        "http://localhost:5173/__cypress/src/assets/profile.js"
+      ]
+    },
+    "modal": {
+      "js": [
+        "http://localhost:5173/__cypress/src/assets/modal.js"
+      ]
+    },
+    "profile-incomplet": {
+      "js": [
+        "http://localhost:5173/__cypress/src/assets/profile-incomplet.js"
+      ]
+    }
+  },
+  "legacy": false,
+  "metadatas": {},
+  "version": [
+    "8.2.2",
+    8,
+    2,
+    2
+  ],
+  "viteServer": "http://localhost:5173"
+}

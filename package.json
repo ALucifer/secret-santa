@@ -6,6 +6,7 @@
         "@symfony/ux-vue": "file:vendor/symfony/ux-vue/assets",
         "@vue/compiler-sfc": "^3.5.13",
         "@vue/tsconfig": "^0.7.0",
+        "cypress": "^15.5.0",
         "file-loader": "^6.2.0",
         "fos-router": "file:vendor/friendsofsymfony/jsrouting-bundle/Resources",
         "sass": "^1.85.1",
@@ -25,7 +26,8 @@
     "private": true,
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "cy:open": "cypress open"
     },
     "dependencies": {
         "@tailwindcss/postcss": "^4.0.9",

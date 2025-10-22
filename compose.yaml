@@ -76,7 +76,7 @@ services:
     ports:
       - "3306:3306"
   database_test:
-    image: mysql:8.0
+    image: mysql:8.0 # todo: change to 8.4
     container_name: secretesanta_db_test
     environment:
       MYSQL_ROOT_PASSWORD: password
@@ -114,7 +114,6 @@ services:
       - traefik.http.routers.secret-mailer.entrypoints=web
       - traefik.http.services.secret-mailer.loadbalancer.server.port=8025
     ###< symfony/mailer ###
-
   cleancode:
 #    image: jakzal/phpqa
     build:
@@ -127,6 +126,15 @@ services:
       - .:/app
       - ./docker/cleancode/99-custom.ini:/usr/local/etc/php/conf.d/99-custom.ini:ro
     working_dir: /app
+  cypress:
+    image: cypress/included:cypress-13.15.1-node-20.18.0-chrome-130.0.6723.69-1-ff-131.0.3-edge-130.0.2849.52-1
+    working_dir: /e2e
+    volumes:
+      - ./:/e2e
+      - ./cypress/videos:/e2e/cypress/videos
+      - ./cypress/screenshots:/e2e/cypress/screenshots
+    shm_size: "2gb"
+    command: ["run","--component","--browser","chrome","--headless"]
 
 networks:
   frontend:
@@ -136,3 +144,4 @@ networks:
 volumes:
   db_data:
   db_data_test:
+  cypress_cache:
